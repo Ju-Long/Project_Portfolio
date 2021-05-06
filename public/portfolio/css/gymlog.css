@@ -1,0 +1,80 @@
+.gymlog {
+  width: 100%;
+  height: 100%;
+  padding: 20px 0 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  display: grid;
+}
+.gymlog img {
+  width: 80vw;
+  height: auto;
+  justify-self: center;
+  position: absolute;
+  z-index: 1;
+  transition: 0.5s ease;
+}
+.gymlog .txt-section {
+  width: 97%;
+  display: grid;
+  padding: 0 4vw 0;
+  z-index: 2;
+  margin: 60vh 0 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  justify-self: center;
+}
+.gymlog .txt-section section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-self: center;
+}
+.gymlog .txt-section section strong {
+  font-size: 2.2vw;
+  margin: 0 0 10px;
+}
+.gymlog .txt-section section p {
+  font-size: 1.8vw;
+}
+.gymlog .txt-section section .row {
+  width: 100%;
+  display: grid;
+  grid-template-areas: "a a";
+  gap: 15px;
+  grid-auto-rows: 50%;
+}
+.gymlog .txt-section section .row div {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-self: center;
+}
+.gymlog .img-section {
+  width: 100%;
+  display: grid;
+}
+.gymlog .img-section img {
+  width: 85%;
+  position: relative;
+  z-index: 2;
+}
+.gymlog .XD-demo {
+  width: 100%;
+  padding: 0 4vw 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.gymlog .XD-demo a {
+  align-self: center;
+  text-decoration: none;
+  color: black;
+  padding: 0 20px 0;
+  text-align: center;
+  width: 40vw;
+  font-size: 20px;
+}
+
+/*# sourceMappingURL=gymlog.css.map */
