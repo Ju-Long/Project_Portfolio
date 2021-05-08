@@ -15,9 +15,11 @@ class CreateIPAddressCallsTable extends Migration
     {
         Schema::create('IP_Address_Calls', function (Blueprint $table) {
             $table->string('IP_address', 20);
-            $table->integer('times_a_month');
-            $table->integer('times_a_day')->nullable();
+            $table->integer('times_a_month')->default(0);
+            $table->integer('month');
             $table->integer('user_api_key')->nullable();
+            $table->integer('times_a_day')->nullable()->default(0);
+            $table->date('day');
         });
     }
 
