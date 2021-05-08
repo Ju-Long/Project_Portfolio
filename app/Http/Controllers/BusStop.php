@@ -3,389 +3,353 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class BusStop extends Controller
 {
 
-    public $BusArrivalLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2';
-    public $BusStopLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusStops';
-    public $BusRouteLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusRoutes';
-    public $BusDataLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusServices';
+    private $account_key = "We/4SNhISV+moxrLY/BVrw==";
 
-    function get_nearest_busstop(Request $req){
-        $lat = isset($req['lat']) ? $req['lat'] : 0;
-        $long = isset($req['long']) ? $req['long'] : 0;
-        $AccountKey = isset($req['AccountKey']) ? $req['AccountKey'] : '';
-        $resultLength = isset($req['length']) ? $req['length']: 10;
-        $AccountKey = str_replace(" ", "+", $AccountKey);
-        $calls = 500;
-        $check = 0;
-        $AllBusStops = array();
-        $result = array();
-        $array = array();
-        $actualResult = array();
+    function get_nearest_bus_stop(Request $req) {
+        $user_acc_key = $req->accountkey ?? 0;
+        $username = $req->username ?? '';
+        $client_ip = $req->ip();
+        $lat = $req->Latitude ?? '';
+        $long = $req->Longitude ?? '';
+        $amountReturned = $req->amount ?? 10;
 
-        if (!($lat || $long || $AccountKey)) {
-            return "Invalid Parameters";
-        }
-
-        $BusStops = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusStopLink);
-
-        if ($BusStops->serverError()) {
-            return "Server Error";
-        } else if ($BusStops->clientError()) {
-            return "Account Code Wrong";
-        }
-        foreach($BusStops['value'] as $i) {
-            array_push($AllBusStops, $i);
-        }
-
-        while(count($BusStops['value']) != 0) {
-            $BusStops = Http::withHeaders([
-                'AccountKey' => $AccountKey
-            ])->get($this->BusStopLink);
-
-            if ($BusStops->serverError()) {
-                return "Server Error";
-            } else if ($BusStops->clientError()) {
-                return "Account Code Wrong";
-            }
-            foreach($BusStops['value'] as $i) {
-                array_push($AllBusStops, $i);
-            }
-
-            $this->BusStopLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusStops?$skip='.$calls;
-            $calls += 500;
-        }
-
-        foreach($AllBusStops as $i) {
-            $array['code'] = $i['BusStopCode'];
-            $latdiff = abs($lat - $i['Latitude']);
-            $longdiff = abs($long - $i['Longitude']);
-            $array['diff'] = $latdiff + $longdiff;
-            $count = 0;
-            $temp = array();
-            $temp[] = $array;
-            if (!$result) {
-                array_push($result, $array);
-            } else {
-                foreach($result as $n) {
-                    if ($array['diff'] < $n['diff']) {
-                        array_splice($result, $count, 0, $temp);
-                        break;
-                    }
-                    if ($count == count($result)-1) {
-                        array_push($result, $array);
-                    }
-                    $count++;
-                }
-            }
-        }
-
-        foreach($result as $i) {
-            foreach($AllBusStops as $n) {
-                if ($i['code'] == $n['BusStopCode']) {
-                    array_push($actualResult, $n);
-                    $check++;
-                    break;
-                }
-            }
-            if ($check == $resultLength) {
-                break;
-            }
-        }
-        return ($actualResult);
-    }
-
-    function get_bus_stop_timing(Request $req) {
-        $BusStopCode = isset($req['BusStopCode']) ? $req['BusStopCode'] : 0;
-        $busNo = isset($req['ServiceNo']) ? $req['ServiceNo'] : 0;
-        $AccountKey = isset($req['AccountKey']) ? $req['AccountKey'] : '';
-        $AccountKey = str_replace(" ", "+", $AccountKey);
         date_default_timezone_set("Singapore");
-        $result = array();
-        $busData = array();
-        $actualResult = array();
+        $currMonth = date('m', time());
+        $currDay = date('Y-m-d', time());
 
-        if (!($BusStopCode || $AccountKey)) {
-            return "Invalid Parameters";
-        }
+        if (!($lat && $long && $amountReturned>1)) {
+            return ['output' => "Invalid params"];}
 
-        $Buses = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusArrivalLink, [
-            'BusStopCode' => $BusStopCode
-        ]);
+        $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/$amountReturned";
 
-        if ($Buses->serverError()) {
-            return "Server Error";
-        } else if ($Buses->clientError()) {
-            return "Account Code Wrong";
-        }
+        if (!($user_acc_key || $username)) {
+            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            foreach($datas as $i) {
+                if ($i->times_a_day > 30) {
+                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                }}
 
-        $currentTime = time();
-        foreach($Buses['Services'] as $i) {
-            $busDataContainer = array();
+            DB::table('api_datacenter.IP_Address_Calls')
+            ->updateOrInsert(
+                ['IP_address' => "$client_ip", 'month' => $currMonth, 'user_api_key' => $user_acc_key],
+                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
 
-            $result['ServiceNo'] = $i['ServiceNo'];
-            $result['OriginCode'] = $i['NextBus']['OriginCode'];
-            $result['DestinationCode'] = $i['NextBus']['DestinationCode'];
+            $result = Http::withHeaders([
+                'api_key' => $this->account_key
+            ])->get($url);
 
-            if (isset($busNo) && $result['ServiceNo'] == $busNo) {
-                $ArrivalTime = strtotime($i['NextBus']['EstimatedArrival']);
-                $busData['EstimatedArrival'] = (round(($ArrivalTime - $currentTime)/60) <= 0) ? "Arr" : round(($ArrivalTime - $currentTime)/60);
-                $busData['Type'] = $i['NextBus']['Type'];
-                $busData['Load'] = $i['NextBus']['Load'];
-                $busData['Feature'] = isset($i[$NextBus]['Feature']) ? $i['NextBus']['Feature'] : "none";
-                $result['BusData'] = $busDataContainer;
-                $actualResult[] = $result;
-                break;
-            } else {
-                $nextBus = "NextBus";
-                for($n = 1; $n < 4; $n++) {
-                    if ($i[$nextBus]['Type'] != "") {
-                        $ArrivalTime = strtotime($i[$nextBus]['EstimatedArrival']);
-                        $busData['EstimatedArrival'] = (round(($ArrivalTime - $currentTime)/60) <= 0) ? "Arr" : round(($ArrivalTime - $currentTime)/60);
-                        $busData['Type'] = $i[$nextBus]['Type'];
-                        $busData['Load'] = $i[$nextBus]['Load'];
-                        $busData['Feature'] = isset($i[$nextBus]['Feature']) ? $i[$nextBus]['Feature'] : "none";
-                    }
-                    switch ($n) {
-                        case 2: 
-                            $nextBus = "NextBus2";
-                            break;
-                        case 3: 
-                            $nextBus = "NextBus3";
-                            break;
-                        default: 
-                            $nextBus = "NextBus";
-                    }
-                    $busDataContainer[] = $busData;
-                }
-            }
-            $result['BusData'] = $busDataContainer;
-            $actualResult[] = $result;
-        }
-        return $actualResult;
-    }
+            if ($result->serverError()) {
+                return ["Server Error"];
+            } else if ($result->clientError()) {
+                return ["Client Error"];}
+
+            return json_decode($result);
+        } else {
+            $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
+
+            foreach ($API_Key as $i) {
+                if ($i->user_role == "client") {
+                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_a_day > 300) {
+                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+
+                DB::table('api_datacenter.IP_Address_Calls')
+                ->updateOrInsert(
+                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key],
+                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
+
+                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                foreach($datamall_key as $i) {
+                    
+                    $result = Http::withHeaders([
+                        'api_key' => $i->datamall
+                    ])->get($url);
+
+                    if ($result->serverError()) {
+                        return ["Server Error"];
+                    } else if ($result->clientError()) {
+                        return ["Client Error"];}
+
+                    return json_decode($result); }} 
+
+        } return 'no value found'; }
+
+    function get_bus_arrival_timing(Request $req) {
+        $user_acc_key = $req->accountkey ?? 0;
+        $username = $req->username ?? '';
+        $client_ip = $req->ip();
+        $busstopcode = $req->BusStopCode ?? '';
+
+        date_default_timezone_set("Singapore");
+        $currMonth = date('m', time());
+        $currDay = date('Y-m-d', time());
+
+        if (!$busstopcode) {
+            return ['output' => "Invalid params"];}
+
+        $url = "http://babasama.me/get_bus_arrival/$busstopcode";
+
+        if (!($user_acc_key || $username)) {
+            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            foreach($datas as $i) {
+                if ($i->times_a_day > 30) {
+                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                }}
+
+            DB::table('api_datacenter.IP_Address_Calls')
+            ->updateOrInsert(
+                ['IP_address' => "$client_ip", 'month' => $currMonth, 'user_api_key' => $user_acc_key],
+                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
+
+            $result = Http::withHeaders([
+                'api_key' => $this->account_key
+            ])->get($url);
+
+            if ($result->serverError()) {
+                return ["Server Error"];
+            } else if ($result->clientError()) {
+                return ["Client Error"];}
+
+            return json_decode($result);
+        } else {
+            $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
+
+            foreach ($API_Key as $i) {
+                if ($i->user_role == "client") {
+                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_a_day > 300) {
+                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+
+                DB::table('api_datacenter.IP_Address_Calls')
+                ->updateOrInsert(
+                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key],
+                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
+
+                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                foreach($datamall_key as $i) {
+                    
+                    $result = Http::withHeaders([
+                        'api_key' => $i->datamall
+                    ])->get($url);
+
+                    if ($result->serverError()) {
+                        return ["Server Error"];
+                    } else if ($result->clientError()) {
+                        return ["Client Error"];}
+
+                    return json_decode($result); }} 
+
+        } return 'no value found'; }
 
     function get_bus_route(Request $req) {
-        $BusNumber = isset($req['BusNumber']) ? $req['BusNumber'] : '';
-        $AccountKey = isset($req['AccountKey']) ? $req['AccountKey'] : '';
-        $AccountKey = str_replace(" ", "+", $AccountKey);
-        $AllBuses = [];
-        $AllBusStops = [];
-        $calls = 0;
-        $result = array();
+        $user_acc_key = $req->accountkey ?? 0;
+        $username = $req->username ?? '';
+        $client_ip = $req->ip();
+        $serviceno = $req->ServiceNo ?? '';
 
-        if (!($BusNumber || $AccountKey)) {
-            return "Invalid Parameters";
-        }
+        date_default_timezone_set("Singapore");
+        $currMonth = date('m', time());
+        $currDay = date('Y-m-d', time());
 
-        $Buses = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusRouteLink);
+        if (!$serviceno) {
+            return ['output' => "Invalid params"];}
 
-        if ($Buses->serverError()) {
-            return "Server Error";
-        } else if ($Buses->clientError()) {
-            return "Account Code Wrong";
-        }
+        $url = "http://babasama.me/get_bus_route/$serviceno";
 
-        foreach($Buses['value'] as $i) {
-            if ($i['ServiceNo'] == $BusNumber) {
-                array_push($AllBuses, $i);
-            }
-        }
+        if (!($user_acc_key || $username)) {
+            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            foreach($datas as $i) {
+                if ($i->times_a_day > 30) {
+                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                }}
 
-        while(count($Buses['value']) != 0) {
-            $Buses = Http::withHeaders([
-                'AccountKey' => $AccountKey
-            ])->get($this->BusRouteLink);
+            DB::table('api_datacenter.IP_Address_Calls')
+            ->updateOrInsert(
+                ['IP_address' => "$client_ip", 'month' => $currMonth, 'user_api_key' => $user_acc_key],
+                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
 
-            if ($Buses->serverError()) {
-                return "Server Error";
-            } else if ($Buses->clientError()) {
-                return "Account Code Wrong";
-            }
-            foreach($Buses['value'] as $i) {
-                if ($i['ServiceNo'] == $BusNumber) {
-                    array_push($AllBuses, $i);
-                }
-            }
+            $result = Http::withHeaders([
+                'api_key' => $this->account_key
+            ])->get($url);
 
-            $this->BusRouteLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusRoutes?$skip='.$calls;
-            $calls += 500;
-        }
+            if ($result->serverError()) {
+                return ["Server Error"];
+            } else if ($result->clientError()) {
+                return ["Client Error"];}
 
-        $calls = 0;
+            return json_decode($result);
+        } else {
+            $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
 
-        $BusStops = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusStopLink);
+            foreach ($API_Key as $i) {
+                if ($i->user_role == "client") {
+                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_a_day > 300) {
+                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
 
-        if ($BusStops->serverError()) {
-            return "Server Error";
-        } else if ($BusStops->clientError()) {
-            return "Account Code Wrong";
-        }
-    
-        foreach($BusStops['value'] as $i) {
-            array_push($AllBusStops, $i);
-        }
+                DB::table('api_datacenter.IP_Address_Calls')
+                ->updateOrInsert(
+                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key],
+                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
 
-        while(count($BusStops['value']) != 0) {
-            $BusStops = Http::withHeaders([
-                'AccountKey' => $AccountKey
-            ])->get($this->BusStopLink);
+                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                foreach($datamall_key as $i) {
+                    
+                    $result = Http::withHeaders([
+                        'api_key' => $i->datamall
+                    ])->get($url);
 
-            if ($BusStops->serverError()) {
-                return "Server Error";
-            } else if ($BusStops->clientError()) {
-                return "Account Code Wrong";
-            }
-            foreach($BusStops['value'] as $i) {
-                array_push($AllBusStops, $i);
-            }
+                    if ($result->serverError()) {
+                        return ["Server Error"];
+                    } else if ($result->clientError()) {
+                        return ["Client Error"];}
 
-            $this->BusStopLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusStops?$skip='.$calls;
-            $calls += 500;
-        }
+                    return json_decode($result); }} 
 
-       foreach($AllBuses as $i) {
-            $data = array();
-            $data['ServiceNo'] = $i['ServiceNo'];
-            $data['Operator'] = $i['Operator'];
-            $data['Direction'] = $i['Direction'];
-            $data['StopSequence'] = $i['StopSequence'];
-            $data['BusStopCode'] = $i['BusStopCode'];
-            $data['Distance'] = $i['Distance'];
-            $data['WD_FirstBus'] = $i['WD_FirstBus'];
-            $data['WD_LastBus'] = $i['WD_LastBus'];
-            $data['SAT_FirstBus'] = $i['SAT_FirstBus'];
-            $data['SAT_LastBus'] = $i['SAT_LastBus'];
-            $data['SUN_FirstBus'] = $i['SUN_FirstBus'];
-            $data['SUN_LastBus'] = $i['SUN_LastBus'];
-
-            foreach ($AllBusStops as $n) {
-                if ($n['BusStopCode'] == $i['BusStopCode']) {
-                    $data['RoadName'] = $n['RoadName'];
-                    $data['Description'] = $n['Description'];
-                    $data['Latitude'] = $n['Latitude'];
-                    $data['Longitude'] = $n['Longitude'];
-                    break;
-                }
-            }
-            $result[] = $data;
-       }
-       return $result;
-    }
+        } return 'no value found'; }
 
     function search_bus(Request $req) {
-        $BusNumber = isset($req['BusNumber']) ? $req['BusNumber'] : '';
-        $AccountKey = isset($req['AccountKey']) ? $req['AccountKey'] : '';
-        $AccountKey = str_replace(" ", "+", $AccountKey);
-        $calls = 0;
-        $result = array();
+        $user_acc_key = $req->accountkey ?? 0;
+        $username = $req->username ?? '';
+        $client_ip = $req->ip();
+        $serviceno = $req->ServiceNo ?? '';
 
-        if (!($AccountKey)) {
-            return "Invalid Parameters";
-        }
+        date_default_timezone_set("Singapore");
+        $currMonth = date('m', time());
+        $currDay = date('Y-m-d', time());
 
-        $Buses = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusDataLink);
+        if (!$serviceno) {
+            return ['output' => "Invalid params"];}
 
-        if ($Buses->serverError()) {
-            return "Server Error";
-        } else if ($Buses->clientError()) {
-            return "Account Code Wrong";
-        }
+        $url = "http://babasama.me/get_bus_data/$serviceno";
 
-        foreach($Buses['value'] as $i) {
-            if ($i['ServiceNo'] == $BusNumber) {
-                $result[] = $i;
-                return $result;
-            }
-        }
+        if (!($user_acc_key || $username)) {
+            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            foreach($datas as $i) {
+                if ($i->times_a_day > 30) {
+                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                }}
 
-        while(count($Buses['value']) != 0) {
-            $Buses = Http::withHeaders([
-                'AccountKey' => $AccountKey
-            ])->get($this->BusDataLink);
+            DB::table('api_datacenter.IP_Address_Calls')
+            ->updateOrInsert(
+                ['IP_address' => "$client_ip", 'month' => $currMonth, 'user_api_key' => $user_acc_key],
+                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
 
-            if ($Buses->serverError()) {
-                return "Server Error";
-            } else if ($Buses->clientError()) {
-                return "Account Code Wrong";
-            }
-            foreach($Buses['value'] as $i) {
-                if ($i['ServiceNo'] == $BusNumber) {
-                    $result[] = $i;
-                    return $result;
-                }
-            }
+            $result = Http::withHeaders([
+                'api_key' => $this->account_key
+            ])->get($url);
 
-            $this->BusDataLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusRoutes?$skip='.$calls;
-            $calls += 500;
-        }
+            if ($result->serverError()) {
+                return ["Server Error"];
+            } else if ($result->clientError()) {
+                return ["Client Error"];}
 
-        $result['output'] = "no data found";
-        return $result;
-    }
+            return json_decode($result);
+        } else {
+            $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
+
+            foreach ($API_Key as $i) {
+                if ($i->user_role == "client") {
+                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_a_day > 300) {
+                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+
+                DB::table('api_datacenter.IP_Address_Calls')
+                ->updateOrInsert(
+                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key],
+                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
+
+                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                foreach($datamall_key as $i) {
+                    
+                    $result = Http::withHeaders([
+                        'api_key' => $i->datamall
+                    ])->get($url);
+
+                    if ($result->serverError()) {
+                        return ["Server Error"];
+                    } else if ($result->clientError()) {
+                        return ["Client Error"];}
+
+                    return json_decode($result); }} 
+
+        } return 'no value found'; }
 
     function get_bus_stop(Request $req) {
-        $BusStopCode = isset($req['BusStopCode']) ? $req['BusStopCode'] : '';
-        $AccountKey = isset($req['AccountKey']) ? $req['AccountKey'] : '';
-        $AccountKey = str_replace(" ", "+", $AccountKey);
-        $calls = 0;
-        $result = array();
+        $user_acc_key = $req->accountkey ?? 0;
+        $username = $req->username ?? '';
+        $client_ip = $req->ip();
+        $busstopcode = $req->BusStopCode ?? '';
 
-        if (!($BusStopCode || $AccountKey)) {
-            return "Invalid Parameters";
-        }
+        date_default_timezone_set("Singapore");
+        $currMonth = date('m', time());
+        $currDay = date('Y-m-d', time());
 
-        $BusStops = Http::withHeaders([
-            'AccountKey' => $AccountKey
-        ])->get($this->BusStopLink);
+        if (!$busstopcode) {
+            return ['output' => "Invalid params"];}
 
-        if ($BusStops->serverError()) {
-            return "Server Error";
-        } else if ($BusStops->clientError()) {
-            return "Account Code Wrong";
-        }
-    
-        foreach($BusStops['value'] as $i) {
-            if ($i['BusStopCode'] == $BusStopCode) {
-                $result[] = $i;
-                return $result;
-            }
-        }
+        $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
 
-        while(count($BusStops['value']) != 0) {
-            $BusStops = Http::withHeaders([
-                'AccountKey' => $AccountKey
-            ])->get($this->BusStopLink);
+        if (!($user_acc_key || $username)) {
+            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            foreach($datas as $i) {
+                if ($i->times_a_day > 30) {
+                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                }}
 
-            if ($BusStops->serverError()) {
-                return "Server Error";
-            } else if ($BusStops->clientError()) {
-                return "Account Code Wrong";
-            }
-            foreach($BusStops['value'] as $i) {
-                if ($i['BusStopCode'] == $BusStopCode) {
-                    $result[] = $i;
-                    return $result;
-                }
-            }
+            DB::table('api_datacenter.IP_Address_Calls')
+            ->updateOrInsert(
+                ['IP_address' => "$client_ip", 'month' => $currMonth, 'user_api_key' => $user_acc_key],
+                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
 
-            $this->BusStopLink = 'http://datamall2.mytransport.sg/ltaodataservice/BusStops?$skip='.$calls;
-            $calls += 500;
-        }
-        $result['output'] = "no data found";
-        return $result;
-    }
+            $result = Http::withHeaders([
+                'api_key' => $this->account_key
+            ])->get($url);
+
+            if ($result->serverError()) {
+                return ["Server Error"];
+            } else if ($result->clientError()) {
+                return ["Client Error"];}
+
+            return json_decode($result);
+        } else {
+            $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
+
+            foreach ($API_Key as $i) {
+                if ($i->user_role == "client") {
+                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_a_day > 300) {
+                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+
+                DB::table('api_datacenter.IP_Address_Calls')
+                ->updateOrInsert(
+                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key],
+                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1'), 'day' => "$currDay"]);
+
+                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                foreach($datamall_key as $i) {
+                    
+                    $result = Http::withHeaders([
+                        'api_key' => $i->datamall
+                    ])->get($url);
+
+                    if ($result->serverError()) {
+                        return ["Server Error"];
+                    } else if ($result->clientError()) {
+                        return ["Client Error"];}
+
+                    return json_decode($result); }} 
+
+        } return 'no value found'; }
 }
