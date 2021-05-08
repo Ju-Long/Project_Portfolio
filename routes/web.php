@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Mail\Contact;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', function () {
-    return round(1.5);
+Route::get('/test', function (Request $req) {
+   return $req->ip();
 });
 
 Route::get('info', function() { phpinfo();});
