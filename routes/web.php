@@ -9,20 +9,21 @@ use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
 Route::get('/test', function (Request $req) {
-
+    date_default_timezone_set("Singapore");
+    $curr = time();
+    return date('Y-m-d', $curr);
 });
 
 // Route::get('info', function() { phpinfo();});
 
-Route::get('/add_user_has_exercise_data', [DatabaseController::class, 'add_user_has_exercise_data']);
-Route::get('/user', [DatabaseController::class, 'user']);
-Route::get('/delete_user_has_exercise_data', [DatabaseController::class, 'delete_user_has_exercise_data']);
-Route::get('/edit_user_has_exercise_data', [DatabaseController::class, 'edit_user_has_exercise_data']);
-Route::get('/new_exercise', [DatabaseController::class, 'new_exercise']);
-Route::get('/new_user', [DatabaseController::class, 'new_user']);
-Route::get('/user_has_exercise', [DatabaseController::class, 'user_has_exercise']);
-Route::get('/user_has_exercise_data', [DatabaseController::class, 'user_has_exercise_data']);
-Route::get('/new_set_done', [DatabaseController::class, 'new_set_done']);
+Route::get('/gym_planner/login', [DatabaseController::class, 'login']);
+Route::get('/gym_planner/signup', [DatabaseController::class, 'signup']);
+Route::get('/gym_planner/get_user_exercise', [DatabaseController::class, 'get_user_exercise']);
+Route::get('/gym_planner/get_user_exercise_data', [DatabaseController::class, 'get_user_exercise_data']);
+Route::get('/gym_planner/add_edit_exercise_data', [DatabaseController::class, 'add_edit_exercise_data']);
+Route::get('/gym_planner/add_new_exercise', [DatabaseController::class, 'add_new_exercise']);
+Route::get('/gym_planner/delete_exercise_data', [DatabaseController::class, 'delete_exercise_data']);
+Route::get('/gym_planner/new_set_done', [DatabaseController::class, 'new_set_done']);
 
 Route::get('/api/get_nearest_bus_stop', [BusStop::class, 'get_nearest_bus_stop']);
 Route::get('/api/get_bus_arrival_timing', [BusStop::class, 'get_bus_arrival_timing']);

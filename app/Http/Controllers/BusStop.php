@@ -24,7 +24,7 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         if (!($lat && $long && $amountReturned>1)) {
-            return ['output' => "Invalid params"];}
+            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/$amountReturned";
 
@@ -32,7 +32,7 @@ class BusStop extends Controller
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
-                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                    return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
             DB::table('api_datacenter.IP_Address_Calls')
@@ -45,9 +45,9 @@ class BusStop extends Controller
             ])->get($url);
 
             if ($result->serverError()) {
-                return ["Server Error"];
+                return [['output' => "Server Error"]];
             } else if ($result->clientError()) {
-                return ["Client Error"];}
+                return [['output' => "Client Error"]];}
 
             return json_decode($result);
         } else {
@@ -58,7 +58,7 @@ class BusStop extends Controller
                     $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
                     foreach($datas as $i) {
                         if ($i->times_a_day > 300) {
-                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
 
                 DB::table('api_datacenter.IP_Address_Calls')
                 ->updateOrInsert(
@@ -73,13 +73,13 @@ class BusStop extends Controller
                     ])->get($url);
 
                     if ($result->serverError()) {
-                        return ["Server Error"];
+                        return [['output' => "Server Error"]];
                     } else if ($result->clientError()) {
-                        return ["Client Error"];}
+                        return [['output' => "Client Error"]];}
 
                     return json_decode($result); }} 
 
-        } return 'no value found'; }
+        } return [['output' => 'no value found']]; }
 
     function get_bus_arrival_timing(Request $req) {
         $user_acc_key = $req->accountkey ?? 0;
@@ -92,7 +92,7 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         if (!$busstopcode) {
-            return ['output' => "Invalid params"];}
+            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_bus_arrival/$busstopcode";
 
@@ -100,7 +100,7 @@ class BusStop extends Controller
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
-                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                    return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
             DB::table('api_datacenter.IP_Address_Calls')
@@ -113,9 +113,9 @@ class BusStop extends Controller
             ])->get($url);
 
             if ($result->serverError()) {
-                return ["Server Error"];
+                return [['output' => "Server Error"]];
             } else if ($result->clientError()) {
-                return ["Client Error"];}
+                return [['output' => "Client Error"]];}
 
             return json_decode($result);
         } else {
@@ -126,7 +126,7 @@ class BusStop extends Controller
                     $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
                     foreach($datas as $i) {
                         if ($i->times_a_day > 300) {
-                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
 
                 DB::table('api_datacenter.IP_Address_Calls')
                 ->updateOrInsert(
@@ -135,19 +135,18 @@ class BusStop extends Controller
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $i) {
-                    
                     $result = Http::withHeaders([
                         'api_key' => $i->datamall
                     ])->get($url);
 
                     if ($result->serverError()) {
-                        return ["Server Error"];
+                        return [['output' => "Server Error"]];
                     } else if ($result->clientError()) {
-                        return ["Client Error"];}
+                        return [['output' => "Client Error"]];}
 
                     return json_decode($result); }} 
 
-        } return 'no value found'; }
+        } return [['output' => 'no value found']]; }
 
     function get_bus_route(Request $req) {
         $user_acc_key = $req->accountkey ?? 0;
@@ -160,7 +159,7 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         if (!$serviceno) {
-            return ['output' => "Invalid params"];}
+            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_bus_route/$serviceno";
 
@@ -168,7 +167,7 @@ class BusStop extends Controller
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
-                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                    return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
             DB::table('api_datacenter.IP_Address_Calls')
@@ -181,9 +180,9 @@ class BusStop extends Controller
             ])->get($url);
 
             if ($result->serverError()) {
-                return ["Server Error"];
+                return [['output' => "Server Error"]];
             } else if ($result->clientError()) {
-                return ["Client Error"];}
+                return [['output' => "Client Error"]];}
 
             return json_decode($result);
         } else {
@@ -194,7 +193,7 @@ class BusStop extends Controller
                     $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
                     foreach($datas as $i) {
                         if ($i->times_a_day > 300) {
-                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
 
                 DB::table('api_datacenter.IP_Address_Calls')
                 ->updateOrInsert(
@@ -203,19 +202,18 @@ class BusStop extends Controller
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $i) {
-                    
                     $result = Http::withHeaders([
                         'api_key' => $i->datamall
                     ])->get($url);
 
                     if ($result->serverError()) {
-                        return ["Server Error"];
+                        return [['output' => "Server Error"]];
                     } else if ($result->clientError()) {
-                        return ["Client Error"];}
+                        return [['output' => "Client Error"]];}
 
                     return json_decode($result); }} 
 
-        } return 'no value found'; }
+        } return [['output' => 'no value found']]; }
 
     function search_bus(Request $req) {
         $user_acc_key = $req->accountkey ?? 0;
@@ -228,7 +226,7 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         if (!$serviceno) {
-            return ['output' => "Invalid params"];}
+            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_bus_data/$serviceno";
 
@@ -236,7 +234,7 @@ class BusStop extends Controller
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
-                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                    return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
             DB::table('api_datacenter.IP_Address_Calls')
@@ -249,9 +247,9 @@ class BusStop extends Controller
             ])->get($url);
 
             if ($result->serverError()) {
-                return ["Server Error"];
+                return [['output' => "Server Error"]];
             } else if ($result->clientError()) {
-                return ["Client Error"];}
+                return [['output' => "Client Error"]];}
 
             return json_decode($result);
         } else {
@@ -262,7 +260,7 @@ class BusStop extends Controller
                     $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
                     foreach($datas as $i) {
                         if ($i->times_a_day > 300) {
-                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
 
                 DB::table('api_datacenter.IP_Address_Calls')
                 ->updateOrInsert(
@@ -277,13 +275,13 @@ class BusStop extends Controller
                     ])->get($url);
 
                     if ($result->serverError()) {
-                        return ["Server Error"];
+                        return [['output' => "Server Error"]];
                     } else if ($result->clientError()) {
-                        return ["Client Error"];}
+                        return [['output' => "Client Error"]];}
 
                     return json_decode($result); }} 
 
-        } return 'no value found'; }
+        } return [['output' => 'no value found']]; }
 
     function get_bus_stop(Request $req) {
         $user_acc_key = $req->accountkey ?? 0;
@@ -296,7 +294,7 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         if (!$busstopcode) {
-            return ['output' => "Invalid params"];}
+            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
 
@@ -304,7 +302,7 @@ class BusStop extends Controller
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
-                    return ['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times'];
+                    return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
             DB::table('api_datacenter.IP_Address_Calls')
@@ -317,9 +315,9 @@ class BusStop extends Controller
             ])->get($url);
 
             if ($result->serverError()) {
-                return ["Server Error"];
+                return [['output' => "Server Error"]];
             } else if ($result->clientError()) {
-                return ["Client Error"];}
+                return [['output' => "Client Error"]];}
 
             return json_decode($result);
         } else {
@@ -330,7 +328,7 @@ class BusStop extends Controller
                     $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
                     foreach($datas as $i) {
                         if ($i->times_a_day > 300) {
-                            return ['output' => 'You use this IP address to call the data too many times for today, please come again another day'];}}}
+                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
 
                 DB::table('api_datacenter.IP_Address_Calls')
                 ->updateOrInsert(
@@ -345,11 +343,11 @@ class BusStop extends Controller
                     ])->get($url);
 
                     if ($result->serverError()) {
-                        return ["Server Error"];
+                        return [['output' => "Server Error"]];
                     } else if ($result->clientError()) {
-                        return ["Client Error"];}
+                        return [['output' => "Client Error"]];}
 
                     return json_decode($result); }} 
 
-        } return 'no value found'; }
+        } return [['output' => 'no value found']]; }
 }
