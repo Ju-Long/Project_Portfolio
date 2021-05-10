@@ -55,7 +55,9 @@ class DatabaseController extends Controller
 
         $user = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
         foreach($user as $i) {
-            return DB::table('gym_planner.User_Has_Exercise')->where('user_id', $i->user_id)->get();}
+            return DB::table(DB::raw('gym_planner.User_Has_Exercise UHE'))
+            ->join(DB::raw('gym_planner.Exercise E'), 'UHE.exercise_id', '=', 'E.exercise_id')
+            ->select('UHE.user_has_exercise_id', 'E.exercise_name', 'E.exercise_image')->where('user_id', $i->user_id)->get();}
     }
 
     function get_user_exercise_data(Request $req) {
