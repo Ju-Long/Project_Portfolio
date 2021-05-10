@@ -20,6 +20,7 @@ Route::get('/gym_planner/login', [DatabaseController::class, 'login']);
 Route::get('/gym_planner/signup', [DatabaseController::class, 'signup']);
 Route::get('/gym_planner/get_user_exercise', [DatabaseController::class, 'get_user_exercise']);
 Route::get('/gym_planner/get_user_exercise_data', [DatabaseController::class, 'get_user_exercise_data']);
+Route::get('/gym_planner/get_all_future_exercise_data', [DatabaseController::class, 'get_all_future_exercise_data']);
 Route::get('/gym_planner/add_edit_exercise_data', [DatabaseController::class, 'add_edit_exercise_data']);
 Route::get('/gym_planner/add_new_exercise', [DatabaseController::class, 'add_new_exercise']);
 Route::get('/gym_planner/delete_exercise_data', [DatabaseController::class, 'delete_exercise_data']);

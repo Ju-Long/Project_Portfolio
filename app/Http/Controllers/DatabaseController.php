@@ -92,6 +92,28 @@ class DatabaseController extends Controller
         $username = $req->username ?? '';
         $password = $req->password ?? '';
         $date = date('Y-m-d', time());
+        $user_id;
+        $user_has_exercise_data = array();
+
+        if (!($username || $password)) {
+            return [['output' => "Invalid params"]];}
+
+        $userData = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
+        foreach ($userData as $i) {
+            $user_id = $i->user_id;}
+
+        if ($user_id != 0) {
+            $data = DB::table(DB::raw('gym_planner.User_Has_Exercise_Data UHED'))
+            ->join(DB::raw('gym_planner.User_Has_Exercise UHE'), 'UHED.user_has_exercise_id', '=', 'UHE.user_has_exercise_id')
+            ->select('UHED.*')
+            ->where('UHED.date', '>=', "$date")
+            ->get();
+            foreach($data as $i) {
+                $i->date = strtotime($i->date) + 978307200;
+                $user_has_exercise_data[] = $i;
+            }
+            return $user_has_exercise_data;
+        } return [['output' => 'user credentials wrong']];
     }
 
     function add_edit_exercise_data(Request $req) {
