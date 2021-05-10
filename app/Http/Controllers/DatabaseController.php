@@ -124,10 +124,10 @@ class DatabaseController extends Controller
         $user_has_exercise_id_true = false;
         $sets = $req->sets ?? 0;
         $reps = $req->reps ?? 0;
-        $weight = $req->reps ?? 0;
-        $date = $req->date ?? '';
+        $weight = $req->weight ?? 0;
+        $date = $req->date ?? time();
 
-        if (!($username || $password || $user_has_exercise_id || $sets || $reps || $weight || $date)) {
+        if (!($username || $password || $user_has_exercise_id || $sets || $reps || $date)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
