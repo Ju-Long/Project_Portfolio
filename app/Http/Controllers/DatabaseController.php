@@ -113,7 +113,7 @@ class DatabaseController extends Controller
             ->where([['UHED.date', '>=', "$date"], ['UHE.user_id', "$user_id"]])
             ->get();
             foreach($data as $i) {
-                $i->date = strtotime($i->date);
+                $i->date = strtotime($i->date) - 978307200;
                 $user_has_exercise_data[] = $i;
             }
             return $user_has_exercise_data;
@@ -125,7 +125,6 @@ class DatabaseController extends Controller
         $password = $req->password ?? '';
         $user_id = 0;
         $user_has_exercise_id = $req->user_has_exercise_id ?? 0;
-        $user_has_exercise_id_true = false;
         $sets = $req->sets ?? 0;
         $reps = $req->reps ?? 0;
         $weight = $req->weight ?? 0;
@@ -144,17 +143,17 @@ class DatabaseController extends Controller
             $user_has_exercise = DB::table('gym_planner.User_Has_Exercise')->where([['user_has_exercise_id', $user_has_exercise_id], ['user_id', $user_id]])->get();
             foreach($user_has_exercise as $i) {
                 if ($i->user_has_exercise_id == $user_has_exercise_id) {
-                    $user_has_exercise_id_true = true;
+                    $user_has_exercise_id = $i->user_has_exercise_id;
                 }}
 
-            if ($user_has_exercise_id_true) {
+            if ($user_has_exercise_id > 0) {
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
                 ->updateOrInsert(
                     ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date], 
                     ['sets' => $sets, 'reps' => $reps, 'weight' => $weight]);
                 
                 if ($data > 0) {
-                    return [['output' => 'updated']];
+                    return [['output' => 'Inserted']];
                 } return [['output' => 'fail to update']];
             } return [['output' => 'user_exercise_id does not exist or is not binded to your account']];
         } return [['output' => 'user credentials wrong']];
