@@ -62,7 +62,7 @@ class DatabaseController extends Controller
         $username = $req->username ?? '';
         $password = $req->password ?? '';
         $date = $req->date ?? time();
-        $user_id;
+        $user_id = 0;
         $user_has_exercise_data = array();
 
         if (!($username || $password)) {
@@ -92,7 +92,7 @@ class DatabaseController extends Controller
         $username = $req->username ?? '';
         $password = $req->password ?? '';
         $date = date('Y-m-d', time());
-        $user_id;
+        $user_id = 0;
         $user_has_exercise_data = array();
 
         if (!($username || $password)) {
@@ -119,7 +119,7 @@ class DatabaseController extends Controller
     function add_edit_exercise_data(Request $req) {
         $username = $req->username ?? '';
         $password = $req->password ?? '';
-        $user_id;
+        $user_id = 0;
         $user_has_exercise_id = $req->user_has_exercise_id ?? 0;
         $user_has_exercise_id_true = false;
         $sets = $req->sets ?? 0;
@@ -159,7 +159,7 @@ class DatabaseController extends Controller
     function add_new_exercise(Request $req) {
         $username = $req->username ?? '';
         $password = $req->password ?? '';
-        $user_id;
+        $user_id = 0;
         $exercise_name = $req->exercise_name ?? '';
         $exercise_image = $req->exercise_image ?? '';
     
@@ -189,6 +189,7 @@ class DatabaseController extends Controller
         $password = $req->password ?? '';
         $data_id = $req->data_id ?? 0;
         $date = $req->date ?? time();
+        $user_id = 0;
 
         if (!($username || $password || $data_id || $date)) {
             return [['output' => "Invalid params"]];}
@@ -213,6 +214,7 @@ class DatabaseController extends Controller
         $password = $req->password ?? '';
         $data_id = $req->data_id ?? 0;
         $date = $req->date ?? time();
+        $user_id = 0;
 
         if (!($username || $password || $data_id || $date)) {
             return [['output' => "Invalid params"]];}
