@@ -190,7 +190,7 @@ class DatabaseController extends Controller
         $data_id = $req->data_id ?? 0;
         $date = $req->date ?? time();
 
-        if (!($username || $password || $exercise_name || $exercise_image)) {
+        if (!($username || $password || $data_id || $date)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
