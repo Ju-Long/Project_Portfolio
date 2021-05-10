@@ -113,7 +113,7 @@ class DatabaseController extends Controller
             ->where([['UHED.date', '>=', "$date"], ['UHE.user_id', "$user_id"]])
             ->get();
             foreach($data as $i) {
-                $i->date = strtotime($i->date) + 978307200;
+                $i->date = strtotime($i->date);
                 $user_has_exercise_data[] = $i;
             }
             return $user_has_exercise_data;
