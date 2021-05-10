@@ -79,8 +79,9 @@ class DatabaseController extends Controller
         if ($user_id != 0) {
             $data = DB::table(DB::raw('gym_planner.User_Has_Exercise_Data UHED'))
             ->join(DB::raw('gym_planner.User_Has_Exercise UHE'), 'UHED.user_has_exercise_id', '=', 'UHE.user_has_exercise_id')
-            ->select('UHED.*')
-            ->where('UHED.date', "$date")
+            ->join(DB::raw('gym_planner.Exercise E', 'UHE.exercise_id', '=', 'E.exercise_id'))
+            ->select('UHED.data_id', 'E.exercise_name', 'E.exercise_image', 'UHED.sets', 'UHED.reps', 'UHED.weight', 'UHED.date')
+            ->where([['UHED.date', "$date"], ['UHE.user_id', "$user_id"]])
             ->get();
             foreach($data as $i) {
                 $i->date = strtotime($i->date) + 978307200;
