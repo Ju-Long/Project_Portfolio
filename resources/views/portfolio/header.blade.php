@@ -2,6 +2,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home</title>
+<meta name="description" content="Portfolio of Ju Long">
+<meta property="og:title" content="JL">
+<meta property="og:url" content="https://babasama.com">
+<meta property="og:description" content="Portfolio of Ju Long">
+<meta property="og:image" content="../portfolio/img/babasama.png">
 <link rel="shortcut icon" href="../portfolio/img/favicon/favicon.png" type="image/x-icon" id="icon">
 <link rel="stylesheet" href="../portfolio/css/main.css">
 <link rel="stylesheet" href="../portfolio/css/home.css">
