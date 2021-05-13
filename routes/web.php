@@ -8,7 +8,9 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', [UserController::class, 'test']);
+Route::get('/test', function() {
+
+});
 
 // Route::get('info', function() { phpinfo();});
 
@@ -28,6 +30,9 @@ Route::get('/api/get_bus_route', [BusStop::class, 'get_bus_route']);
 Route::get('/api/get_bus_data', [BusStop::class, 'search_bus']);
 Route::get('/api/get_bus_stop_data', [BusStop::class, 'get_bus_stop']);
 Route::get('/api/get_quote', [QuoteApiController::class, 'get_quote']);
+
+Route::get('/api/login', [UserController::class, 'login']);
+Route::post('/api/signup', [UserController::class, 'signup']);
 
 Route::get('/api/dashboard', function () {
     return view('api/index');

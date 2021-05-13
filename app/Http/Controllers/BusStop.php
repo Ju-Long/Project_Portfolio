@@ -12,12 +12,12 @@ class BusStop extends Controller
     private $account_key = "We/4SNhISV+moxrLY/BVrw==";
 
     function get_nearest_bus_stop(Request $req) {
-        $user_acc_key = $req->accountkey ?? 0;
-        $username = $req->username ?? '';
+        $user_acc_key = $req->input('accountkey', 0);
+        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $lat = $req->Latitude ?? '';
-        $long = $req->Longitude ?? '';
-        $amountReturned = $req->amount ?? 10;
+        $lat = $req->input('Latitude', '');
+        $long = $req->input('Longitude', '');
+        $amountReturned = $req->input('amount', 10);
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
@@ -81,10 +81,10 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function get_bus_arrival_timing(Request $req) {
-        $user_acc_key = $req->accountkey ?? 0;
-        $username = $req->username ?? '';
+        $user_acc_key = $req->input('accountkey', 0);
+        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $busstopcode = $req->BusStopCode ?? '';
+        $busstopcode = $req->input('BusStopCode', '');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
@@ -147,10 +147,10 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function get_bus_route(Request $req) {
-        $user_acc_key = $req->accountkey ?? 0;
-        $username = $req->username ?? '';
+        $user_acc_key = $req->input('accountkey', 0);
+        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $serviceno = $req->ServiceNo ?? '';
+        $serviceno = $req->input('ServiceNo', '');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
@@ -214,10 +214,10 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function search_bus(Request $req) {
-        $user_acc_key = $req->accountkey ?? 0;
-        $username = $req->username ?? '';
+        $user_acc_key = $req->input('accountkey', 0);
+        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $serviceno = $req->ServiceNo ?? '';
+        $serviceno = $req->input('ServiceNo', '');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
@@ -282,17 +282,18 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function get_bus_stop(Request $req) {
-        $user_acc_key = $req->accountkey ?? 0;
-        $username = $req->username ?? '';
+        if ($req->missing('BusStopCode')) {
+            return [['output' => 'Invalid Parameters']];
+        }
+
+        $user_acc_key = $req->input('accountkey', 0);
+        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $busstopcode = $req->BusStopCode ?? '';
+        $busstopcode = $req->input('BusStopCode', '');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
         $currDay = date('Y-m-d', time());
-
-        if (!$busstopcode) {
-            return [['output' => "Invalid params"]];}
 
         $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
 
