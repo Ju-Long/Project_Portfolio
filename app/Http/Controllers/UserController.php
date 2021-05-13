@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
         return DB::table('api_datacenter.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
     }
 
-    function signup(Request $req) {
+    function signup(ServerRequestInterface $req) {
         return $req;
     }
 }
