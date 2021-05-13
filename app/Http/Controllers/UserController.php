@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UserController extends Controller
 {
 
-    function test(Request $req) {
-        return $req;
+    function test(Request $getReq, ServerRequestInterface $postReq) {
+        return [$postReq, $getReq];
     }
 
     function login(Request $req) {
