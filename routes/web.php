@@ -1,18 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Mail\Contact;
+
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', function (Request $req) {
-    date_default_timezone_set("Singapore");
-    $curr = time();
-    return date('Y-m-d', $curr);
-});
+Route::get('/test', [UserController::class, 'test']);
 
 // Route::get('info', function() { phpinfo();});
 
