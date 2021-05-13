@@ -8,9 +8,7 @@ class UserController extends Controller
 {
 
     function test(Request $req) {
-        $data = $req->input('data', 'no data');
-
-        return $data;
+        return $req;
     }
 
     function login(Request $req) {
