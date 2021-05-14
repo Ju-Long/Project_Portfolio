@@ -47,7 +47,7 @@ Route::get('/', function () {
     return view('portfolio/index');
 });
 
-Route::get('/email', [MailController::class, 'sendEmail']);
+Route::post('/email', [MailController::class, 'sendEmail']);
 
 Route::get('/apps', function() {
     return view('portfolio/apps');

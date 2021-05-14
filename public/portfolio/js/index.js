@@ -71,7 +71,7 @@ $(document).ready(function () {
     });
 
     sendEmail = (name, email, subject, content) => {
-        $.get("/email", 
+        $.post("/email", 
             {
                 name: name,
                 email: email,

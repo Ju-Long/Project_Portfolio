@@ -17,7 +17,8 @@ class UserController extends Controller
         return DB::table('api_datacenter.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
     }
 
-    function signup() {
-        return request('data');
+    function signup(Request $req) {
+        error_log($req);
+        return redirect('/');
     }
 }
