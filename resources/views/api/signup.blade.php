@@ -1,0 +1,4 @@
+<form action="/api/signup" method="POST">
+    <input type="text" name="username"/>
+    <input type="text" name="password">
+</form>

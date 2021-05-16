@@ -9,7 +9,7 @@ use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
 Route::get('/test', function() {
-
+    return view('emails.signup');
 });
 
 // Route::get('info', function() { phpinfo();});
@@ -33,9 +33,10 @@ Route::get('/api/get_quote', [QuoteApiController::class, 'get_quote']);
 
 Route::get('/api/login', [UserController::class, 'login']);
 Route::post('/api/signup', [UserController::class, 'signup']);
+Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmation']);
 
 Route::get('/api/dashboard', function () {
-    return view('api/index');
+    return view('api.main', ['username' => 'username']);
 });
 
 Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {
@@ -44,11 +45,11 @@ Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', f
 });
 
 Route::get('/', function () {
-    return view('portfolio/index');
+    return view('portfolio.index');
 });
 
 Route::post('/email', [MailController::class, 'sendEmail']);
 
 Route::get('/apps', function() {
-    return view('portfolio/apps');
+    return view('portfolio.apps');
 });

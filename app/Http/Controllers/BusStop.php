@@ -8,27 +8,24 @@ use Illuminate\Support\Facades\Http;
 
 class BusStop extends Controller
 {
-
     private $account_key = "We/4SNhISV+moxrLY/BVrw==";
 
     function get_nearest_bus_stop(Request $req) {
-        $user_acc_key = $req->input('accountkey', 0);
-        $username = $req->input('username', '');
+        if ($req->missing('lat') && $req->missing('long') && $req->input('amount') < 1) {
+            return [['output' => 'Invalid Parameters']];
+        }
         $client_ip = $req->ip();
-        $lat = $req->input('Latitude', '');
-        $long = $req->input('Longitude', '');
-        $amountReturned = $req->input('amount', 10);
+        $lat = $req->input('Latitude');
+        $long = $req->input('Longitude');
+        $amountReturned = $req->input('amount');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
         $currDay = date('Y-m-d', time());
 
-        if (!($lat && $long && $amountReturned > 1)) {
-            return [['output' => "Invalid params"]];}
-
         $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/$amountReturned";
 
-        if (!($user_acc_key && $username)) {
+        if ($req->missing('username') && $req->missing('accountkey')) {
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
@@ -51,6 +48,8 @@ class BusStop extends Controller
 
             return json_decode($result);
         } else {
+            $user_acc_key = $req->input('accountkey');
+            $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
@@ -81,21 +80,19 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function get_bus_arrival_timing(Request $req) {
-        $user_acc_key = $req->input('accountkey', 0);
-        $username = $req->input('username', '');
+        if ($req->missing('BusStopCode')) {
+            return [['output' => 'Invalid Parameters']];
+        }
         $client_ip = $req->ip();
-        $busstopcode = $req->input('BusStopCode', '');
+        $busstopcode = $req->input('BusStopCode');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
         $currDay = date('Y-m-d', time());
 
-        if (!$busstopcode) {
-            return [['output' => "Invalid params"]];}
-
         $url = "http://babasama.me/get_bus_arrival/$busstopcode";
 
-        if (!($user_acc_key || $username)) {
+        if ($req->missing('username') && $req->missing('accountkey')) {
             $datas = DB::table('api_datacenter.IP_Address_Calls')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
@@ -117,6 +114,8 @@ class BusStop extends Controller
 
             return json_decode($result);
         } else {
+            $user_acc_key = $req->input('accountkey');
+            $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
 
             foreach ($API_Key as $i) {
@@ -147,21 +146,19 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function get_bus_route(Request $req) {
-        $user_acc_key = $req->input('accountkey', 0);
-        $username = $req->input('username', '');
+        if ($req->missing('ServiceNo')) {
+            return [['output' => 'Invalid Paramters']];
+        }
         $client_ip = $req->ip();
-        $serviceno = $req->input('ServiceNo', '');
+        $serviceno = $req->input('ServiceNo');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
         $currDay = date('Y-m-d', time());
 
-        if (!$serviceno) {
-            return [['output' => "Invalid params"]];}
-
         $url = "http://babasama.me/get_bus_route/$serviceno";
 
-        if (!($user_acc_key || $username)) {
+        if ($req->missing('username') && $req->missing('accountkey')) {
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
@@ -184,6 +181,8 @@ class BusStop extends Controller
 
             return json_decode($result);
         } else {
+            $user_acc_key = $req->input('accountkey');
+            $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
 
             foreach ($API_Key as $i) {
@@ -214,21 +213,19 @@ class BusStop extends Controller
         } return [['output' => 'no value found']]; }
 
     function search_bus(Request $req) {
-        $user_acc_key = $req->input('accountkey', 0);
-        $username = $req->input('username', '');
+        if ($req->missing('ServiceNo')) {
+            return [['output' => 'Invalid Parameters']];
+        }
         $client_ip = $req->ip();
-        $serviceno = $req->input('ServiceNo', '');
+        $serviceno = $req->input('ServiceNo');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
         $currDay = date('Y-m-d', time());
 
-        if (!$serviceno) {
-            return [['output' => "Invalid params"]];}
-
         $url = "http://babasama.me/get_bus_data/$serviceno";
 
-        if (!($user_acc_key || $username)) {
+        if ($req->missing('username') && $req->missing('accountkey')) {
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
@@ -251,6 +248,8 @@ class BusStop extends Controller
 
             return json_decode($result);
         } else {
+            $user_acc_key = $req->input('accountkey');
+            $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
 
             foreach ($API_Key as $i) {
@@ -285,11 +284,8 @@ class BusStop extends Controller
         if ($req->missing('BusStopCode')) {
             return [['output' => 'Invalid Parameters']];
         }
-
-        $user_acc_key = $req->input('accountkey', 0);
-        $username = $req->input('username', '');
         $client_ip = $req->ip();
-        $busstopcode = $req->input('BusStopCode', '');
+        $busstopcode = $req->input('BusStopCode');
 
         date_default_timezone_set("Singapore");
         $currMonth = date('m', time());
@@ -297,7 +293,7 @@ class BusStop extends Controller
 
         $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
 
-        if (!($user_acc_key || $username)) {
+        if ($req->missing('username') && $req->missing('accountkey')) {
             $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_a_day > 30) {
@@ -320,6 +316,8 @@ class BusStop extends Controller
 
             return json_decode($result);
         } else {
+            $user_acc_key = $req->input('accountkey');
+            $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
 
             foreach ($API_Key as $i) {

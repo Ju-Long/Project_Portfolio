@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Contact;
+use App\Mail\ContactConfirmation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,7 +18,7 @@ class MailController extends Controller
         ];
 
         Mail::to('julong170501@gmail.com')->send(new Contact($details));
-        Mail::to($req->email)->send(new Contact($details));
+        Mail::to($req->email)->send(new ContactConfirmation($details));
         return 'email sent';
     }
 }

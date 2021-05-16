@@ -12,6 +12,10 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'stripe/*',
+        'http://localhost:8000/email',
+        'https://babasama.com/email',
+        'http://localhost:8000/api/signup',
+        'https://babasama.com/api/signup',
     ];
 }
