@@ -13,7 +13,6 @@
         <img src="../portfolio/img/movie/Competitors.png">
     </div>
     <div class="XD-demo">
-        <iframe width="414" height="896" frameborder="0" allowfullscreen></iframe>
-        <a href="https://xd.adobe.com/embed/d6c12cac-7d27-4609-a4bb-fa18c71f1253-8392/"><i class="fas fa-arrow-square-left"></i> Check out the live prototype or you can click here to see through Adobe Website</a>
+        <a href="https://xd.adobe.com/embed/d6c12cac-7d27-4609-a4bb-fa18c71f1253-8392/"> Click here to see through Adobe Website</a>
     </div>
 </div>

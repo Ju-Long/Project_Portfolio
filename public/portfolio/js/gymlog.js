@@ -23,12 +23,12 @@ $(document).ready(function () {
     var width = "80vw";
     $(".gymlog").scroll(function () { 
         if ($(this).scrollTop() > 1307) {
-            $(".gymlog .img-section img:first-child").attr("src", "../img/gymlog/CoverPage.png");
+            $(".gymlog .img-section img:first-child").attr("src", "../portfolio/img/gymlog/CoverPage.png");
             // $(".movie-bg").attr("src", "../img/transparent.png");
             $(".gymlog-bg").hide();
         }
         if ($(this).scrollTop() < 1307) {
-            $(".gymlog .img-section img:first-child").attr("src", "../img/transparent.png");
+            $(".gymlog .img-section img:first-child").attr("src", "../portfolio/img/transparent.png");
             // $(".movie-bg").attr("src", "../img/movie/CoverPageV2.png");
             $(".gymlog-bg").show();
         }
@@ -48,10 +48,6 @@ $(document).ready(function () {
             width = "76vw";
         } else if (position < 1307) {
             width = "75vw";
-        } else if (position > 2000) {
-            $(".gymlog .XD-demo iframe").attr("src", "https://xd.adobe.com/view/4e408f09-6ecc-4ba7-b4ba-1e143adbe06f-1b13/");
-        } else if (position < 1995 ) {
-            $(".gymlog .XD-demo iframe").removeAttr("src");
         }
         $(".gymlog-bg").css("width", width);
     }

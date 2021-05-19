@@ -29,7 +29,7 @@ class UserController extends Controller
         }
         $username = $req->input('username');
         $password = $req->input('password');
-        
+
         return DB::table('api_datacenter.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
     }
 
@@ -40,7 +40,7 @@ class UserController extends Controller
         $username = $req->input('username');
         $email = $req->input('email');
         $password = $req->input('password');
-        
+
         $random_str = $this->random_str(20);
         $create_user = DB::table('api_datacenter.User')->insertOrIgnore([
             ['username' => "$username", 'user_email' => "$email", 'password' => "$password", 'reset_password_token' => "$random_str"]
@@ -63,5 +63,30 @@ class UserController extends Controller
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
         } return [['output' => 'no data found']];
+    }
+
+    function test(Request $req) {
+        if ($req->missing('username')) {
+            return 'hello world';
+        }
+        return 'no hello world';
+    }
+
+    function get_user_api_calls(Request $req) {
+        date_default_timezone_set("Singapore");
+        $currMonth = date('m', time());
+        $previousMonth = (($currMonth - 1) == 0) ? 12 : $currMonth - 1;
+
+        if ($req->missing('accountkey')) {
+            return [['output' => 'token is missing']];
+        }
+
+        $user_acc_key = $req->input('accountkey');
+        return DB::table('api_datacenter.IP_Address_Calls')->where([['month', $currMonth], ['month', $previousMonth], ['user_api_key', $user_acc_key]])->get();
+    }
+
+    function delete_api_calls(Request $req) {
+        $password = $req->input('password');
+
     }
 }

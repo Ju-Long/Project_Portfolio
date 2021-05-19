@@ -7,7 +7,7 @@
 
 <body>
     <div class='overall'>
-        <img src="..portfolio/img/polar_night.jpeg" class="background-img">
+        <img src="../portfolio/img/polar_night.jpeg" class="background-img">
         <main>
             @include('portfolio/nav')
             <div class="content">

@@ -1,4 +1,5 @@
-<form action="/api/signup" method="POST">
-    <input type="text" name="username"/>
-    <input type="text" name="password">
-</form>
+@extends('api.index')
+
+@section('signup')
+    
+@endsection

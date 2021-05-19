@@ -8,9 +8,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', function() {
-    return view('emails.signup');
-});
+Route::get('/test', [UserController::class, 'test']);
 
 // Route::get('info', function() { phpinfo();});
 
@@ -36,7 +34,11 @@ Route::post('/api/signup', [UserController::class, 'signup']);
 Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmation']);
 
 Route::get('/api/dashboard', function () {
-    return view('api.main', ['username' => 'username']);
+    return view('api.main', ['username' => 'hello']);
+});
+
+Route::get('/api/dashboard/signup', function() {
+    return view('api.signup');
 });
 
 Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {

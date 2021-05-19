@@ -17,6 +17,9 @@
     
         {{-- anychart --}}
         <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-base.min.js"></script>
+
+        {{-- prettify --}}
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
         
     </head>
 <body>

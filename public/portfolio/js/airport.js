@@ -23,12 +23,12 @@ $(document).ready(function () {
     var width = "80vw";
     $(".airport").scroll(function () { 
         if ($(this).scrollTop() > 1307) {
-            $(".airport .img-section img:first-child").attr("src", "../img/airport/CoverPage.png");
+            $(".airport .img-section img:first-child").attr("src", "../portfolio/img/airport/CoverPage.png");
             // $(".movie-bg").attr("src", "../img/transparent.png");
             $(".airport-bg").hide();
         }
         if ($(this).scrollTop() < 1307) {
-            $(".airport .img-section img:first-child").attr("src", "../img/transparent.png");
+            $(".airport .img-section img:first-child").attr("src", "../portfolio/img/transparent.png");
             // $(".movie-bg").attr("src", "../img/movie/CoverPageV2.png");
             $(".airport-bg").show();
         }
@@ -48,10 +48,6 @@ $(document).ready(function () {
             width = "76vw";
         } else if (position < 1307) {
             width = "75vw";
-        } else if (position > 2000) {
-            $(".airport .XD-demo iframe").attr("src", "https://xd.adobe.com/view/7fb2bde4-dde0-494d-90a7-ffda63cf21e5-2ae1/");
-        } else if (position < 1995 ) {
-            $(".airport .XD-demo iframe").removeAttr("src");
         }
         $(".airport-bg").css("width", width);
     }

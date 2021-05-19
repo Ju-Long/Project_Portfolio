@@ -12,7 +12,6 @@
         <img src="../portfolio/img/gymlog/Delete_Exercise.png">
     </div>
     <div class="XD-demo">
-        <iframe width="375" height="812" frameborder="0" allowfullscreen></iframe>
-        <a href="https://xd.adobe.com/view/4e408f09-6ecc-4ba7-b4ba-1e143adbe06f-1b13/"><i class="fas fa-arrow-square-left"></i> Check out the live prototype or you can click here to see through Adobe Website</a>
+        <a href="https://xd.adobe.com/view/4e408f09-6ecc-4ba7-b4ba-1e143adbe06f-1b13/">Click here to see through Adobe Website</a>
     </div>
 </div>
