@@ -1,0 +1,65 @@
+@use 'font'
+
+body 
+    display: flex
+    flex-direction: row
+    background-color: font.$navbar-bg
+
+.img-showcase-bg 
+    width: 55vw
+    height: 100vh
+    filter: blur(4px)
+    background-image: url(../../api/img/signup.signin.jpg)
+    background-size: auto 100vh
+    background-repeat: no-repeat
+
+.img-showcase
+    position: absolute
+    width: 55vw
+    height: 100vh
+
+.inputs 
+    width: 45vw
+    height: 100vh
+    display: grid
+    align-items: center
+    justify-content: center
+
+    .input-form
+        display: grid
+        width: 45vw
+        height: 50%
+        align-items: center
+        justify-content: space-evenly
+
+        header 
+            width: 45vw * 0.7
+            font-size: 3vw
+            font-family: font.$oxygen
+            font-weight: bold
+            text-align: center
+
+        .input-box
+            padding: 20px 10px
+            background: font.$white
+            text-align: center
+            color: font.$not-so-white
+            border: none
+            border-radius: 16px
+        
+        button.input-btn
+            width: 40%
+            align-self: center
+            justify-self: center
+            background: font.$blueish 
+            padding: 10px 0
+            border: none
+            border-radius: 8px
+
+        p
+            font-family: font.$oxygen
+            justify-self: center
+
+            a
+                color: blue
+                text-decoration: underline

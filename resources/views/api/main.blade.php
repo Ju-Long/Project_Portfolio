@@ -1,4 +1,4 @@
-@extends('api.index')
+@extends('api.template.index')
 
 @section('main')
     <main class="dashboard">

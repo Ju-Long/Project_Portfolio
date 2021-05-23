@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+a, button {
+  cursor: pointer;
+}
+
 body {
   overflow: hidden;
   width: 100vw;

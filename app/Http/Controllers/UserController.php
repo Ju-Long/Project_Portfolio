@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\SignupConfirmation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -24,13 +26,22 @@ class UserController extends Controller
     }
 
     function login(Request $req) {
-        if ($req->missing('username') && $req->missing('password')) {
-            return [['output' => 'username and password is missing.']];
+        if (Cache::has('username') && Cache::has('password')) {
+            return ['has value']
         }
-        $username = $req->input('username');
+        if ($req->missing('email') && $req->missing('password')) {
+            return [['output' => 'email and password is missing.']];
+        }
+        $email = $req->input('email');
         $password = $req->input('password');
 
-        return DB::table('api_datacenter.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
+        $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
+        foreach ($user as $i) {
+            session(['username' => $i->username, 'password' => $i->user_password]);
+            Cache::forever('username', $i->username);
+            Cache::forever('password', $i->user_password);
+        }
+        return $user;
     }
 
     function signup(Request $req) {
@@ -60,16 +71,19 @@ class UserController extends Controller
         $confirm = DB::table('api_datacenter.User')->where('reset_password_token', "$token");
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
+                session(['username' => $i->username, 'password' => $i->user_password]);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
         } return [['output' => 'no data found']];
     }
 
+    function signout(Request $req) {
+        Cache::flush();
+        $req->session()->forget(['username', 'password']);
+    }
+
     function test(Request $req) {
-        if ($req->missing('username')) {
-            return 'hello world';
-        }
-        return 'no hello world';
+        return Cache::forever('username', 'JohnDoe');
     }
 
     function get_user_api_calls(Request $req) {
@@ -85,8 +99,13 @@ class UserController extends Controller
         return DB::table('api_datacenter.IP_Address_Calls')->where([['month', $currMonth], ['month', $previousMonth], ['user_api_key', $user_acc_key]])->get();
     }
 
-    function delete_api_calls(Request $req) {
-        $password = $req->input('password');
+    // function delete_api_calls(Request $req) {
+    //     $password = $req->input('password');
+    //     date_default_timezone_set("Singapore");
+    //     $currMonth = date('m', time());
 
-    }
+    //     if ($password == config('private_password')) {
+    //         DB::table('api_datacenter.IP_Address_Calls')->where([[''], ['']])->delete();
+    //     }
+    // }
 }

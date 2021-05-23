@@ -32,13 +32,14 @@ Route::get('/api/get_quote', [QuoteApiController::class, 'get_quote']);
 Route::get('/api/login', [UserController::class, 'login']);
 Route::post('/api/signup', [UserController::class, 'signup']);
 Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmation']);
+Route::get('/api/signout', [UserController::class, 'signout']);
 
 Route::get('/api/dashboard', function () {
     return view('api.main', ['username' => 'hello']);
 });
 
-Route::get('/api/dashboard/signup', function() {
-    return view('api.signup');
+Route::get('/api/dashboard/auth', function() {
+    return view('api.input');
 });
 
 Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {
