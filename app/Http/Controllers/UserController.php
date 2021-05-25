@@ -27,7 +27,7 @@ class UserController extends Controller
 
     function login(Request $req) {
         if (Cache::has('username') && Cache::has('password')) {
-            return ['has value']
+            return redirect('/api/dashboard');
         }
         if ($req->missing('email') && $req->missing('password')) {
             return [['output' => 'email and password is missing.']];
@@ -68,10 +68,12 @@ class UserController extends Controller
             return [['output' => 'token is missing']];
         }
         $token = $req->input('token');
-        $confirm = DB::table('api_datacenter.User')->where('reset_password_token', "$token");
+        $confirm = DB::table('api_datacenter.User')->where('reset_password_token', "$token")->get();
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
                 session(['username' => $i->username, 'password' => $i->user_password]);
+                Cache::forever('username', $i->username);
+                Cache::forever('password', $i->user_password);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
         } return [['output' => 'no data found']];
@@ -80,10 +82,21 @@ class UserController extends Controller
     function signout(Request $req) {
         Cache::flush();
         $req->session()->forget(['username', 'password']);
+        return redirect('/api/dashboard');
     }
 
     function test(Request $req) {
         return Cache::forever('username', 'JohnDoe');
+    }
+
+    function dashboard(Request $req) {
+        if (Cache::has('username')) {
+            if (!$req->session()->has('username')) {
+                session(['username' => Cache::get('username'), 'password' => Cache::get('password')]);
+            }
+            return view('api.main', ['username' => $req->session()->get('username')]);
+        }
+        return redirect('/api/dashboard/auth');
     }
 
     function get_user_api_calls(Request $req) {

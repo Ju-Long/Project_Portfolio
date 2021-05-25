@@ -58,6 +58,10 @@ body {
   border: none;
   border-radius: 16px;
 }
+.inputs .input-form .input-box.error {
+  border: 1px solid #c52233;
+  color: #c52233;
+}
 .inputs .input-form button.input-btn {
   width: 40%;
   align-self: center;

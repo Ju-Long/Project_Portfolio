@@ -14,6 +14,6 @@
 <body>
     <header>Welcome {{$username}}</header>
     <p>you have successfully authenicated your account.</p>
-    <p>logging in now...</p>
+    <p>redirecting to home page now...</p>
 </body>
 </html>
