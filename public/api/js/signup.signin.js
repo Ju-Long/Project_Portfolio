@@ -1,12 +1,11 @@
 
 $(document).ready(() => {
     $(".signin").hide();
-    var passwordformat=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/;
 
     $(".input-box").keypress((e) => { 
         if (e.keyCode > 0) {
             $(".input-box").removeClass("error");
-            $("#error").removeClass("show")
+            $("#error").removeClass("show");
         }
     });
 

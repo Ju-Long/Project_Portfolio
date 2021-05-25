@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
         foreach ($user as $i) {
-            session(['username' => $i->username, 'password' => $i->user_password]);
+            session(['username' => $i->username, 'password' => $i->user_password], ['user_api_key' => $i->user_api_key]);
         }
         return $user;
     }
@@ -101,17 +101,18 @@ class UserController extends Controller
             return [['output' => 'token is missing']];
         }
 
-        $user_acc_key = $req->input('accountkey');
+        $user_acc_key = $req->session()->get('user_api_key');
         return DB::table('api_datacenter.IP_Address_Calls')->where([['month', $currMonth], ['month', $previousMonth], ['user_api_key', $user_acc_key]])->get();
     }
 
-    // function delete_api_calls(Request $req) {
-    //     $password = $req->input('password');
-    //     date_default_timezone_set("Singapore");
-    //     $currMonth = date('m', time());
+    function delete_api_calls(Request $req) {
+        $password = $req->input('password');
+        date_default_timezone_set("Singapore");
+        $previousMonth = date('Y-m-d', strtotime(time(), ' -3 month'));
 
-    //     if ($password == config('private_password')) {
-    //         DB::table('api_datacenter.IP_Address_Calls')->where([[''], ['']])->delete();
-    //     }
-    // }
+        if ($password == config('private_password')) {
+            return DB::table('api_datacenter.IP_Address_Calls')->where('day', '<', "$previousMonth")->delete();
+        }
+        return [['output' => 'wrong password']];
+    }
 }

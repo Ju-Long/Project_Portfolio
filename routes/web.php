@@ -34,6 +34,8 @@ Route::post('/api/signup', [UserController::class, 'signup']);
 Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmation']);
 Route::get('/api/signout', [UserController::class, 'signout']);
 
+Route::get('/api/dashboard/data', [UserController::class, 'get_user_api_calls']);
+
 Route::get('/api/dashboard', [UserController::class, 'dashboard']);
 
 Route::get('/api/dashboard/auth', function() {
