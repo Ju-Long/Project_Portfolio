@@ -47,6 +47,9 @@ body
             border: none
             border-radius: 16px
 
+        .input-box:focus, .input-box:hover 
+            color: font.$black-but-not-so-black
+
         .input-box.error
             border: 1px solid font.$red
             color: font.$red
@@ -67,3 +70,16 @@ body
             a
                 color: blue
                 text-decoration: underline
+
+        #error
+            display: none
+            width: 45vw * 0.7
+            background: transparent
+            color: font.$red
+            font-weight: bold
+            padding: 4px 8px
+            font-size: 13px
+            font-family: font.$oxygen
+        
+        #error.show
+            display: block

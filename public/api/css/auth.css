@@ -58,6 +58,9 @@ body {
   border: none;
   border-radius: 16px;
 }
+.inputs .input-form .input-box:focus, .inputs .input-form .input-box:hover {
+  color: #3f332d;
+}
 .inputs .input-form .input-box.error {
   border: 1px solid #c52233;
   color: #c52233;
@@ -78,6 +81,19 @@ body {
 .inputs .input-form p a {
   color: blue;
   text-decoration: underline;
+}
+.inputs .input-form #error {
+  display: none;
+  width: 31.5vw;
+  background: transparent;
+  color: #c52233;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-family: Oxygen, sans-serif;
+}
+.inputs .input-form #error.show {
+  display: block;
 }
 
 /*# sourceMappingURL=auth.css.map */

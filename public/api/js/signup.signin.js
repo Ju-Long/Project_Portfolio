@@ -1,11 +1,12 @@
+
 $(document).ready(() => {
     $(".signin").hide();
     var passwordformat=  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/;
 
     $(".input-box").keypress((e) => { 
         if (e.keyCode > 0) {
-            $(".input-box").css("color", "#000000")
             $(".input-box").removeClass("error");
+            $("#error").removeClass("show")
         }
     });
 
@@ -52,11 +53,16 @@ $(document).ready(() => {
             $(".input-box.password").addClass("error");
             return false;
         }
-        if (username.contains(" "))
-        if (!password.match(passwordformat)) {
+        if (!/^[0-9a-zA-Z_.-]{6,20}$/.test(username)) {
+            $(".input-box.username").addClass("error");
+            $(".input-box.username").val("");
+            $("#error.username").addClass("show");
+            return false;
+        }
+        if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/.test(password)) {
             $(".input-box.password").addClass("error");
             $(".input-box.password").val("");
-            $(".signup .password").attr("placeholder", "Invalid format: please enter more than 6 character and only have at least 1 captial letter, 1 non captial letter, 1 number, 1 special character and no space.")
+            $("#error.password").addClass("show");
             return false;
         }
 
