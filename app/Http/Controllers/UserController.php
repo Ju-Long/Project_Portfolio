@@ -38,8 +38,6 @@ class UserController extends Controller
         $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
         foreach ($user as $i) {
             session(['username' => $i->username, 'password' => $i->user_password]);
-            Cache::forever('username', $i->username);
-            Cache::forever('password', $i->user_password);
         }
         return $user;
     }
@@ -72,8 +70,6 @@ class UserController extends Controller
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
                 session(['username' => $i->username, 'password' => $i->user_password]);
-                Cache::forever('username', $i->username);
-                Cache::forever('password', $i->user_password);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
         } return [['output' => 'no data found']];
@@ -90,10 +86,7 @@ class UserController extends Controller
     }
 
     function dashboard(Request $req) {
-        if (Cache::has('username')) {
-            if (!$req->session()->has('username')) {
-                session(['username' => Cache::get('username'), 'password' => Cache::get('password')]);
-            }
+        if ($req->session()->has('username')) {
             return view('api.main', ['username' => $req->session()->get('username')]);
         }
         return redirect('/api/dashboard/auth');
