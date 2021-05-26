@@ -79,8 +79,12 @@ body {
   justify-self: center;
 }
 .inputs .input-form p a {
-  color: blue;
   text-decoration: underline;
+}
+.inputs .input-form a {
+  color: blue;
+  justify-self: center;
+  font-family: Oxygen, sans-serif;
 }
 .inputs .input-form #error {
   display: none;
@@ -94,6 +98,62 @@ body {
 }
 .inputs .input-form #error.show {
   display: block;
+}
+
+.forget-password {
+  width: 45vw;
+  height: 100vh;
+  display: grid;
+  align-items: center;
+}
+.forget-password .input-box-container {
+  display: grid;
+  height: 40vw;
+}
+.forget-password .input-box-container header {
+  font-family: Ubuntu, sans-serif;
+  font-weight: bold;
+  font-size: 3vw;
+  text-align: center;
+}
+.forget-password .input-box-container .input-box {
+  display: grid;
+  width: 45vw;
+  height: 20vw;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.forget-password .input-box-container .input-box label {
+  width: 31.5vw;
+  font-family: Oxygen, sans-serif;
+  font-weight: bold;
+  font-size: 2vw;
+  text-align: center;
+}
+.forget-password .input-box-container .input-box input {
+  padding: 20px;
+  border: none;
+  border-radius: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+}
+.forget-password .input-box-container .input-box button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  background: #c8c8c8;
+  transition: 0.5s linear;
+}
+.forget-password .input-box-container .input-box button i {
+  font-size: 2.5vw;
+  color: #c52233;
+  transition: 0.5s linear;
+}
+.forget-password .input-box-container .input-box button.proceed {
+  background: #f9f9f9;
+}
+.forget-password .input-box-container .input-box button.proceed i {
+  color: #99B673;
 }
 
 /*# sourceMappingURL=auth.css.map */

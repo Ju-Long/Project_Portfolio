@@ -84,7 +84,7 @@ $(document).ready(function () {
                     $(".submit").attr("disabled", true)
                     $(".form-name, .form-email, .form-subject, .form-message").attr("disabled", true)
                 }
-            });
+            }, 'text');
     }
 
     if ($(window).width() < 500) {

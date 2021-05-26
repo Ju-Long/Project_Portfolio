@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SignupConfirmation;
+use App\Mail\ForgetPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +59,7 @@ class UserController extends Controller
             Mail::to("$email")->send(new SignupConfirmation($random_str));
             return [['output' => 'new user created']];
         }
-        return [['output' => 'fail to create user']];
+        return [['output' => 'fail to create user due to username/email already exist']];
     }
 
     function signup_confirmation(Request $req) {
@@ -81,8 +82,20 @@ class UserController extends Controller
         return redirect('/api/dashboard');
     }
 
-    function test(Request $req) {
-        return Cache::forever('username', 'JohnDoe');
+    function generate_code(Request $req) {
+        $six_digit_random_number = random_int(100000, 999999);
+        Mail::to($req->email)->send(new ForgetPassword($six_digit_random_number));
+        return [['output' => $six_digit_random_number]];
+    }
+
+    function update_password(Request $req) {
+        if ($req->missing('email') && $req->missing('password')) {
+            return [['output' => 'email and password is missing']];
+        }
+        $email = $req->input('email');
+        $password = $req->input('password');
+
+        return DB::table('api_datacenter.User')->where('user_email', "$email")->update(['user_password' => "$password"]);
     }
 
     function dashboard(Request $req) {

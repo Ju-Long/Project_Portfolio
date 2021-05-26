@@ -8,8 +8,6 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', [UserController::class, 'test']);
-
 // Route::get('info', function() { phpinfo();});
 
 Route::get('/gym_planner/login', [DatabaseController::class, 'login']);
@@ -33,26 +31,27 @@ Route::get('/api/login', [UserController::class, 'login']);
 Route::post('/api/signup', [UserController::class, 'signup']);
 Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmation']);
 Route::get('/api/signout', [UserController::class, 'signout']);
+Route::post('/api/update_password', [UserController::class, 'update_password']);
+Route::post('/api/generate_code', [UserController::class, 'generate_code']);
 
 Route::get('/api/dashboard/data', [UserController::class, 'get_user_api_calls']);
-
 Route::get('/api/dashboard', [UserController::class, 'dashboard']);
-
 Route::get('/api/dashboard/auth', function() {
     return view('api.input');
 });
-
-Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {
-    return response('B790F0643144CB72C43648EEAE6AAA0F3D3F0FEDDA53660DEA1A08010F327D7A comodoca.com 606e9371a3a80', 200)
-        -> header('Content-Type', 'text/plain');
+Route::get('/api/dashboard/forget_password', function() {
+    return view('api.forget_password');
 });
 
 Route::get('/', function () {
     return view('portfolio.index');
 });
-
-Route::post('/email', [MailController::class, 'sendEmail']);
-
 Route::get('/apps', function() {
     return view('portfolio.apps');
+});
+Route::post('/email', [MailController::class, 'sendEmail']);
+
+Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {
+    return response('B790F0643144CB72C43648EEAE6AAA0F3D3F0FEDDA53660DEA1A08010F327D7A comodoca.com 606e9371a3a80', 200)
+        -> header('Content-Type', 'text/plain');
 });

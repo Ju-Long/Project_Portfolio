@@ -1,12 +1,11 @@
-
 $(document).ready(() => {
     $(".signin").hide();
+    const username_error_msg = "Please only enter numbers, english characters and _ and -";
+    const password_error_msg = "Please enter more than 6 character and only have at least 1 captial letter, 1 non captial letter, 1 number, 1 special character and no space."
 
-    $(".input-box").keypress((e) => { 
-        if (e.keyCode > 0) {
-            $(".input-box").removeClass("error");
-            $("#error").removeClass("show");
-        }
+    $(".input-box").change(() => { 
+        $(".input-box").removeClass("error");
+        $("#error").removeClass("show");
     });
 
     $(".signin").submit(() => {
@@ -55,13 +54,15 @@ $(document).ready(() => {
         if (!/^[0-9a-zA-Z_.-]{6,20}$/.test(username)) {
             $(".input-box.username").addClass("error");
             $(".input-box.username").val("");
-            $("#error.username").addClass("show");
+            $("#error").html(username_error_msg);
+            $("#error").addClass("show");
             return false;
         }
         if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/.test(password)) {
             $(".input-box.password").addClass("error");
             $(".input-box.password").val("");
-            $("#error.password").addClass("show");
+            $("#error").html(password_error_msg);
+            $("#error").addClass("show");
             return false;
         }
 
@@ -70,7 +71,12 @@ $(document).ready(() => {
             email: email,
             password: password
         }, (data) => {
-            console.log(data);
+            if (data[0].output == "new user created") {
+                alert("new user successfully created, please check your email to confirm your email address");
+            } else  {
+                $("#error").html(data[0].output);
+                $("#error").addClass("show");
+            }
         }, "JSON");
         return false;
     });

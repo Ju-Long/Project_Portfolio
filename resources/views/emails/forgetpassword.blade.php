@@ -15,7 +15,7 @@
             font-size: 14px;
         }
 
-        .v39_49 {
+        .v45_0 {
             width: 600px;
             height: 414px;
             background: rgba(255, 255, 255, 1);
@@ -26,10 +26,10 @@
             overflow: hidden;
         }
 
-        .v39_50 {
+        .v45_1 {
             width: 600px;
             height: 65px;
-            background: url("../images/v39_50.png");
+            background: url("../images/v45_1.png");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
@@ -40,7 +40,7 @@
             overflow: hidden;
         }
 
-        .v39_51 {
+        .v45_2 {
             width: 600px;
             height: 65px;
             background: rgba(171, 191, 233, 1);
@@ -51,7 +51,7 @@
             overflow: hidden;
         }
 
-        .v39_52 {
+        .v45_3 {
             width: 550px;
             height: 15px;
             background: rgba(171, 191, 233, 1);
@@ -62,7 +62,7 @@
             overflow: hidden;
         }
 
-        .v39_53 {
+        .v45_4 {
             width: 227px;
             color: rgba(0, 0, 0, 1);
             position: absolute;
@@ -75,10 +75,10 @@
             text-align: left;
         }
 
-        .v39_54 {
+        .v45_5 {
             width: 600px;
             height: 269px;
-            background: url("../images/v39_54.png");
+            background: url("../images/v45_5.png");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
@@ -89,7 +89,7 @@
             overflow: hidden;
         }
 
-        .v39_55 {
+        .v45_6 {
             width: 550px;
             height: 219px;
             background: rgba(255, 255, 255, 1);
@@ -100,7 +100,7 @@
             overflow: hidden;
         }
 
-        .v39_56 {
+        .v45_7 {
             width: 600px;
             height: 269px;
             background: rgba(255, 255, 255, 1);
@@ -111,7 +111,7 @@
             overflow: hidden;
         }
 
-        .v39_57 {
+        .v45_8 {
             width: 550px;
             color: rgba(63, 51, 45, 1);
             position: absolute;
@@ -124,7 +124,7 @@
             text-align: left;
         }
 
-        .v39_58 {
+        .v45_9 {
             width: 550px;
             color: rgba(63, 51, 45, 1);
             position: absolute;
@@ -137,7 +137,7 @@
             text-align: left;
         }
 
-        .v39_59 {
+        .v45_10 {
             width: 550px;
             color: rgba(63, 51, 45, 1);
             position: absolute;
@@ -150,10 +150,10 @@
             text-align: left;
         }
 
-        .v39_60 {
+        .v45_11 {
             width: 600px;
             height: 80px;
-            background: url("../images/v39_60.png");
+            background: url("../images/v45_11.png");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
@@ -164,7 +164,7 @@
             overflow: hidden;
         }
 
-        .v39_61 {
+        .v45_12 {
             width: 600px;
             height: 80px;
             background: rgba(171, 191, 233, 1);
@@ -175,7 +175,7 @@
             overflow: hidden;
         }
 
-        .v39_62 {
+        .v45_13 {
             width: 550px;
             height: 30px;
             background: rgba(171, 191, 233, 1);
@@ -186,7 +186,7 @@
             overflow: hidden;
         }
 
-        .v39_63 {
+        .v45_14 {
             width: 178px;
             color: rgba(63, 51, 45, 1);
             position: absolute;
@@ -199,44 +199,15 @@
             text-align: left;
         }
 
-        .v39_64 {
-            width: 150px;
-            height: 41px;
-            background: url("../images/v39_64.png");
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            opacity: 1;
-            position: absolute;
-            top: 208px;
-            left: 225px;
-            overflow: hidden;
-        }
-
-        .v39_65 {
-            width: 150px;
-            height: 41px;
-            background: rgba(63, 51, 45, 1);
-            opacity: 1;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            overflow: hidden;
-        }
-
-        .v39_66 {
+        .v45_17 {
             width: 118px;
-            color: rgba(255, 255, 255, 1);
+            color: rgba(63, 51, 45, 1);
             position: absolute;
-            top: 8px;
-            left: 16px;
+            top: 216px;
+            left: 241px;
             font-family: Oxygen;
             font-weight: Bold;
-            font-size: 12px;
+            font-size: 30px;
             opacity: 1;
             text-align: center;
         }
@@ -244,24 +215,22 @@
 </head>
 
 <body>
-    <div class="v39_49">
-        <div class="v39_50">
-            <div class="v39_51"></div>
-            <div class="v39_52"></div><span class="v39_53">© 2021 API Datacenter. All rights reserved.</span>
+    <div class="v45_0">
+        <div class="v45_1">
+            <div class="v45_2"></div>
+            <div class="v45_3"></div><span class="v45_4">© 2021 API Datacenter. All rights reserved.</span>
         </div>
-        <div class="v39_54">
-            <div class="v39_55"></div>
-            <div class="v39_56"></div><span class="v39_57">To complete your sign up, please verify your email
-                address:</span><span class="v39_58">Welcome to Datacenter!</span>
-        </div><span class="v39_59">If you did not create an account using this email address, please ignore this
-            email.</span>
-        <div class="v39_60">
-            <div class="v39_61"></div>
-            <div class="v39_62"></div><span class="v39_63">API Datacenter</span>
-        </div>
-        <div class="v39_64">
-            <div class="v39_65"></div><span class="v39_66"><a href="https://babasama.com/api/signup_confirmation?token={{$random_str}}">Verify Email Address</a></span>
-        </div>
+        <div class="v45_5">
+            <div class="v45_6"></div>
+            <div class="v45_7"></div><span class="v45_8">Heres your reset password pin code:</span><span
+                class="v45_9">Welcome to Datacenter!</span>
+        </div><span class="v45_10">If you did not request for reset password. Please consider to change your password
+            asap. If there is any problem, <a href="mailto: support@babasama.com">please contact me</a>.</span>
+        <div class="v45_11">
+            <div class="v45_12"></div>
+            <div class="v45_13"></div><span class="v45_14">API Datacenter</span>
+        </div><span class="v45_17">{{$pin}}</span>
     </div>
 </body>
+
 </html>

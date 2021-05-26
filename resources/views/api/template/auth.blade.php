@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Signup - API DataCenter</title>
+        <title>Auth - API DataCenter</title>
         <link rel="stylesheet" href="../../api/css/auth.css">
     
         {{-- jquery --}}
@@ -18,6 +18,6 @@
     </div>
     <img src="../../api/img/asset1.png" class="img-showcase">
     @yield('input')
-    <script src="../../api/js/signup.signin.js"></script>
+    @yield('forget_password')
 </body>
 </html>
