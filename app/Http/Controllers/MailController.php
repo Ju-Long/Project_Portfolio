@@ -11,14 +11,14 @@ class MailController extends Controller
 {
     public function sendEmail(Request $req) {
         $details = [
-            'name' => $req->name,
-            'email' => $req->email,
-            'subject' => $req->subject,
-            'content' => $req->content
+            'name' => $req->input('name'),
+            'email' => $req->input('email'),
+            'subject' => $req->input('subject'),
+            'content' => $req->input('content')
         ];
 
         Mail::to('julong170501@gmail.com')->send(new Contact($details));
-        Mail::to($req->email)->send(new ContactConfirmation($details));
+        Mail::to($req->input('email'))->send(new ContactConfirmation($details));
         return 'email sent';
     }
 }
