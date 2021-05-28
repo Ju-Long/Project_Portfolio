@@ -22,6 +22,6 @@
     </form>
 </div>
 
-<script src="../../api/js/signup.signin.js"></script>
+<script src="https://babasama.com/api/js/signup.signin.js"></script>
     
 @endsection

@@ -4,11 +4,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Dashboard - API DataCenter</title>
-        <link rel="stylesheet" href="../api/css/index.css">
-        <link rel="stylesheet" href="../api/css/nav.css">
-        <link rel="stylesheet" href="../api/css/dashboard.css">
-    
+        <title>API DataCenter</title>
+        <link rel="stylesheet" href="https://babasama.com/api/css/nav.css">
+        <link rel="stylesheet" href="https://babasama.com/api/css/dashboard.css">
+        <link rel="stylesheet" href="https://babasama.com/api/css/list_of_api.css">
+
         {{-- jquery --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
     
@@ -21,6 +21,7 @@
         {{-- prettify --}}
         <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
         
+        <script src="https://babasama.com/api/js/nav.js"></script>
     </head>
 <body>
     <div class="navbar">
@@ -28,12 +29,18 @@
             <a href="/api/dashboard">API Datacenter</a>
         </div>
         <ul class="nav-list">
-            <li class="nav-item active"><a href="" class="nav-link"><i class="fad fa-columns"></i> DashBoard</a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i class="fad fa-list-alt"></i> API List</a></li>
-            <li class="nav-item"><a href="" class="nav-link"><i class="fad fa-book-spells"></i> Documentations</a></li>
+            <li class="nav-item active" id="dashboard"><a href="https://babasama.com/api/dashboard" class="nav-link"><i class="fad fa-columns"></i> DashBoard</a></li>
+            <li class="nav-item" id="list_of_api"><a href="https://babasama.com/api/education/list_of_api" class="nav-link"><i class="fad fa-list-alt"></i> API List</a></li>
+            <li class="nav-item" ><a href="" class="nav-link"><i class="fad fa-book-spells"></i> Documentations</a></li>
             <li class="nav-item"><a href="" class="nav-link"><i class="fad fa-question-circle"></i> FAQs</a></li>
         </ul>
     </div>
-    @yield('main')
+    <main>
+        <img src="https://babasama.com/api/img/main-bg.jpg" class="main-bg">
+        @yield('main')
+        @yield('list_of_api')
+        @yield('documentary')
+        @yield('faqs')
+    </main>
 </body>
 </html>

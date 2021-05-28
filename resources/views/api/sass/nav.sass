@@ -1,7 +1,6 @@
 @use 'font'
 
 .navbar
-    
     flex: 1
     display: flex
     flex-direction: column
@@ -38,3 +37,13 @@
         .nav-item.active
             .nav-link
                 color: font.$white
+
+main
+    flex: 3
+    
+    .main-bg
+        height: 100vh
+        object-fit: contain
+        position: absolute
+        border-radius: 34px 0 0 34px
+        z-index: 1

@@ -43,6 +43,10 @@ Route::get('/api/dashboard/forget_password', function() {
     return view('api.forget_password');
 });
 
+Route::get('/api/education/list_of_api', function() {
+    return view('api.list_of_api');
+});
+
 Route::get('/', function () {
     return view('portfolio.index');
 });

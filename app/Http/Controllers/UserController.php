@@ -11,10 +11,7 @@ use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
-    public function random_str(
-        $length,
-        $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ) {
+    public function random_str( $length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
         if ($max < 1) {
@@ -66,10 +63,19 @@ class UserController extends Controller
         if ($req->missing('token')) {
             return [['output' => 'token is missing']];
         }
+
+        $list_api_key = DB::table('api_datacenter.User')->select('user_api_key')->get();
+        $new_api_key = random_int(1000000, 9999999);
+        while(in_array($new_api_key, $list_api_key, false)) {
+            $new_api_key = random_int(1000000, 9999999);
+        }
+
         $token = $req->input('token');
         $confirm = DB::table('api_datacenter.User')->where('reset_password_token', "$token")->get();
+        
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
+                DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key]);
                 session(['username' => $i->username, 'password' => $i->user_password]);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
