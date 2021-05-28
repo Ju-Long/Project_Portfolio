@@ -89,7 +89,7 @@ $(document).ready(() => {
         let password = passwordvalidate() ? $(".input-box.password input").val() : "";
 
         if (password) {
-            $.post("https://babasama.com/api/update-password", {
+            $.post("https://babasama.com/api/update_password", {
                 email: email,
                 password: password
             }, (data) => {
