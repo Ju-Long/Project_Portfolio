@@ -20,9 +20,10 @@ $(document).ready(() => {
     emailvalidate();
     var pin;
     var tries = 10;
-
+r
     $(".input-box.email button").click(() => { 
         if (emailvalidate()) {
+            console.log($(".input-box.email input").val());
             $.post("https://babasama.com/api/generate_code", {
                 email: $(".input-box.email input").val()
             }, (data) => {
@@ -54,8 +55,8 @@ $(document).ready(() => {
 
     $(".input-box.pin button").click(() => {
         if (pin == $(".input-box.pin input").val()) {
+            $(".pin").hide();
             $(".password").show();
-            $(".hide").hide();
         } else {
             if (tries > 0) {
                 tries--;
