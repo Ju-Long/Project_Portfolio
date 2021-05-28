@@ -40,5 +40,5 @@
         </div>
     </div>
 
-    <script src="https://babasama.com/api/js/list_of_api.js"></script>
+    <script src="http://localhost:8000/api/js/list_of_api.js"></script>
 @endsection

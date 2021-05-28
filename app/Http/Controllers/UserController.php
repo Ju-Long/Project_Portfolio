@@ -71,11 +71,11 @@ class UserController extends Controller
         }
 
         $token = $req->input('token');
-        $confirm = DB::table('api_datacenter.User')->where('reset_password_token', "$token")->get();
+        $confirm = DB::table('api_datacenter.User')->where('reset_password_code', "$token")->get();
         
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
-                DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key]);
+                DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
                 session(['username' => $i->username, 'password' => $i->user_password]);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
@@ -133,5 +133,9 @@ class UserController extends Controller
             return DB::table('api_datacenter.IP_Address_Calls')->where('day', '<', "$previousMonth")->delete();
         }
         return [['output' => 'wrong password']];
+    }
+
+    function test(Request $req) {
+        return $req->ip();
     }
 }
