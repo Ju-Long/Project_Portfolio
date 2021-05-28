@@ -23,7 +23,6 @@ $(document).ready(() => {
 
     $(".input-box.email button").click(() => { 
         if (emailvalidate()) {
-            console.log($(".input-box.email input").val());
             $.post("https://babasama.com/api/generate_code", {
                 email: $(".input-box.email input").val()
             }, (data) => {
@@ -82,7 +81,7 @@ $(document).ready(() => {
     }
 
     $(".input-box.password button").click(() => {
-        if (!$(".input-box.email input").val() && !$(".input-box.pin input").val()) 
+        if (!$(".input-box.email input").val() && $(".input-box.pin input").val() != pin) 
             window.location.href = "https://babasama.com/api/dashboard/forget_password"
         
         let email = $(".input-box.email input").val();
@@ -93,7 +92,17 @@ $(document).ready(() => {
                 email: email,
                 password: password
             }, (data) => {
-                console.log(data);
+                if (data == 1) {
+                    alert("password successfully updated");
+                    setTimeout(() => {
+                        window.location.href = "https://babasama.com/api/dashboard"
+                    }, 3000);
+                } else {
+                    alert("password update failed. please try again.");
+                    setTimeout(() => {
+                        window.location.href = "https://babasama.com/api/dashboard/forget_password"
+                    }, 3000);
+                }
             }, "JSON");}
     });
 });
