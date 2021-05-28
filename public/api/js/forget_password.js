@@ -20,7 +20,7 @@ $(document).ready(() => {
     emailvalidate();
     var pin;
     var tries = 10;
-r
+
     $(".input-box.email button").click(() => { 
         if (emailvalidate()) {
             console.log($(".input-box.email input").val());
