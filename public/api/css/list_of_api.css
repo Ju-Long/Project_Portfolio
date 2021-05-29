@@ -88,7 +88,7 @@ a {
   height: 75vh;
   overflow-y: scroll;
   font-size: 1vw;
-  padding: 20px 0;
+  padding: 20px 10px;
   border-radius: 8px;
   background-color: #0F111A;
 }
@@ -96,7 +96,7 @@ a {
   color: #7BA0F1;
 }
 .content.list_of_api .api .result-content .item-data {
-  padding-left: 20px;
+  padding-left: 40px;
 }
 .content.list_of_api .api .result-content .item-data .item-data-key {
   color: #CF465F;
