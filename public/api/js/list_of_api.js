@@ -1,4 +1,9 @@
 $(document).ready(() => {
+    $.get("https://babasama.com/test", {},
+        function (data) {
+            console.log(data)
+        });
+
     const location = {latitude: 0, longitude: 0};
 
     const getLocation = () => {
