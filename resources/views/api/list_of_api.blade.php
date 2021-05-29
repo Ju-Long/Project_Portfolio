@@ -26,7 +26,7 @@
         </div>
         <div class="api">
             <div class="link">
-                'http://localhost:8000/api/get_nearest_bus_stop'
+                'https://babasama.com/api/get_nearest_bus_stop'
             </div>
             <pre class="result-content">
     <code class="item-no">0:</code>
@@ -40,5 +40,5 @@
         </div>
     </div>
 
-    <script src="http://localhost:8000/api/js/list_of_api.js"></script>
+    <script src="https://babasama.com/api/js/list_of_api.js"></script>
 @endsection
