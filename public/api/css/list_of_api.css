@@ -74,17 +74,13 @@ a {
   align-items: center;
 }
 .content.list_of_api .api .link {
-  display: flex;
   justify-self: center;
   color: #99B673;
   background: #0F111A;
   font-family: Ubuntu, sans-serif;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
+  padding: 20px 10px;
+  font-size: 1.2vw;
   border-radius: 8px;
-  width: 80%;
-  height: 6vh;
 }
 .content.list_of_api .api .result-content {
   justify-self: center;

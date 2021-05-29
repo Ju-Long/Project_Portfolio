@@ -25,9 +25,9 @@
             </div>
         </div>
         <div class="api">
-            <div class="link">
-                'https://babasama.com/api/get_nearest_bus_stop'
-            </div>
+            <label class="link">
+                
+            </label>
             <pre class="result-content">
     <code class="item-no">0:</code>
     <code class="item-data"><code class="item-data-key">BusStopCode: </code><code class="item-data-value string">11111</code></code>
@@ -40,5 +40,5 @@
         </div>
     </div>
 
-    <script src="https://babasama.com/api/js/list_of_api.js"></script>
+    <script src="http://localhost:8000/api/js/list_of_api.js"></script>
 @endsection
