@@ -148,28 +148,23 @@ class UserController extends Controller
                 $lat = $req->input('lat');
                 $long = $req->input('long');
                 $url = "https://babasama.com/api/get_nearest_bus_stop?accountkey=$acc_key&username=$username&Latitude=$lat&Longitude=$long&amount=5";
-                return [['url' => $url]];
-                // return json_decode(file_get_contents($url), true);
+                return json_decode(file_get_contents($url), true);
             case "get_bus_arrival_time":
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "https://babasama.com/api/get_bus_arrival_timing?BusStopCode=$busstopcode&accountkey=$acc_key&username=$username";
-                return [['url' => $url]];
-                // return json_decode(file_get_contents($url), true);
+                return json_decode(file_get_contents($url), true);
             case "get_bus_route":
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "https://babasama.com/api/get_bus_route?ServiceNo=$busnumber&accountkey=$acc_key&username=$username";
-                return [['url' => $url]];
-                // return json_decode(file_get_contents($url), true);
+                return json_decode(file_get_contents($url), true);
             case "get_bus_stop_data":
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "https://babasama.com/api/get_bus_stop_data?BusStopCode=$busstopcode&username=$username&accountkey=$acc_key";
-                return [['url' => $url]];
-                // return json_decode(file_get_contents($url), true);
+                return json_decode(file_get_contents($url), true);
             case "get_bus_data":
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "https://babasama.com/api/get_bus_data?ServiceNo=$busnumber&username=$username&accountkey=$acc_key";
-                return [['url' => $url]];
-                // return json_decode(file_get_contents($url), true);
+                return json_decode(file_get_contents($url), true);
 
             default: 
                 return [['output' => 'Invalid Input Given']];
