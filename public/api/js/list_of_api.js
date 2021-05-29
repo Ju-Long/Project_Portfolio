@@ -129,22 +129,20 @@ $(document).ready(() => {
 });
 
 const data = 
-{
-    datamall: {
-        get_nearest_bus_stop: {
-            displaylink: 'https://babasama.com/api/get_nearest_bus_stop'
-        }, get_bus_arrival_timing: {
-            displaylink: 'https://babasama.com/api/get_bus_arrival_timing'
-        }, get_bus_route: {
-            displaylink: 'https://babasama.com/api/get_bus_route'
-        }, get_bus_data: {
-            displaylink: 'https://babasama.com/api/get_bus_data'
-        }, get_bus_stop_data: {
-            displaylink: 'https://babasama.com/api/get_bus_stop_data'
-        },
-    }, quote: {
-        get_quote: {
-            displaylink: 'https://babasama.com/api/get_quote'
-        }
+{ datamall: {
+    get_nearest_bus_stop: {
+        displaylink: 'https://babasama.com/api/get_nearest_bus_stop'
+    }, get_bus_arrival_timing: {
+        displaylink: 'https://babasama.com/api/get_bus_arrival_timing'
+    }, get_bus_route: {
+        displaylink: 'https://babasama.com/api/get_bus_route'
+    }, get_bus_data: {
+        displaylink: 'https://babasama.com/api/get_bus_data'
+    }, get_bus_stop_data: {
+        displaylink: 'https://babasama.com/api/get_bus_stop_data'
+    },
+}, quote: {
+    get_quote: {
+        displaylink: 'https://babasama.com/api/get_quote'
     }
-}
+}}

@@ -29,16 +29,10 @@
                 
             </label>
             <pre class="result-content">
-    <code class="item-no">0:</code>
-    <code class="item-data"><code class="item-data-key">BusStopCode: </code><code class="item-data-value string">11111</code></code>
-    <code class="item-data"><code class="item-data-key">Description: </code><code class="item-data-value string">"BEF TUAS STH AVE 14"</code></code>
-    <code class="item-no">0:</code>
-        <code class="item-data">BusStopCode: 11111</code>
-        <code class="item-data">BusStopCode: 11111</code>
-        <code class="item-data">BusStopCode: 11111</code>
+                
             </pre>
         </div>
     </div>
 
-    <script src="http://localhost:8000/api/js/list_of_api.js"></script>
+    <script src="https://babasama.com/api/js/list_of_api.js"></script>
 @endsection

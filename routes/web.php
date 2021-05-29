@@ -47,6 +47,12 @@ Route::post('/api/education', [UserController::class, 'website']);
 Route::get('/api/education/list_of_api', function() {
     return view('api.list_of_api');
 });
+Route::get('/api/education/documentations', function() {
+    return view('api.documentations');
+});
+Route::get('/api/education/FAQs', function() {
+    return view('api.faqs');
+});
 
 Route::get('/', function () {
     return view('portfolio.index');

@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a, button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.content.documentations {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  height: 100%;
+  padding: 3vw;
+  border-radius: 34px 0 0 34px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+.content.documentations header {
+  text-align: start;
+  font-weight: 700;
+  font-size: 2.5vw;
+  font-family: Oxygen, sans-serif;
+}
+.content.documentations p.pure {
+  font-family: Ubuntu, sans-serif;
+  text-align: end;
+  color: #7BA0F1;
+  cursor: pointer;
+  padding: 20px 0;
+}
+.content.documentations .select-wrapper {
+  background: #f9f9f9;
+  padding: 15px 10px;
+  border: 2px solid #3f332d;
+  border-radius: 16px;
+}
+.content.documentations .select-wrapper .select {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.content.documentations .select-wrapper .select .select-trigger {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.content.documentations .select-wrapper .select .select-trigger span {
+  font-family: Oxygen, sans-serif;
+  font-weight: 700;
+  font-size: 2vw;
+}
+.content.documentations .select-wrapper .select .select-trigger i {
+  font-size: 3vw;
+  cursor: pointer;
+}
+.content.documentations .select-wrapper .select .options {
+  display: none;
+  padding: 5px 30px;
+  flex-direction: column;
+  height: 30vh;
+  overflow-y: auto;
+}
+.content.documentations .select-wrapper .select .options .option {
+  padding: 10px;
+  border-top: 1px solid #3f332d;
+  border-bottom: 1px solid #3f332d;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.content.documentations .select-wrapper .select .options .option.selected {
+  background-color: #abbfe9;
+}
+.content.documentations .select-wrapper .select .options .option:hover {
+  background-color: #c4c4c4;
+}
+.content.documentations .select-wrapper .select .options .option.selected:hover {
+  background-color: #abbfe9;
+}
+.content.documentations .select-wrapper.active .select .options {
+  display: flex;
+}
+
+/*# sourceMappingURL=documentations.css.map */
