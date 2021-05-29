@@ -18,16 +18,13 @@ $(document).ready(() => {
         }};
     
     emailvalidate();
-    var pin;
     var tries = 10;
 
     $(".input-box.email button").click(() => { 
         if (emailvalidate()) {
             $.post("https://babasama.com/api/generate_code", {
                 email: $(".input-box.email input").val()
-            }, (data) => {
-                    pin = data[0].output
-            }, "JSON");
+            }, (data) => {}, "JSON");
             $(".pin").show();
             $(".email").hide();
 
@@ -53,16 +50,21 @@ $(document).ready(() => {
         }};
 
     $(".input-box.pin button").click(() => {
-        if (pin == $(".input-box.pin input").val()) {
-            $(".pin").hide();
-            $(".password").show();
-        } else {
-            if (tries > 0) {
-                tries--;
-                alert(`Wrong pin being entered. please try again. you still have ${tries} tries left`);
-            } else 
-                window.location.href = "https://babasama.com/api/dashboard/forget_password";
-        }
+        let pin = $(".input-box.pin input").val();
+        $.post("https://babasama.com/api/confirm_pin", {
+            pin: $(".input-box.pin input").val()
+        }, (data) => {
+            if (data[0].output === "same") {
+                $(".pin").hide();
+                $(".password").show();
+            } else {
+                if (tries > 0) {
+                    tries--;
+                    alert(`Wrong pin being entered. please try again. you still have ${tries} tries left`);
+                } else 
+                    window.location.href = "https://babasama.com/api/dashboard/forget_password";
+            }
+        }, "JSON");
     });
 
     $(".input-box.password input").keypress(() => { passwordvalidate(); });
@@ -81,16 +83,18 @@ $(document).ready(() => {
     }
 
     $(".input-box.password button").click(() => {
-        if (!$(".input-box.email input").val() && $(".input-box.pin input").val() != pin) 
+        if (!$(".input-box.email input").val() && !$(".input-box.pin input").val()) 
             window.location.href = "https://babasama.com/api/dashboard/forget_password"
         
         let email = $(".input-box.email input").val();
         let password = passwordvalidate() ? $(".input-box.password input").val() : "";
+        let pin = $(".input-box.pin input").val();
 
         if (password) {
             $.post("https://babasama.com/api/update_password", {
                 email: email,
-                password: password
+                password: password,
+                pin: pin
             }, (data) => {
                 if (data == 1) {
                     alert("password successfully updated");

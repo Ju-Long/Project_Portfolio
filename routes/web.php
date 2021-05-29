@@ -33,6 +33,7 @@ Route::get('/api/signup_confirmation', [UserController::class, 'signup_confirmat
 Route::get('/api/signout', [UserController::class, 'signout']);
 Route::post('/api/update_password', [UserController::class, 'update_password']);
 Route::post('/api/generate_code', [UserController::class, 'generate_code']);
+Route::post('/api/confirm_pin', [UserController::class, 'confirm_pin']);
 
 Route::get('/api/dashboard/data', [UserController::class, 'get_user_api_calls']);
 Route::get('/api/dashboard', [UserController::class, 'dashboard']);

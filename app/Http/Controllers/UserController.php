@@ -92,15 +92,32 @@ class UserController extends Controller
     function generate_code(Request $req) {
         $six_digit_random_number = random_int(100000, 999999);
         Mail::to($req->email)->send(new ForgetPassword($six_digit_random_number));
-        return [['output' => $six_digit_random_number]];
+        session(['pin' => $six_digit_random_number]);
+        return;
+    }
+
+    function confirm_pin(Request $req) {
+        if (!$req->session()->has('pin')) {
+            return [['output' => 'pin is not generated']];
+        }
+        $pin = $req->session()->get('pin');
+        $enteredpin = $req->input('pin');
+        if ($pin == $enteredpin) {
+            return [['output' => 'same']];
+        }
+        return [['output' => 'not same']];
     }
 
     function update_password(Request $req) {
-        if ($req->missing('email') && $req->missing('password')) {
+        if ($req->missing('email') && $req->missing('password') && $req->missing('pin')) {
             return [['output' => 'email and password is missing']];
         }
         $email = $req->input('email');
         $password = $req->input('password');
+
+        if ($req->input('pin') != $req->session()->get('pin')) {
+            return 2;
+        }
 
         return DB::table('api_datacenter.User')->where('user_email', "$email")->update(['user_password' => "$password"]);
     }

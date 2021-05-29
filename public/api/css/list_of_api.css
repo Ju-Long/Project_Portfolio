@@ -41,7 +41,7 @@ a {
   height: 100%;
   display: grid;
   padding: 0 2vw;
-  overflow-y: auto !important;
+  overflow-y: auto;
 }
 .content.list_of_api .list .list-api-box .api-box {
   width: 100%;
@@ -86,7 +86,7 @@ a {
   justify-self: center;
   width: 80%;
   height: 75vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   font-size: 1vw;
   padding: 20px 10px;
   border-radius: 8px;

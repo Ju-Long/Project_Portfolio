@@ -24,6 +24,8 @@ a {
   z-index: 2;
   display: flex;
   flex-direction: column;
+  color: #3f332d;
+  transition: 0.5s ease;
 }
 .content.documentations header {
   text-align: start;
@@ -40,9 +42,10 @@ a {
 }
 .content.documentations .select-wrapper {
   background: #f9f9f9;
-  padding: 15px 10px;
+  padding: 10px 10px;
   border: 2px solid #3f332d;
   border-radius: 16px;
+  margin: 0 0 20px;
 }
 .content.documentations .select-wrapper .select {
   width: 100%;
@@ -53,6 +56,7 @@ a {
 .content.documentations .select-wrapper .select .select-trigger {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0 20px;
 }
 .content.documentations .select-wrapper .select .select-trigger span {
@@ -63,13 +67,15 @@ a {
 .content.documentations .select-wrapper .select .select-trigger i {
   font-size: 3vw;
   cursor: pointer;
+  padding-bottom: 10px;
 }
 .content.documentations .select-wrapper .select .options {
-  display: none;
-  padding: 5px 30px;
+  font-family: Ubuntu, sans-serif;
+  display: flex;
   flex-direction: column;
-  height: 30vh;
+  height: 0;
   overflow-y: auto;
+  transition: 0.5s ease;
 }
 .content.documentations .select-wrapper .select .options .option {
   padding: 10px;
@@ -88,7 +94,39 @@ a {
   background-color: #abbfe9;
 }
 .content.documentations .select-wrapper.active .select .options {
+  padding: 5px 30px;
+  height: 30vh;
+}
+.content.documentations .codes {
+  background: #f9f9f9;
+  padding: 15px 15px;
+  border: 2px solid #3f332d;
+  border-radius: 16px;
   display: flex;
+  flex-direction: column;
+}
+.content.documentations .codes .codes-lang {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  width: 100%;
+}
+.content.documentations .codes .codes-lang span {
+  font-size: 1.8vw;
+  font-weight: 500;
+  padding: 0 10px 2px;
+  margin: 0 10px 0;
+  transition: 0.5s ease-in-out;
+}
+.content.documentations .codes .codes-lang span.active {
+  font-weight: 700;
+  border-bottom: 2px solid #A178BF;
+}
+.content.documentations .codes .codes-lang span:hover {
+  padding: 0 15px 2px;
+}
+.content.documentations .codes .codes-body {
+  height: 50vh;
 }
 
 /*# sourceMappingURL=documentations.css.map */
