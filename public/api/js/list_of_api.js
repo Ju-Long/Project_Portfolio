@@ -43,12 +43,12 @@ $(document).ready(() => {
             $(".link").html(data.datamall.get_bus_data.displaylink);
         if (id === "get_random_quote") {
             $(".link").html(data.quote.get_quote.displaylink);
-            $.get("https://babasama.com/get_quote", {},
+            $.get("https://babasama.com/api/get_quote", {},
                 (data) => {
                     console.log(data);
                 }, "JSON");
         } else {
-            $.post("https://babasama.com/api/website", {
+            $.post("https://babasama.com/api/education", {
                 type: id,
                 lat: location.latitude,
                 long: location.longitude
