@@ -8,8 +8,6 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-Route::get('/test', [UserController::class, 'test']);
-
 // Route::get('info', function() { phpinfo();});
 
 Route::get('/gym_planner/login', [DatabaseController::class, 'login']);
@@ -45,6 +43,7 @@ Route::get('/api/dashboard/forget_password', function() {
     return view('api.forget_password');
 });
 
+Route::post('/api/education', [UserController::class, 'website']);
 Route::get('/api/education/list_of_api', function() {
     return view('api.list_of_api');
 });

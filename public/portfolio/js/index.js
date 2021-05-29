@@ -71,7 +71,7 @@ $(document).ready(function () {
     });
 
     sendEmail = (name, email, subject, content) => {
-        $.post("/email", 
+        $.post("https://babasama.com/email", 
             {
                 name: name,
                 email: email,

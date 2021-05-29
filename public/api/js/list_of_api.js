@@ -1,9 +1,4 @@
 $(document).ready(() => {
-    $.get("https://babasama.com/test", {},
-        function (data) {
-            console.log(data)
-        });
-
     const location = {latitude: 0, longitude: 0};
 
     const getLocation = () => {
@@ -14,16 +9,19 @@ $(document).ready(() => {
             }, (error) => {
                 switch (error.code) {
                     case error.PERMISSION_DENIED: 
+                        alert('user denial');
                         break;
                     
                     case error.POSITION_UNAVAILABLE:
+                        alert('position not available');
                         break;
                     
                     case error.TIMEOUT:
+                        alert('timeout');
                         break;
                     
                     default:
-
+                        alert('unknown error');
                 }
             });
         else
@@ -34,24 +32,36 @@ $(document).ready(() => {
         let id = e.target.id;
         if (id === "get_nearest_bus_stop") {
             $(".link").html(data.datamall.get_nearest_bus_stop.displaylink);
-            
-        } else if (id === "get_bus_arrival_time") {
+            getLocation();
+        } else if (id === "get_bus_arrival_time")
             $(".link").html(data.datamall.get_bus_arrival_timing.displaylink);
-        } else if (id === "get_bus_route") {
+        else if (id === "get_bus_route")
             $(".link").html(data.datamall.get_bus_route.displaylink);
-        } else if (id === "get_bus_stop_data") {
+        else if (id === "get_bus_stop_data")
             $(".link").html(data.datamall.get_bus_stop_data.displaylink);
-        } else if (id === "get_bus_data") {
+        else if (id === "get_bus_data")
             $(".link").html(data.datamall.get_bus_data.displaylink);
-        } else if (id === "get_random_quote") {
+        if (id === "get_random_quote") {
             $(".link").html(data.quote.get_quote.displaylink);
+            $.get("https://babasama.com/get_quote", {},
+                (data) => {
+                    console.log(data);
+                }, "JSON");
+        } else {
+            $.post("https://babasama.com/api/website", {
+                type: id,
+                lat: location.latitude,
+                long: location.longitude
+            }, (data) => {
+                console.log(data)        
+            }, "JSON");
         }
     });
 
 });
 
 const data = 
-[{
+{
     datamall: {
         get_nearest_bus_stop: {
             displaylink: 'https://babasama.com/api/get_nearest_bus_stop',
@@ -70,4 +80,4 @@ const data =
             displaylink: 'https://babasama.com/api/get_quote'
         }
     }
-}]
+}

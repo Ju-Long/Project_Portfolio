@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Config;
 
 class UserController extends Controller
 {
@@ -135,7 +136,38 @@ class UserController extends Controller
         return [['output' => 'wrong password']];
     }
 
-    function test(Request $req) {
-        return $req->ip();
+    function website(Request $req) {
+        $acc_key = config("value.website_acc_key", '');
+        $username = config("value.website_username", '');
+        if ($req->missing('type')) {
+            return [['output' => 'Invalid Input Given']];
+        }
+        $type = $req->input('type');
+        switch ($type) {
+            case "get_nearest_bus_stop": 
+                $lat = $req->input('lat');
+                $long = $req->input('long');
+                $url = "https://babasama.com/api/get_nearest_bus_stop?accountkey=$acc_key&username=$username&Latitude=$lat&Longitude=$long&amount=5";
+                return json_decode(file_get_contents($url), true);
+            case "get_bus_arrival_time":
+                $busstopcode = $req->input('BusStopCode', 54201);
+                $url = "https://babasama.com/api/get_bus_arrival_timing?BusStopCode=$busstopcode&accountkey=$acc_key&username=$username";
+                return json_decode(file_get_contents($url), true);
+            case "get_bus_route":
+                $busnumber = $req->input('ServiceNo', 88);
+                $url = "https://babasama.com/api/get_bus_route?ServiceNo=$busnumber&accountkey=$acc_key&username=$username";
+                return json_decode(file_get_contents($url), true);
+            case "get_bus_stop_data":
+                $busstopcode = $req->input('BusStopCode', 54201);
+                $url = "https://babasama.com/api/get_bus_stop_data?BusStopCode=$busstopcode&username=$username&accountkey=$acc_key";
+                return json_decode(file_get_contents($url), true);
+            case "get_bus_data":
+                $busnumber = $req->input('ServiceNo', 88);
+                $url = "https://babasama.com/api/get_bus_data?ServiceNo=$busnumber&username=$username&accountkey=$acc_key";
+                return json_decode(file_get_contents($url), true);
+
+            default: 
+                return [['output' => 'Invalid Input Given']];
+        }
     }
 }
