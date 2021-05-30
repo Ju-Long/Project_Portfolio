@@ -1,4 +1,5 @@
 @use 'font'
+@import url('https://cdn.rawgit.com/lonekorean/gist-syntax-themes/d49b91b3/stylesheets/one-dark.css')
 
 .content.documentations
     background-color: rgba(255, 255, 255, 0.8)
@@ -86,17 +87,21 @@
                 height: 30vh
 
     .codes
+        width: 100%
+        height: auto
         background: font.$white
         padding: 15px 15px
         border: 2px solid font.$black-but-not-so-black
         border-radius: 16px
         display: flex
         flex-direction: column
+        overflow-y: auto
 
         .codes-lang
             display: flex
             flex-direction: row
             overflow-x: auto
+            padding: 0 0 10px 0
             width: 100%
             
             span 
@@ -108,11 +113,46 @@
 
             span.active
                 font-weight: 700
-                border-bottom: 2px solid font.$programming-purple
+                border-bottom: 3px solid font.$programming-purple
+                border-radius: 2px
 
             span:hover
                 padding: 0 15px 2px
         
         .codes-body
+            width: 70vw
             height: 50vh
-            
+            border-radius: 16px
+            // background-color: font.$programming-background
+            padding: 10px
+            overflow: auto
+
+            // .lang
+            //     font-size: 1.5vw
+            //     font-weight: 300
+            //     font-family: font.$oxygen
+
+
+            //     .syntax
+            //         color: font.$programming-purple
+
+            //     .name
+            //         color: font.$programming-red
+
+            //     .int
+            //         color: font.$programming-blue
+
+            //     .string
+            //         color: font.$programming-green
+
+            //     .operator, .bracket
+            //         color: font.$programming-yellow
+
+            //     .replace
+            //         color: font.$programming-purple
+            //         font-size: 2vw
+            //         font-weight: bold
+            //         font-family: font.$ubuntu
+
+            //     .comment
+            //         color: font.$not-so-white
