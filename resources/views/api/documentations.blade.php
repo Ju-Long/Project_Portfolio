@@ -44,5 +44,5 @@
             </div>
         </div>
     </div>
-    <script src="http://localhost:8000/api/js/documentations.js"></script>
+    <script src="https://babasama.com/api/js/documentations.js"></script>
 @endsection
