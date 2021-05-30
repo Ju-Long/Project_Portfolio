@@ -125,7 +125,7 @@ class UserController extends Controller
     function dashboard(Request $req) {
         if ($req->session()->has('username')) {
             return view('api.main', ['username' => $req->session()->get('username')]);
-        }
+        } 
         return redirect('/api/dashboard/auth');
     }
 

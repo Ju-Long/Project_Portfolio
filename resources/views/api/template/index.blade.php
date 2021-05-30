@@ -10,6 +10,11 @@
         <link rel="stylesheet" href="https://babasama.com/api/css/list_of_api.css">
         <link rel="stylesheet" href="https://babasama.com/api/css/documentations.css">
         <link rel="stylesheet" href="https://babasama.com/api/css/faqs.css">
+        <meta name="description" content="API Datacenter">
+        <meta property="og:title" content="API">
+        <meta property="og:url" content="https://babasama.com/api/dashboard">
+        <meta property="og:description" content="API Datacenter">
+        <meta property="og:image" content="https://babasama.com/api/img/asset1.png">
 
         {{-- jquery --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
@@ -18,7 +23,7 @@
         <script src="https://kit.fontawesome.com/f442a7350f.js" crossorigin="anonymous"></script>
     
         {{-- anychart --}}
-        <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-base.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/8.10.0/js/anychart-base.min.js"></script>
         
         <script src="https://babasama.com/api/js/nav.js"></script>
     </head>

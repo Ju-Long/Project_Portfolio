@@ -1,5 +1,6 @@
 $(document).ready(() => {
     const location = {latitude: 0, longitude: 0};
+    getLocation()
 
     const getLocation = () => {
         if (navigator.geolocation)
@@ -28,11 +29,10 @@ $(document).ready(() => {
             alert("Geolocation is not supported by this browser.")
     }
     
-    $(".list-item").click(async(e) => { 
+    $(".list-item").click((e) => { 
         let id = e.target.id;
         if (id === "get_nearest_bus_stop") {
             $(".link").html(data.datamall.get_nearest_bus_stop.displaylink);
-            await getLocation();
         } else if (id === "get_bus_arrival_time")
             $(".link").html(data.datamall.get_bus_arrival_timing.displaylink);
         else if (id === "get_bus_route")

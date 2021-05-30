@@ -12,40 +12,84 @@ body
     box-shadow: inset 0 0 10px black
     
 .content.dashboard
-    display: flex
+    background-color: rgba(255, 255, 255, 0.8)
     width: 100%
     height: 100%
-    flex-direction: row
-    align-items: center
-    padding: 0 20px 0
+    padding: 2vw
+    border-radius: 34px 0 0 34px
+    position: relative
+    z-index: 2
+    display: flex
+    flex-direction: column
+    color: font.$black-but-not-so-black
+    transition: 0.5s ease
 
-    .api-data
-        flex: 2
-        height: 65%
-        border: 1px solid font.$not-so-white
-        border-radius: 16px
-        background-color: rgba(249, 249, 249, 0.7)
-        margin: 0 5px 0
-        z-index: 2
+    .top
+        width: 100%
+        display: flex
+        justify-content: space-between
 
-    .user-info 
-        flex: 1
-        height: 80%
-        margin: 0 5px 0
-        border-left: 1px solid black
-        z-index: 2
-        display: grid
-        text-align: center
-        align-items: center
+        header
+            text-align: start
+            font-weight: 700
+            font-size: 2.5vw
+            font-family: font.$oxygen
+            margin: 0 0 10vh
 
-        b.username
-            font-size: 1.5vw
-        
-        .user-items
-            height: 100%
+        .user
+            padding: 0 15px 0
+            font-family: font.$oxygen
+
+            strong
+                text-align: center
+                font-size: 2vw
+                color: font.$programming-blue
+                cursor: pointer
+
+            .user-dropdown
+                display: none
+
+                span
+                    text-align: center
+                    font-family: font.$ubuntu
+                    font-size: 1.5vw
+                    color: font.$black-but-not-so-black
+                    cursor: pointer
+
+                span.logout
+                    color: font.$red
+                    font-weight: bold
+
+    .body
+        justify-self: center
+        width: 100%
+        height: 100%
+        display: flex
+
+        .display
+            flex: 2
             display: grid
-            justify-content: space-evenly
-            border: 1px 0 0 1px solid font.$black-but-not-so-black
+
+            .api-data
+                background: font.$white
+                display: grid
+                height: 60vh
+                border-radius: 16px
+                border: 2px solid font.$black-but-not-so-black
+                padding: 10px 5px
+                margin: 0 10px 0 0
+                align-self: center
+
+                .section
+                    
+                    .section-header
+                        display: flex
+                        border-bottom: 1px solid font.$black-but-not-so-black
+                        
+                        i
+                            padding: 0 10px 0
+
+                    .section-body
+                        height: 90%
+
         
-        .logout
-            color: font.$red

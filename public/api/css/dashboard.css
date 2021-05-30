@@ -27,43 +27,83 @@ body {
 }
 
 .content.dashboard {
-  display: flex;
+  background-color: rgba(255, 255, 255, 0.8);
   width: 100%;
   height: 100%;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 20px 0;
-}
-.content.dashboard .api-data {
-  flex: 2;
-  height: 65%;
-  border: 1px solid #c4c4c4;
-  border-radius: 16px;
-  background-color: rgba(249, 249, 249, 0.7);
-  margin: 0 5px 0;
+  padding: 2vw;
+  border-radius: 34px 0 0 34px;
+  position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  color: #3f332d;
+  transition: 0.5s ease;
 }
-.content.dashboard .user-info {
-  flex: 1;
-  height: 80%;
-  margin: 0 5px 0;
-  border-left: 1px solid black;
-  z-index: 2;
-  display: grid;
+.content.dashboard .top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.content.dashboard .top header {
+  text-align: start;
+  font-weight: 700;
+  font-size: 2.5vw;
+  font-family: Oxygen, sans-serif;
+  margin: 0 0 10vh;
+}
+.content.dashboard .top .user {
+  padding: 0 15px 0;
+  font-family: Oxygen, sans-serif;
+}
+.content.dashboard .top .user strong {
   text-align: center;
-  align-items: center;
+  font-size: 2vw;
+  color: #7BA0F1;
+  cursor: pointer;
 }
-.content.dashboard .user-info b.username {
+.content.dashboard .top .user .user-dropdown {
+  display: none;
+}
+.content.dashboard .top .user .user-dropdown span {
+  text-align: center;
+  font-family: Ubuntu, sans-serif;
   font-size: 1.5vw;
+  color: #3f332d;
+  cursor: pointer;
 }
-.content.dashboard .user-info .user-items {
-  height: 100%;
-  display: grid;
-  justify-content: space-evenly;
-  border: 1px 0 0 1px solid #3f332d;
-}
-.content.dashboard .user-info .logout {
+.content.dashboard .top .user .user-dropdown span.logout {
   color: #c52233;
+  font-weight: bold;
+}
+.content.dashboard .body {
+  justify-self: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.content.dashboard .body .display {
+  flex: 2;
+  display: grid;
+}
+.content.dashboard .body .display .api-data {
+  background: #f9f9f9;
+  display: grid;
+  height: 60vh;
+  border-radius: 16px;
+  border: 2px solid #3f332d;
+  padding: 10px 5px;
+  margin: 0 10px 0 0;
+  align-self: center;
+}
+.content.dashboard .body .display .api-data .section .section-header {
+  display: flex;
+  border-bottom: 1px solid #3f332d;
+}
+.content.dashboard .body .display .api-data .section .section-header i {
+  padding: 0 10px 0;
+}
+.content.dashboard .body .display .api-data .section .section-body {
+  height: 90%;
 }
 
 /*# sourceMappingURL=dashboard.css.map */
