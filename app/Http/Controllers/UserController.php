@@ -131,7 +131,7 @@ class UserController extends Controller
 
     function get_user_api_calls(Request $req) {
         date_default_timezone_set("Singapore");
-        $date = date('Y-m-d', strtotime(time(), ' -1 month'));
+        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ) );
 
         if (!$req->session()->has('user_api_key')) {
             return [['output' => 'session not found']];
@@ -141,16 +141,16 @@ class UserController extends Controller
         return DB::table('api_datacenter.IP_Address_Calls')->where([['day', '>', $date], ['user_api_key', $user_acc_key]])->get();
     }
 
-    function delete_api_calls(Request $req) {
-        $password = $req->input('password');
-        date_default_timezone_set("Singapore");
-        $previousMonth = date('Y-m-d', strtotime(time(), ' -3 month'));
+    // function delete_api_calls(Request $req) {
+    //     $password = $req->input('password');
+    //     date_default_timezone_set("Singapore");
+    //     $previousMonth = date('Y-m-d', strtotime(time(), ' -3 month'));
 
-        if ($password == config('private_password')) {
-            return DB::table('api_datacenter.IP_Address_Calls')->where('day', '<', "$previousMonth")->delete();
-        }
-        return [['output' => 'wrong password']];
-    }
+    //     if ($password == config('private_password')) {
+    //         return DB::table('api_datacenter.IP_Address_Calls')->where('day', '<', "$previousMonth")->delete();
+    //     }
+    //     return [['output' => 'wrong password']];
+    // }
 
     function website(Request $req) {
         $acc_key = config("value.website_acc_key", '');
