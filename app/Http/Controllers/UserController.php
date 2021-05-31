@@ -135,7 +135,19 @@ class UserController extends Controller
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table('api_datacenter.IP_Address_Calls')->where([['day', '>', $date], ['user_api_key', $user_acc_key]])->get();
+        return DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day', 'day')->where([['day', '>', $date], ['user_api_key', $user_acc_key]])->get();
+    }
+
+    function get_user_api_calls2(Request $req) {
+        date_default_timezone_set("Singapore");
+        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ) );
+
+        if (!$req->session()->has('user_api_key')) {
+            return [['output' => 'session not found']];
+        }
+
+        $user_acc_key = $req->session()->get('user_api_key');
+        return DB::table('api_datacenter.IP_Address_Calls')->select('IP_address', 'times_a_month')->where('user_api_key', $user_acc_key)->groupBy('IP_address')->having('day', '>', $date)->get();
     }
 
     // function delete_api_calls(Request $req) {

@@ -36,6 +36,7 @@ Route::post('/api/generate_code', [UserController::class, 'generate_code']);
 Route::post('/api/confirm_pin', [UserController::class, 'confirm_pin']);
 
 Route::get('/api/dashboard/data', [UserController::class, 'get_user_api_calls']);
+Route::get('/api/dashboard/data2', [UserController::class, 'get_user_api_calls2']);
 Route::get('/api/dashboard', [UserController::class, 'dashboard']);
 Route::get('/api/dashboard/auth', function() {
     return view('api.input');

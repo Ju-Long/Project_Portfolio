@@ -105,5 +105,8 @@ body {
 .content.dashboard .body .display .api-data .section .section-body {
   height: 90%;
 }
+.content.dashboard .body .display .api-data .section .section-body#list .list-item {
+  list-style: none;
+}
 
 /*# sourceMappingURL=dashboard.css.map */

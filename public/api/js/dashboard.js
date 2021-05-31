@@ -1,18 +1,25 @@
 $(document).ready(() => {
-    var api_data = "";
     var graph_data = [];
     $.get("https://babasama.com/api/dashboard/data", {},
         (data) => {
             console.log(data)
             data.forEach(i => {
-                graph_data.push([i.times_a_day, i.day]);
-                api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`
+                graph_data.push([i.day, i.times_a_day]);
             });
+            console.log(graph_data);
             display_graph();
-            $("#list.section-body").html(api_data);
         }, "JSON"
     );
 
+    $.get("https://babasama.com/api/dashboard/data2", {},
+        (data) => {
+            var api_data = "";
+            data.forEach(i => {
+                api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`;
+            });
+            $("#list.section-body").html(api_data);
+        }, "JSON"
+    );
     const display_graph = () => {
         const chart = anychart.column();
         const series = chart.column(graph_data);
