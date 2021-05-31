@@ -3,6 +3,7 @@ $(document).ready(() => {
     var graph_data = [];
     $.get("https://babasama.com/api/dashboard/data", {},
         (data) => {
+            console.log(data)
             data.forEach(i => {
                 graph_data.push([i.times_a_day, i.day]);
                 api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`
