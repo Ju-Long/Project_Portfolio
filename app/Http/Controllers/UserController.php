@@ -131,15 +131,14 @@ class UserController extends Controller
 
     function get_user_api_calls(Request $req) {
         date_default_timezone_set("Singapore");
-        $currMonth = date('m', time());
-        $previousMonth = (($currMonth - 1) == 0) ? 12 : $currMonth - 1;
+        $date = date('Y-m-d', strtotime(time(), ' -1 month'));
 
-        if ($req->missing('accountkey')) {
-            return [['output' => 'token is missing']];
+        if (!$req->session()->has('user_api_key')) {
+            return [['output' => 'session not found']];
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table('api_datacenter.IP_Address_Calls')->where([['month', $currMonth], ['month', $previousMonth], ['user_api_key', $user_acc_key]])->get();
+        return DB::table('api_datacenter.IP_Address_Calls')->where([['day', '>', $date], ['user_api_key', $user_acc_key]])->get();
     }
 
     function delete_api_calls(Request $req) {

@@ -1,43 +1,26 @@
 $(document).ready(() => {
-    var data = [
-        ['01-05-2021', 30],
-        ['02-05-2021', 20],
-        ['03-05-2021', 50],
-        ['04-05-2021', 40],
-        ['05-05-2021', 20],
-        ['06-05-2021', 0],
-        ['07-05-2021', 10],
-        ['08-05-2021', 100],
-        ['09-05-2021', 150],
-        ['10-05-2021', 254],
-        ['11-05-2021', 30],
-        ['12-05-2021', 20],
-        ['13-05-2021', 50],
-        ['14-05-2021', 40],
-        ['15-05-2021', 20],
-        ['16-05-2021', 0],
-        ['17-05-2021', 10],
-        ['18-05-2021', 100],
-        ['19-05-2021', 150],
-        ['20-05-2021', 254],
-        ['21-05-2021', 30],
-        ['22-05-2021', 20],
-        ['23-05-2021', 50],
-        ['24-05-2021', 40],
-        ['25-05-2021', 20],
-        ['26-05-2021', 0],
-        ['27-05-2021', 10],
-        ['28-05-2021', 100],
-        ['29-05-2021', 150],
-    ];
+    var api_data = "";
+    var graph_data = [];
+    $.get("https://babasama.com/api/dashboard/data", {},
+        (data) => {
+            data.forEach(i => {
+                graph_data.push([i.times_a_day, i.day]);
+                api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`
+            });
+            display_graph();
+            $("#list.section-body").html(api_data);
+        }, "JSON"
+    );
 
-    const chart = anychart.column();
-    const series = chart.column(data);
-    chart.title("");
-
-    chart.xAxis().title("Date");
-    chart.yAxis().title("Amount Called");
-    chart.container("graph");
-    chart.draw();
+    const display_graph = () => {
+        const chart = anychart.column();
+        const series = chart.column(graph_data);
+        chart.title("");
+    
+        chart.xAxis().title("Date");
+        chart.yAxis().title("Amount Called");
+        chart.container("graph");
+        chart.draw();
+    }
 });
 
