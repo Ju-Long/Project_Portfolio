@@ -1,6 +1,6 @@
 $(document).ready(() => {
     var graph_data = [];
-    $.get("https://babasama.com/api/dashboard/data", {},
+    $.get("https://babasama.com/api/dashboard/data_by_day", {},
         (data) => {
             console.log(data)
             data.forEach(i => {
@@ -11,7 +11,7 @@ $(document).ready(() => {
         }, "JSON"
     );
 
-    $.get("https://babasama.com/api/dashboard/data2", {},
+    $.get("https://babasama.com/api/dashboard/data_by_ip_address", {},
         (data) => {
             var api_data = "";
             data.forEach(i => {
@@ -20,6 +20,7 @@ $(document).ready(() => {
             $("#list.section-body").html(api_data);
         }, "JSON"
     );
+    
     const display_graph = () => {
         const chart = anychart.column();
         const series = chart.column(graph_data);

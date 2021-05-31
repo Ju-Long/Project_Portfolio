@@ -126,21 +126,21 @@ class UserController extends Controller
         return redirect('/api/dashboard/auth');
     }
 
-    function get_user_api_calls(Request $req) {
+    function get_user_api_calls_by_day(Request $req) {
         date_default_timezone_set("Singapore");
-        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ) );
+        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ));
 
         if (!$req->session()->has('user_api_key')) {
             return [['output' => 'session not found']];
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day', 'day')->where([['day', '>', $date], ['user_api_key', $user_acc_key]])->get();
+        return DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day', 'day')->where('user_api_key', $user_acc_key)->groupBy('day')->having('day', '>', $date)->get();
     }
 
-    function get_user_api_calls2(Request $req) {
+    function get_user_api_calls_by_ip_address(Request $req) {
         date_default_timezone_set("Singapore");
-        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ) );
+        $date = date("Y-m-d", strtotime( date( "Y-m-d", strtotime( date("Y-m-d") ) ) . "-1 month" ));
 
         if (!$req->session()->has('user_api_key')) {
             return [['output' => 'session not found']];
