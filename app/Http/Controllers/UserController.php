@@ -25,9 +25,6 @@ class UserController extends Controller
     }
 
     function login(Request $req) {
-        if (Cache::has('username') && Cache::has('password')) {
-            return redirect('/api/dashboard');
-        }
         if ($req->missing('email') && $req->missing('password')) {
             return [['output' => 'email and password is missing.']];
         }
@@ -36,7 +33,7 @@ class UserController extends Controller
 
         $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
         foreach ($user as $i) {
-            session(['username' => $i->username, 'password' => $i->user_password], ['user_api_key' => $i->user_api_key]);
+            session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key]);
         }
         return $user;
     }
