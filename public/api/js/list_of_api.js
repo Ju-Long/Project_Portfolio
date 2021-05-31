@@ -1,6 +1,5 @@
 $(document).ready(() => {
     const location = {latitude: 0, longitude: 0};
-    getLocation()
 
     const getLocation = () => {
         if (navigator.geolocation)
@@ -28,6 +27,7 @@ $(document).ready(() => {
         else
             alert("Geolocation is not supported by this browser.")
     }
+    getLocation()
     
     $(".list-item").click((e) => { 
         let id = e.target.id;
