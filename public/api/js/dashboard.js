@@ -13,6 +13,7 @@ $(document).ready(() => {
 
     $.get("https://babasama.com/api/dashboard/data_by_ip_address", {},
         (data) => {
+		console.log(data);
             var api_data = "";
             data.forEach(i => {
                 api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`;
