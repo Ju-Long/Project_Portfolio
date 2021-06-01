@@ -147,7 +147,7 @@ class UserController extends Controller
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table(DB::raw('api_datacenter.IP_address_calls IPAC'))->select('IPAC.ip_address', 'count(*)')->join(DB::raw('api_datacenter.IP_address_call_date IPACD'), 'IPAC.ip_id', '=', 'IPACD.ip_id')->where([['IPAC.user_api_key', $user_acc_key], ['date_of_calling', '>', "$date"]])->groupBy('IPAC.ip_address')->get();
+        return DB::table(DB::raw('api_datacenter.IP_address_calls IPAC'))->select(DB::raw('ip_address, count(*) as count'))->join(DB::raw('api_datacenter.IP_address_call_date IPACD'), 'IPAC.ip_id', '=', 'IPACD.ip_id')->where([['IPAC.user_api_key', $user_acc_key], ['date_of_calling', '>', "$date"]])->groupBy('IPAC.ip_address')->get();
     }
 
     // function delete_api_calls(Request $req) {
