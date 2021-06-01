@@ -7,14 +7,59 @@
             <div class="user">
                 <strong>{ Welcome {{$username}} }</strong>
                 <div class="user-dropdown">
-                    <span class="account-setting">Account Settings</span>
-                    <span class="seek-assistance">Seek Assistance</span>
-                    <span class="logout"><a href="https://babasama.com/api/signout">Signout</a></span>
+                    <span id="account-setting">Account Settings</span>
+                    <span id="seek-assistance"><a href="mailto:support@babasama.com">Seek Assistance</a></span>
+                    <span id="signout"><a href="https://babasama.com/api/signout">Signout</a></span>
                 </div>
             </div>
         </div>
         <div class="body">
             <div class="display">
+                <div class="account-setting">
+                    <div class="top-left-button">
+                        <i class="fa-duotone fa-arrow-left"></i>
+                        Back
+                    </div>
+                    <header>Account Settings</header>
+                    <div class="account-setting-body">
+                        <div class="row">
+                            <span>
+                                <i class="fa-duotone fa-user username"></i> Username: 
+                            </span>
+                            <div>
+                                <input type="text" value="{{ $username }}" id="username">
+                                <i class="fa-duotone fa-check username"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>
+                                <i class="fa-duotone fa-envelope-open email"></i> Email: 
+                            </span>
+                            <div>
+                                <input type="email" value="{{ $email }}" id="email">
+                                <i class="fa-duotone fa-check email"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>
+                                <i class="fa-duotone fa-unlock-keyhole password"></i> Password: 
+                            </span>
+                            <div>
+                                <input type="password" value="{{ $password }}" id="password">
+                                <i class="fa-duotone fa-check password"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>
+                                <i class="fa-duotone fa-key-skeleton apikey"></i> User API Key: 
+                            </span>
+                            <div>
+                                <input type="text" value="{{ $user_api_key }}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="api-data">
                     <div class="section">
                         <div class="section-header">
@@ -35,8 +80,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

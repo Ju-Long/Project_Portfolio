@@ -33,7 +33,7 @@ class UserController extends Controller
 
         $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
         foreach ($user as $i) {
-            session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key]);
+            session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
         }
         return $user;
     }
@@ -74,7 +74,7 @@ class UserController extends Controller
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
                 DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
-                session(['username' => $i->username, 'password' => $i->user_password]);
+                session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
                 return view('api.signup_succeed', ['username' => "$i->username"]);
             }
         } return [['output' => 'no data found']];
@@ -121,7 +121,7 @@ class UserController extends Controller
 
     function dashboard(Request $req) {
         if ($req->session()->has('username')) {
-            return view('api.main', ['username' => $req->session()->get('username')]);
+            return view('api.main', ['username' => $req->session()->get('username'), 'email' => $req->session()->get('email'), 'password' => $req->session()->get('password'), 'user_api_key' => $req->session()->get('user_api_key')]);
         } 
         return redirect('/api/dashboard/auth');
     }

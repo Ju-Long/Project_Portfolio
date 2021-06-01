@@ -54,15 +54,22 @@ body {
 .content.dashboard .top .user {
   padding: 0 15px 0;
   font-family: Oxygen, sans-serif;
+  transition: 0.5s ease-in-out;
 }
 .content.dashboard .top .user strong {
   text-align: center;
   font-size: 2vw;
   color: #7BA0F1;
   cursor: pointer;
+  padding: 10px 0;
 }
 .content.dashboard .top .user .user-dropdown {
-  display: none;
+  height: 0;
+  display: grid;
+  background: #f9f9f9;
+  overflow: auto;
+  border-radius: 16px;
+  transition: 0.5s ease-in-out;
 }
 .content.dashboard .top .user .user-dropdown span {
   text-align: center;
@@ -70,10 +77,21 @@ body {
   font-size: 1.5vw;
   color: #3f332d;
   cursor: pointer;
+  transition: 0.5s ease-in-out;
 }
-.content.dashboard .top .user .user-dropdown span.logout {
+.content.dashboard .top .user .user-dropdown span.disabled {
+  color: #c8c8c8;
+}
+.content.dashboard .top .user .user-dropdown span#signout {
   color: #c52233;
   font-weight: bold;
+}
+.content.dashboard .top .user .user-dropdown.active {
+  height: 15vh;
+  line-height: 5vh;
+}
+.content.dashboard .top .user .user-dropdown.active span {
+  display: block;
 }
 .content.dashboard .body {
   justify-self: center;
@@ -83,17 +101,169 @@ body {
 }
 .content.dashboard .body .display {
   flex: 2;
+  display: flex;
+  transition: 0.5s ease-in-out;
+}
+.content.dashboard .body .display .account-setting {
+  width: 0;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: #f9f9f9;
+  align-self: center;
+  overflow: auto;
+  transition: 0.5s ease-in-out;
+}
+.content.dashboard .body .display .account-setting .top-left-button {
+  padding: 10px 0 0 20px;
+  font-size: 2vw;
+  cursor: pointer;
+  align-self: start;
+}
+.content.dashboard .body .display .account-setting .top-left-button.loading:hover {
+  color: #c52233;
+}
+.content.dashboard .body .display .account-setting .top-left-button:hover {
+  color: #99B673;
+}
+.content.dashboard .body .display .account-setting header {
+  text-align: center;
+  font-family: Oxygen, sans-serif;
+  font-size: 3vw;
+  padding: 3vh 0;
+}
+.content.dashboard .body .display .account-setting .account-setting-body {
+  width: 70%;
+  height: 100%;
   display: grid;
+  align-items: center;
+  align-self: center;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row {
+  font-size: 2vw;
+  display: flex;
+  justify-content: space-between;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row span {
+  align-self: center;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row span i.fa-user.active {
+  color: #CF465F;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row span i.fa-envelope-open.active {
+  color: #7BA0F1;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row span i.fa-unlock-keyhole.active {
+  color: #99B673;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row span i.fa-key-skeleton.active {
+  color: #A178BF;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row input {
+  border: 2px solid #3f332d;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: Ubuntu, sans-serif;
+  font-size: 1.5vw;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row input#username:focus {
+  border: 2px solid #CF465F;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row input#email:focus {
+  border: 2px solid #7BA0F1;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row input#password:focus {
+  border: 2px solid #99B673;
+}
+.content.dashboard .body .display .account-setting .account-setting-body .row input#apikey:focus {
+  border: 2px solid #A178BF;
+}
+.content.dashboard .body .display .account-setting.show {
+  width: 100%;
+  height: 70vh;
+}
+.content.dashboard .body .display .seek-assistance {
+  width: 0;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  background: #f9f9f9;
+  align-self: center;
+  overflow: auto;
+  transition: 0.5s ease-in-out;
+}
+.content.dashboard .body .display .seek-assistance .top-left-button {
+  padding: 10px 0 0 20px;
+  font-size: 2vw;
+  cursor: pointer;
+  align-self: start;
+}
+.content.dashboard .body .display .seek-assistance .top-left-button:hover {
+  color: #99B673;
+}
+.content.dashboard .body .display .seek-assistance header {
+  text-align: center;
+  font-family: Oxygen, sans-serif;
+  font-size: 3vw;
+  padding: 3vh 0;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-body {
+  flex: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  justify-content: space-around;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-body input, .content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-body textarea {
+  height: 6vh;
+  border: 2px solid #3f332d;
+  border-radius: 8px;
+  padding: 0 10px 0;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-body textarea {
+  height: 15vh;
+  padding: 10px 10px;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-end {
+  flex: 1;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  justify-content: space-around;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-end button {
+  border: 2px solid #3f332d;
+  padding: 10px 10px;
+  border-radius: 8px;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-end button.send {
+  background: #99B673;
+}
+.content.dashboard .body .display .seek-assistance .seek-assistance-container .seek-assistance-end button.reset {
+  background: #CF465F;
+}
+.content.dashboard .body .display .seek-assistance.show {
+  width: 100%;
+  height: 60vh;
 }
 .content.dashboard .body .display .api-data {
-  background: #f9f9f9;
+  width: 0%;
+  height: 0;
   display: grid;
-  height: 60vh;
   border-radius: 16px;
-  border: 2px solid #3f332d;
-  padding: 10px 5px;
-  margin: 0 10px 0 0;
+  background: #f9f9f9;
   align-self: center;
+  overflow: auto;
+  transition: 0.5s ease-in-out;
 }
 .content.dashboard .body .display .api-data .section .section-header {
   display: flex;
@@ -104,9 +274,17 @@ body {
 }
 .content.dashboard .body .display .api-data .section .section-body {
   height: 90%;
+  padding: 15px;
 }
 .content.dashboard .body .display .api-data .section .section-body#list .list-item {
   list-style: none;
+}
+.content.dashboard .body .display .api-data.show {
+  width: 100%;
+  height: 60vh;
+  border: 2px solid #3f332d;
+  padding: 10px 5px;
+  margin: 0 10px 0 0;
 }
 
 /*# sourceMappingURL=dashboard.css.map */
