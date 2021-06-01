@@ -26,6 +26,7 @@ class BusStop extends Controller
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            $id = 0;
             if (empty($ip_data)) {
                 $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
                 DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -60,6 +61,7 @@ class BusStop extends Controller
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
                     $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    $id = 0;
                     if (empty($ip_data)) {
                         $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
                         DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -108,6 +110,7 @@ class BusStop extends Controller
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            $id = 0;
             if (empty($ip_data)) {
                 $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
                 DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -142,6 +145,7 @@ class BusStop extends Controller
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
                     $$ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    $id = 0;
                     if (empty($ip_data)) {
                         $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
                         DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -189,6 +193,7 @@ class BusStop extends Controller
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            $id = 0;
             if (empty($ip_data)) {
                 $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
                 DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -223,6 +228,7 @@ class BusStop extends Controller
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
                     $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    $id = 0;
                     if (empty($ip_data)) {
                         $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
                         DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -270,6 +276,7 @@ class BusStop extends Controller
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            $id = 0;
             if (empty($ip_data)) {
                 $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
                 DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -304,6 +311,7 @@ class BusStop extends Controller
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
                     $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    $id = 0;
                     if (empty($ip_data)) {
                         $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
                         DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -352,6 +360,7 @@ class BusStop extends Controller
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            $id = 0;
             if (empty($ip_data)) {
                 $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
                 DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -386,6 +395,7 @@ class BusStop extends Controller
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
                     $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    $id = 0;
                     if (empty($ip_data)) {
                         $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
                         DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
