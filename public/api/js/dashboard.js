@@ -4,7 +4,7 @@ $(document).ready(() => {
         (data) => {
             console.log(data)
             data.forEach(i => {
-                graph_data.push([i.day, i.times_a_day]);
+                graph_data.push([i.date_of_calling, i.times_called]);
             });
             console.log(graph_data);
             display_graph();
@@ -13,10 +13,9 @@ $(document).ready(() => {
 
     $.get("https://babasama.com/api/dashboard/data_by_ip_address", {},
         (data) => {
-		console.log(data);
             var api_data = "";
             data.forEach(i => {
-                api_data += `<li class='list-item'>${i.IP_address}: <span>${i.times_a_month}</span></li>`;
+                api_data += `<li class='list-item'>${i.ip_address}: <span>${i.count}</span></li>`;
             });
             $("#list.section-body").html(api_data);
         }, "JSON"
