@@ -135,7 +135,11 @@ class UserController extends Controller
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day', 'day')->where('user_api_key', $user_acc_key)->groupBy(DB::raw('day'))->having('day', '>', $date)->get();
+        $user = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day', 'day')->where([['user_api_key', $user_acc_key], ['day', '>', $date]])->get();
+        $data = array();
+        foreach($user as $i) {
+            $data[""];
+        }
     }
 
     function get_user_api_calls_by_ip_address(Request $req) {
@@ -147,7 +151,7 @@ class UserController extends Controller
         }
 
         $user_acc_key = $req->session()->get('user_api_key');
-        return DB::table('api_datacenter.IP_Address_Calls')->select('IP_address', 'times_a_month')->where('user_api_key', $user_acc_key)->groupBy(DB::raw('day'))->having('day', '>', $date)->get();
+        return DB::table('api_datacenter.IP_Address_Calls')->select('IP_address', 'times_a_month')->where([['user_api_key', $user_acc_key], ['day', '>', $date]])->get();
     }
 
     // function delete_api_calls(Request $req) {

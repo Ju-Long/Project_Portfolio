@@ -25,16 +25,22 @@ class BusStop extends Controller
         $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/$amountReturned";
 
         if ($req->missing('username') && $req->missing('accountkey')) {
-            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            if (empty($ip_data)) {
+                $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
+                DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+            } else {
+                foreach($ip_data as $i) {
+                    $id = $i->ip_id;
+                }
+            }
+            $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
-                if ($i->times_a_day > 30) {
+                if ($i->times_called > 30) {
                     return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
-            DB::table('api_datacenter.IP_Address_Calls')
-            ->updateOrInsert(
-                ['IP_address' => "$client_ip", 'month' => $currMonth, 'day' => "$currDay"],
-                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+            DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', $currDay]])->increment('times_called', 1);
 
             $result = Http::withHeaders([
                 'api_key' => $account_key
@@ -45,6 +51,7 @@ class BusStop extends Controller
             } else if ($result->clientError()) {
                 return [['output' => "Client Error"]];}
 
+            error_log($result);
             return json_decode($result);
         } else {
             $user_acc_key = $req->input('accountkey');
@@ -52,27 +59,34 @@ class BusStop extends Controller
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
-                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
-                    foreach($datas as $n) {
-                        if ($n->times_a_day > 300) {
-                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
+                    $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    if (empty($ip_data)) {
+                        $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
+                        DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+                    } else {
+                        foreach($ip_data as $i) {
+                            $id = $i->ip_id;
+                        }
+                    }
+                    $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_called > 300) {
+                            return [['output' => 'You use this IP address to call the data too many times, please call again another day']];
+                        }}}
 
-                DB::table('api_datacenter.IP_Address_Calls')
-                ->updateOrInsert(
-                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key, 'day' => "$currDay"],
-                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+                    DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->increment('times_called', 1);
 
-                $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
-                foreach($datamall_key as $n) {
+                    $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
+                    foreach($datamall_key as $n) {
 
-                    $result = Http::withHeaders([
-                        'api_key' => $n->datamall
-                    ])->get($url);
+                        $result = Http::withHeaders([
+                            'api_key' => $n->datamall
+                        ])->get($url);
 
-                    if ($result->serverError()) {
-                        return [['output' => "Server Error"]];
-                    } else if ($result->clientError()) {
-                        return [['output' => "Client Error"]];}
+                        if ($result->serverError()) {
+                            return [['output' => "Server Error"]];
+                        } else if ($result->clientError()) {
+                            return [['output' => "Client Error"]];}
 
                     return json_decode($result); }}
 
@@ -93,15 +107,22 @@ class BusStop extends Controller
         $url = "http://babasama.me/get_bus_arrival/$busstopcode";
 
         if ($req->missing('username') && $req->missing('accountkey')) {
-            $datas = DB::table('api_datacenter.IP_Address_Calls')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            if (empty($ip_data)) {
+                $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
+                DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+            } else {
+                foreach($ip_data as $i) {
+                    $id = $i->ip_id;
+                }
+            }
+            $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
-                if ($i->times_a_day > 30) {
+                if ($i->times_called > 30) {
                     return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
-            DB::table('api_datacenter.IP_Address_Calls')
-            ->updateOrInsert(
-                ['IP_address' => "$client_ip", 'month' => $currMonth, 'day' => "$currDay"],
-                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+
+            DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', $currDay]])->increment('times_called', 1);
 
             $result = Http::withHeaders([
                 'api_key' => $account_key
@@ -120,15 +141,22 @@ class BusStop extends Controller
 
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
-                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
-                    foreach($datas as $n) {
-                        if ($n->times_a_day > 300) {
-                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
+                    $$ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    if (empty($ip_data)) {
+                        $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
+                        DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+                    } else {
+                        foreach($ip_data as $i) {
+                            $id = $i->ip_id;
+                        }
+                    }
+                    $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_called > 300) {
+                            return [['output' => 'You use this IP address to call the data too many times, please call again another day']];
+                        }}}
 
-                DB::table('api_datacenter.IP_Address_Calls')
-                ->updateOrInsert(
-                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key, 'day' => "$currDay"],
-                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+                    DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->increment('times_called', 1);
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $n) {
@@ -160,16 +188,22 @@ class BusStop extends Controller
         $url = "http://babasama.me/get_bus_route/$serviceno";
 
         if ($req->missing('username') && $req->missing('accountkey')) {
-            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            if (empty($ip_data)) {
+                $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
+                DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+            } else {
+                foreach($ip_data as $i) {
+                    $id = $i->ip_id;
+                }
+            }
+            $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
-                if ($i->times_a_day > 30) {
+                if ($i->times_called > 30) {
                     return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
-            DB::table('api_datacenter.IP_Address_Calls')
-            ->updateOrInsert(
-                ['IP_address' => "$client_ip", 'month' => $currMonth, 'day' => "$currDay"],
-                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+            DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', $currDay]])->increment('times_called', 1);
 
             $result = Http::withHeaders([
                 'api_key' => $account_key
@@ -188,15 +222,22 @@ class BusStop extends Controller
 
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
-                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
-                    foreach($datas as $n) {
-                        if ($n->times_a_day > 300) {
-                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
+                    $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    if (empty($ip_data)) {
+                        $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
+                        DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+                    } else {
+                        foreach($ip_data as $i) {
+                            $id = $i->ip_id;
+                        }
+                    }
+                    $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_called > 300) {
+                            return [['output' => 'You use this IP address to call the data too many times, please call again another day']];
+                        }}}
 
-                DB::table('api_datacenter.IP_Address_Calls')
-                ->updateOrInsert(
-                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key, 'day' => "$currDay"],
-                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+                    DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->increment('times_called', 1);
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $n) {
@@ -228,16 +269,22 @@ class BusStop extends Controller
         $url = "http://babasama.me/get_bus_data/$serviceno";
 
         if ($req->missing('username') && $req->missing('accountkey')) {
-            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            if (empty($ip_data)) {
+                $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
+                DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+            } else {
+                foreach($ip_data as $i) {
+                    $id = $i->ip_id;
+                }
+            }
+            $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
-                if ($i->times_a_day > 30) {
+                if ($i->times_called > 30) {
                     return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
-            DB::table('api_datacenter.IP_Address_Calls')
-            ->updateOrInsert(
-                ['IP_address' => "$client_ip", 'month' => $currMonth, 'day' => "$currDay"],
-                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+            DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', $currDay]])->increment('times_called', 1);
 
             $result = Http::withHeaders([
                 'api_key' => $account_key
@@ -256,15 +303,22 @@ class BusStop extends Controller
 
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
-                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
-                    foreach($datas as $n) {
-                        if ($n->times_a_day > 300) {
-                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
+                    $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    if (empty($ip_data)) {
+                        $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
+                        DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+                    } else {
+                        foreach($ip_data as $i) {
+                            $id = $i->ip_id;
+                        }
+                    }
+                    $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_called > 300) {
+                            return [['output' => 'You use this IP address to call the data too many times, please call again another day']];
+                        }}}
 
-                DB::table('api_datacenter.IP_Address_Calls')
-                ->updateOrInsert(
-                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key, 'day' => "$currDay"],
-                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+                    DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->increment('times_called', 1);
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $n) {
@@ -297,16 +351,22 @@ class BusStop extends Controller
         $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
 
         if ($req->missing('username') && $req->missing('accountkey')) {
-            $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', "$currDay"]])->get();
+            $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => null]])->get();
+            if (empty($ip_data)) {
+                $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => null]);
+                DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+            } else {
+                foreach($ip_data as $i) {
+                    $id = $i->ip_id;
+                }
+            }
+            $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
-                if ($i->times_a_day > 30) {
+                if ($i->times_called > 30) {
                     return [['output' => 'You use this IP address to call the data too many times anonymously, please register an account if you would like to call more times']];
                 }}
 
-            DB::table('api_datacenter.IP_Address_Calls')
-            ->updateOrInsert(
-                ['IP_address' => "$client_ip", 'month' => $currMonth, 'day' => "$currDay"],
-                ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+            DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', $currDay]])->increment('times_called', 1);
 
             $result = Http::withHeaders([
                 'api_key' => $account_key
@@ -325,15 +385,22 @@ class BusStop extends Controller
 
             foreach ($API_Key as $i) {
                 if ($i->user_role == "client") {
-                    $datas = DB::table('api_datacenter.IP_Address_Calls')->select('times_a_day')->where([['IP_address', "$client_ip"], ['day', $currDay], ['user_api_key', $user_acc_key]])->get();
-                    foreach($datas as $n) {
-                        if ($n->times_a_day > 300) {
-                            return [['output' => 'You use this IP address to call the data too many times for today, please come again another day']];}}}
+                    $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key' => $user_acc_key]])->get();
+                    if (empty($ip_data)) {
+                        $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $user_acc_key]);
+                        DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
+                    } else {
+                        foreach($ip_data as $i) {
+                            $id = $i->ip_id;
+                        }
+                    }
+                    $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
+                    foreach($datas as $i) {
+                        if ($i->times_called > 300) {
+                            return [['output' => 'You use this IP address to call the data too many times, please call again another day']];
+                        }}}
 
-                DB::table('api_datacenter.IP_Address_Calls')
-                ->updateOrInsert(
-                    ['IP_address' => "$client_ip", 'month'=> $currMonth, 'user_api_key' => $i->user_api_key, 'day' => "$currDay"],
-                    ['times_a_month' => DB::raw('times_a_month + 1'), 'times_a_day' => DB::raw('times_a_day + 1')]);
+                    DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->increment('times_called', 1);
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $n) {
