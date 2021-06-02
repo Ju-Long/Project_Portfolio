@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    $(".seek-assistance").addClass("show");
+    $(".api-data").addClass("show");
     var graph_data = [];
     $.get("https://babasama.com/api/dashboard/data_by_day", {},
         (data) => {
