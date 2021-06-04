@@ -94,7 +94,7 @@ class UserController extends Controller
 
     function signout(Request $req) {
         Cache::flush();
-        $req->session()->forget(['username', 'password']);
+        $req->session()->forget(['username', 'password', 'user_api_key', 'datamall_api', 'user_id']);
         return redirect('/api/dashboard');
     }
 
