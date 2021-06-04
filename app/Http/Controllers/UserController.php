@@ -33,7 +33,11 @@ class UserController extends Controller
 
         $user = DB::table('api_datacenter.User')->where([['user_email', "$email"], ['user_password', "$password"]])->get();
         foreach ($user as $i) {
-            session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
+            session(['user_id' => $i->user_id, 'username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
+            $datamall_api = DB::table('api_datacenter.User_API_Keys')->where('user_api_key', $i->user_api_key)->get();
+            foreach ($datamall_api as $n) {
+                session(['datamall_api' => $n->datamall]);
+            }
         }
         return $user;
     }
@@ -74,8 +78,12 @@ class UserController extends Controller
         if (count($confirm) > 0) {
             foreach($confirm as $i) {
                 DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
-                session(['username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
-                return view('api.signup_succeed', ['username' => "$i->username"]);
+                session(['user_id' => $i->user_id, 'username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
+                $datamall_api = DB::table('api_datacenter.User_API_Keys')->where('user_api_key', $i->user_api_key)->get();
+                foreach ($datamall_api as $n) {
+                    session(['datamall_api' => $n->datamall]);
+                }
+                return view('api.main', ['username' => $req->session()->get('username'), 'email' => $req->session()->get('email'), 'password' => $req->session()->get('password'), 'user_api_key' => $req->session()->get('user_api_key'), 'datamall_api' => $req->session()->get('datamall_api')]);
             }
         } return [['output' => 'no data found']];
     }
@@ -121,7 +129,7 @@ class UserController extends Controller
 
     function dashboard(Request $req) {
         if ($req->session()->has('username')) {
-            return view('api.main', ['username' => $req->session()->get('username'), 'email' => $req->session()->get('email'), 'password' => $req->session()->get('password'), 'user_api_key' => $req->session()->get('user_api_key')]);
+            return view('api.main', ['username' => $req->session()->get('username'), 'email' => $req->session()->get('email'), 'password' => $req->session()->get('password'), 'user_api_key' => $req->session()->get('user_api_key'), 'datamall_api' => $req->session()->get('datamall_api')]);
         } 
         return redirect('/api/dashboard/auth');
     }
@@ -148,6 +156,27 @@ class UserController extends Controller
 
         $user_acc_key = $req->session()->get('user_api_key');
         return DB::table(DB::raw('api_datacenter.IP_address_calls IPAC'))->select(DB::raw('ip_address, count(*) as count'))->join(DB::raw('api_datacenter.IP_address_call_date IPACD'), 'IPAC.ip_id', '=', 'IPACD.ip_id')->where([['IPAC.user_api_key', $user_acc_key], ['date_of_calling', '>', "$date"]])->groupBy('IPAC.ip_address')->get();
+    }
+
+    function update_user_cred(Request $req) {
+        if ($req->has('username')) {
+            $username = $req->input('username');
+
+            return DB::table('api_datacenter.User')->where('user_id', $req->session()->get('user_id'))->update(['username' => $username]);
+        } else if ($req->has('email')) {
+            $email = $req->input('email');
+
+            return DB::table('api_datacenter.User')->where('user_id', $req->session()->get('user_id'))->update(['user_email' => $email]);
+        } else if ($req->has('password')) {
+            $password = $req->input('password');
+
+            return DB::table('api_datacenter.User')->where('user_id', $req->session()->get('user_id'))->update(['user_password' => $password]);
+        } else if ($req->has('datamall')) {
+            $datamall = $req->input('datamall');
+
+            return DB::table('api_datacenter.User_API_Keys')->where('user_api_key', $req->session()->get('user_api_key'))->update(['datamall' => $datamall]);
+        }
+        return [['output' => 'no data entered']];
     }
 
     // function delete_api_calls(Request $req) {

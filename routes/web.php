@@ -34,6 +34,7 @@ Route::get('/api/signout', [UserController::class, 'signout']);
 Route::post('/api/update_password', [UserController::class, 'update_password']);
 Route::post('/api/generate_code', [UserController::class, 'generate_code']);
 Route::post('/api/confirm_pin', [UserController::class, 'confirm_pin']);
+Route::post('/api/update_user_cred', [UserController::class, 'update_user_cred']);
 
 Route::get('/api/dashboard/data_by_day', [UserController::class, 'get_user_api_calls_by_day']);
 Route::get('/api/dashboard/data_by_ip_address', [UserController::class, 'get_user_api_calls_by_ip_address']);

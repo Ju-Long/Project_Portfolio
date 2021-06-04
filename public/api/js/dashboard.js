@@ -1,4 +1,5 @@
 $(document).ready(() => {
+    var emailregex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
     $(".api-data").addClass("show");
     var graph_data = [];
     $.get("https://babasama.com/api/dashboard/data_by_day", {},
@@ -29,6 +30,18 @@ $(document).ready(() => {
         chart.yAxis().title("Amount Called");
         chart.container("graph");
         chart.draw();
+    }
+
+    const passwordvalidate = (password) => {
+        if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/.test(password)) 
+            return true;
+        return false;
+    }
+
+    const emailvalidate = (email) => {
+        if (emailregex.test(email)) 
+            return true;
+        return false;
     }
 
     $(".user strong").click(() => { 
@@ -69,15 +82,58 @@ $(document).ready(() => {
         $(`.row div i.${id}`).addClass(["fa-loader", "fa-loader fa-spin-pulse"]);
         $(".top-left-button").addClass("loading");
 
-        setTimeout(() => {
-            $(`.row div i.${id}.fa-loader.fa-spin-pulse`).removeClass(["fa-loader", "fa-spin-pulse"]);
-            $(`.row div i.${id}`).addClass("fa-check");
-            $(".top-left-button").removeClass("loading");
-        }, 10000);
+        if (id === "username" && /^[0-9a-zA-Z_.-]{6,20}$/.test($("input#username").val())) 
+            $.post("https://babasama.com/api/update_user_cred", {
+                username: $("input#username").val()
+            }, (data) => {
+                if (data > 0) {
+                    $(`.row div i.${id}.fa-loader.fa-spin-pulse`).removeClass(["fa-loader", "fa-spin-pulse"]);
+                    $(`.row div i.${id}`).addClass("fa-check");
+                    $(".top-left-button").removeClass("loading");
+                } else {
+                    alert('cannot be updated')
+                }}, "text"
+            );
+        else if (id === "email" && emailvalidate($($("input#email").val())))
+            $.post("https://babasama.com/api/update_user_cred", {
+                email: $("input#email").val()
+            }, (data) => {
+                if (data > 0) {
+                    $(`.row div i.${id}.fa-loader.fa-spin-pulse`).removeClass(["fa-loader", "fa-spin-pulse"]);
+                    $(`.row div i.${id}`).addClass("fa-check");
+                    $(".top-left-button").removeClass("loading");
+                } else {
+                    alert('cannot be updated')
+                }}, "text"
+            );
+        else if (id === "password" && passwordvalidate($("input#password").val()))
+            $.post("https://babasama.com/api/update_user_cred", {
+                password: $("input#password").val()
+            }, (data) => {
+                if (data > 0) {
+                    $(`.row div i.${id}.fa-loader.fa-spin-pulse`).removeClass(["fa-loader", "fa-spin-pulse"]);
+                    $(`.row div i.${id}`).addClass("fa-check");
+                    $(".top-left-button").removeClass("loading");
+                } else {
+                    alert('cannot be updated')
+                }}, "text"
+            );
+        else if (id === "datamall")
+            $.post("https://babasama.com/api/update_user_cred", {
+                datamall: $("input#datamall").val()
+            }, (data) => {
+                if (data > 0) {
+                    $(`.row div i.${id}.fa-loader.fa-spin-pulse`).removeClass(["fa-loader", "fa-spin-pulse"]);
+                    $(`.row div i.${id}`).addClass("fa-check");
+                    $(".top-left-button").removeClass("loading");
+                } else {
+                    alert('cannot be updated')
+                }}, "text"
+            );
     });
 
     $(".top-left-button").click(() => { 
-        if ($("account-setting .top-left-button").hasClass("loading")) {
+        if ($(".top-left-button").hasClass("loading")) {
             alert("the data is still being saved. please wait for data to be synced.")
         } else {
             $(".user-dropdown span").removeAttr("disabled");

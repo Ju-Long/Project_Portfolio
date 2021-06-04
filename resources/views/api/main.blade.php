@@ -55,6 +55,17 @@
                             </span>
                             <div>
                                 <input type="text" value="{{ $user_api_key }}" disabled>
+                                <i class="fa-duotone fa-lock-keyhole"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>
+                                <i class="fa-duotone fa-key-skeleton datamall"></i> 
+                                DataMall API Key
+                            </span>
+                            <div>
+                                <input type="text" value="{{ $datamall_api }}" id="datamall">
+                                <i class="fa-duotone fa-check datamall"></i>
                             </div>
                         </div>
                     </div>
