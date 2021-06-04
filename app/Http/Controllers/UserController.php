@@ -67,8 +67,14 @@ class UserController extends Controller
         }
 
         $list_api_key = DB::table('api_datacenter.User')->select('user_api_key')->get();
+        $api_keys =[];
         $new_api_key = random_int(1000000, 9999999);
-        return $list_api_key;
+        foreach ($list_api_key as $i) {
+            array_push($api_keys, $i->user_api_key);
+        }
+        while(in_array($new_api_key, $api_keys, false)) {
+            $new_api_key = random_int(1000000, 9999999);
+        }
 
         $token = $req->input('token');
         $confirm = DB::table('api_datacenter.User')->where('reset_password_code', "$token")->get();
