@@ -130,6 +130,9 @@ $(document).ready(() => {
                     alert('cannot be updated')
                 }}, "text"
             );
+        else {
+            alert("invalid format being entered")
+        }
     });
 
     $(".top-left-button").click(() => { 

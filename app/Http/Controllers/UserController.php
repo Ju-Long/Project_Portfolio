@@ -52,7 +52,7 @@ class UserController extends Controller
 
         $random_str = $this->random_str(20);
         $create_user = DB::table('api_datacenter.User')->insertOrIgnore([
-            ['username' => "$username", 'user_email' => "$email", 'user_password' => "$password", 'reset_password_code' => "$random_str"]
+            ['username' => "$username", 'user_email' => "$email", 'user_password' => "$password", 'user_role' => 'client', 'reset_password_code' => "$random_str"]
         ]);
         if ($create_user > 0) {
             Mail::to("$email")->send(new SignupConfirmation($random_str));
@@ -68,9 +68,7 @@ class UserController extends Controller
 
         $list_api_key = DB::table('api_datacenter.User')->select('user_api_key')->get();
         $new_api_key = random_int(1000000, 9999999);
-        while(in_array($new_api_key, $list_api_key, false)) {
-            $new_api_key = random_int(1000000, 9999999);
-        }
+        return $list_api_key;
 
         $token = $req->input('token');
         $confirm = DB::table('api_datacenter.User')->where('reset_password_code', "$token")->get();
