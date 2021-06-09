@@ -209,7 +209,7 @@ class UserController extends Controller
                 $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/5";
             case "get_bus_arrival_time":
                 $busstopcode = $req->input('BusStopCode', 54201);
-                $url = "http://babasama.me/get_bus_arrival/$busstopcode";
+                url = "http://babasama.me/get_bus_arrival/$busstopcode";
             case "get_bus_route":
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "http://babasama.me/get_bus_route/$busnumber";
