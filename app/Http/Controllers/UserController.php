@@ -223,7 +223,7 @@ class UserController extends Controller
             default: 
                 return [['output' => 'Invalid Input Given']];
         }
-
+        return $url;
         $result = Http::withHeaders([
             'api_key' => $account_key
         ])->get($url);

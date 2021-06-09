@@ -1,0 +1,71 @@
+.progress-btn
+    position: relative
+    width: 70%
+    height: 50px
+    display: inline-grid
+    background: #f44336
+    color: #fff
+    font-weight: normal
+    font-size: 20px
+    transition: all 0.4s ease
+    justify-self: center
+    align-self: center
+    text-align: center
+    border-radius: 15px
+
+    .submit
+        position: absolute
+        left: 0
+        top: 0
+        right: 0
+        bottom: 0
+        line-height: 50px
+
+    .progress 
+        width: 0%
+        max-width: 95%
+        z-index: 5
+        background: #d32f2f
+        opacity: 0
+        transition: all 0.3s
+
+.progress-btn:not(.active)
+    cursor: pointer
+
+.progress-btn.active
+    .progress
+        opacity: 1
+        animation: progress-anim 5s ease 0s
+
+.progress-btn[data-progress-style='fill-bottom']
+    .progress
+        position: absolute
+        left: 7px
+        right: 0
+        bottom: 0
+        height: 0
+        border-radius: 10px 10px 15px 15px
+
+.progress-btn[data-progress-style='fill-bottom'].active
+    .progress
+        height: 7px
+
+@keyframes progress-anim
+
+    0%
+        width: 0%
+    5%
+        width: 0%
+    10%
+        width: 15%
+    30%
+        width: 40%
+    50%
+        width: 55%
+    80%
+        width: 100%
+    95%
+        width: 100%
+    100%
+        width: 0%
+        

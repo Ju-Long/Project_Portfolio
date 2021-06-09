@@ -1,0 +1,111 @@
+@use 'variable'
+    
+.navbar
+    flex: 3
+    display: flex
+    flex-direction: column
+    padding: 30px
+    justify-content: space-around
+    align-items: center
+    transition: 1s ease-in-out
+
+    .navbrand
+        display: flex
+        position: relative
+        cursor: pointer
+        height:20vh
+        align-items: center
+
+        .short
+            display: none
+        
+        strong
+            font-family: variable.$ubuntu
+            font-size: 2vw
+            font-weight: bold
+
+    .nav-list
+        font-family: variable.$roboto
+        display: flex
+        flex-direction: column
+        width: variable.$hundred-percent
+        height: variable.$hundred-percent
+        justify-content: space-around
+        align-items: center
+        position: relative
+
+        .row
+            flex: 1
+            display: flex
+            flex-direction: column
+            justify-content: space-around
+
+            .nav-item
+                display: grid
+                justify-content: start
+                align-items: center
+                font-size: 1.5vw
+                padding: 10px
+                color: black
+
+                .nav-link
+                    display: flex
+                    list-style: none
+                    align-items: center
+                    text-decoration: none
+                    font-weight: bold
+                    color: inherit
+
+                    .nav-icon
+                        font-size: 2vw
+                        margin: 0 5px 5px 0
+                        color: inherit
+
+            .nav-item.active
+                background-color: gray
+                color: white
+                border-radius: 10px
+
+            .nav-item:hover, .nav-item:focus
+                color: white
+                transition: 0.3s ease-in
+
+@media only screen and ( max-width: 500px )
+    main
+        flex-direction: column
+    
+    .navbar
+        flex-direction: row
+        padding: 10px 0 10px
+
+        .navbrand
+            strong
+                font-size: 2.5vw
+        
+        .nav-list
+            flex-direction: row
+
+.navbar.active
+    flex: 0
+    width: 130px
+
+    .navbrand
+        .long
+            display: none
+        
+        .short
+            display: block
+            font-size: 3vw
+
+    .nav-list
+        .row
+            .nav-item
+                justify-content: center
+
+                .nav-link
+                    display: flex
+                    flex-direction: column
+                    justify-self: center
+
+                    .nav-icon
+                        margin: 0 0 5px

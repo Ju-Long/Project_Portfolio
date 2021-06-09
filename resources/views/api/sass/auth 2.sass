@@ -1,0 +1,145 @@
+@use 'font'
+
+body 
+    display: flex
+    flex-direction: row
+    background-color: font.$navbar-bg
+
+.img-showcase-bg 
+    width: 55vw
+    height: 100vh
+    filter: blur(4px)
+    background-image: url(../../api/img/signup.signin.jpg)
+    background-size: auto 100vh
+    background-repeat: no-repeat
+
+.img-showcase
+    position: absolute
+    width: 55vw
+    height: 100vh
+
+.inputs 
+    width: 45vw
+    height: 100vh
+    display: grid
+    align-items: center
+    justify-content: center
+
+    .input-form
+        display: grid
+        width: 45vw
+        height: 50%
+        align-items: center
+        justify-content: space-evenly
+
+        header 
+            width: 45vw * 0.7
+            font-size: 3vw
+            font-family: font.$oxygen
+            font-weight: bold
+            text-align: center
+
+        .input-box
+            padding: 20px 10px
+            background: font.$white
+            text-align: center
+            color: font.$not-so-white
+            border: none
+            border-radius: 16px
+
+        .input-box:focus, .input-box:hover 
+            color: font.$black-but-not-so-black
+
+        .input-box.error
+            border: 1px solid font.$red
+            color: font.$red
+        
+        button.input-btn
+            width: 40%
+            align-self: center
+            justify-self: center
+            background: font.$blueish 
+            padding: 10px 0
+            border: none
+            border-radius: 8px
+
+        p
+            font-family: font.$oxygen
+            justify-self: center
+
+            a
+                text-decoration: underline
+
+        a
+            color: blue
+            justify-self: center
+            font-family: font.$oxygen
+
+        #error
+            display: none
+            width: 45vw * 0.7
+            background: transparent
+            color: font.$red
+            font-weight: bold
+            padding: 4px 8px
+            font-size: 13px
+            font-family: font.$oxygen
+        
+        #error.show
+            display: block
+
+.forget-password
+    width: 45vw
+    height: 100vh
+    display: grid
+    align-items: center
+
+    .input-box-container
+        display: grid
+        height: 40vw
+
+
+        header
+            font-family: font.$ubuntu
+            font-weight: bold
+            font-size: 3vw
+            text-align: center
+        
+        .input-box
+            display: grid
+            width: 45vw
+            height: 20vw
+            align-items: center
+            justify-content: space-evenly
+
+            label
+                width: 45vw * 0.7
+                font-family: font.$oxygen
+                font-weight: bold
+                font-size: 2vw
+                text-align: center
+
+            input
+                padding: 20px
+                border: none
+                border-radius: 16px
+                -webkit-appearance: none
+                -moz-appearance: textfield
+
+            button
+                border: none
+                border-radius: 8px
+                padding: 10px
+                background: font.$grayish
+                transition: 0.5s linear
+
+                i
+                    font-size: 2.5vw
+                    color: font.$red
+                    transition: 0.5s linear
+
+            button.proceed
+                background: font.$white
+                
+                i
+                    color: font.$programming-green

@@ -1,0 +1,158 @@
+@use 'font'
+@import url('https://cdn.rawgit.com/lonekorean/gist-syntax-themes/d49b91b3/stylesheets/one-dark.css')
+
+.content.documentations
+    background-color: rgba(255, 255, 255, 0.8)
+    width: 100%
+    height: 100%
+    padding: 2vw
+    border-radius: 34px 0 0 34px
+    position: relative
+    z-index: 2
+    display: flex
+    flex-direction: column
+    color: font.$black-but-not-so-black
+    transition: 0.5s ease
+
+    header
+        text-align: start
+        font-weight: 700
+        font-size: 2.5vw
+        font-family: font.$oxygen
+
+    p.pure
+        font-family: font.$ubuntu
+        text-align: end
+        color: font.$programming-blue
+        cursor: pointer
+        padding: 20px 0
+    
+    .select-wrapper
+        background: font.$white
+        padding: 10px 10px
+        border: 2px solid font.$black-but-not-so-black
+        border-radius: 16px
+        margin: 0 0 20px
+
+        .select
+            width: 100%
+            height: 100%
+            display: flex
+            flex-direction: column
+
+            .select-trigger
+                display: flex
+                justify-content: space-between
+                align-items: center
+                padding: 0 20px
+
+                span
+                    font-family: font.$oxygen
+                    font-weight: 700
+                    font-size: 2vw
+
+                i
+                    font-size: 3vw
+                    cursor: pointer
+                    padding-bottom: 10px
+                
+            .options
+                font-family: font.$ubuntu
+                display: flex
+                flex-direction: column
+                height: 0
+                overflow-y: auto
+                transition: 0.5s ease
+
+                .option
+                    padding: 10px
+                    border-top: 1px solid font.$black-but-not-so-black
+                    border-bottom: 1px solid font.$black-but-not-so-black
+                    cursor: pointer
+                    border-radius: 4px
+                
+                .option.selected
+                    background-color: font.$navbar-bg
+
+                .option:hover
+                    background-color: font.$not-so-white
+
+                .option.selected:hover
+                    background-color: font.$navbar-bg
+
+    .select-wrapper.active
+        .select
+            .options
+                padding: 5px 30px
+                height: 30vh
+
+    .codes
+        width: 100%
+        height: auto
+        background: font.$white
+        padding: 15px 15px
+        border: 2px solid font.$black-but-not-so-black
+        border-radius: 16px
+        display: flex
+        flex-direction: column
+        overflow-y: auto
+
+        .codes-lang
+            display: flex
+            flex-direction: row
+            overflow-x: auto
+            padding: 0 0 10px 0
+            width: 100%
+            
+            span 
+                font-size: 1.8vw
+                font-weight: 500
+                padding: 0 10px 2px
+                margin: 0 10px 0
+                transition: 0.5s ease-in-out
+
+            span.active
+                font-weight: 700
+                border-bottom: 3px solid font.$programming-purple
+                border-radius: 2px
+
+            span:hover
+                padding: 0 15px 2px
+        
+        .codes-body
+            width: 70vw
+            height: 50vh
+            border-radius: 16px
+            // background-color: font.$programming-background
+            padding: 10px
+            overflow: auto
+
+            // .lang
+            //     font-size: 1.5vw
+            //     font-weight: 300
+            //     font-family: font.$oxygen
+
+
+            //     .syntax
+            //         color: font.$programming-purple
+
+            //     .name
+            //         color: font.$programming-red
+
+            //     .int
+            //         color: font.$programming-blue
+
+            //     .string
+            //         color: font.$programming-green
+
+            //     .operator, .bracket
+            //         color: font.$programming-yellow
+
+            //     .replace
+            //         color: font.$programming-purple
+            //         font-size: 2vw
+            //         font-weight: bold
+            //         font-family: font.$ubuntu
+
+            //     .comment
+            //         color: font.$not-so-white

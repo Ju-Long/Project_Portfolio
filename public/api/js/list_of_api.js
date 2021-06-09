@@ -53,7 +53,8 @@ $(document).ready(() => {
                 lat: location.latitude,
                 long: location.longitude
             }, (data) => {
-                  data_display(data, id);
+                console.log(data);
+                data_display(data, id);
             }, "JSON");
         }
     });
