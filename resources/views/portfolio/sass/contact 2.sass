@@ -1,0 +1,77 @@
+@use 'variable'
+
+.contact
+    width: variable.$hundred-percent
+    height: variable.$hundred-percent
+    display: grid
+
+    strong 
+        font-family: variable.$ubuntu
+        font-size: 3vw
+        text-align: center
+        align-self: center
+    
+    .contact-form
+        width: variable.$hundred-percent
+        display: grid
+        font-family: variable.$roboto
+
+        .form-item
+            width: 70%
+            height: 4vh
+            display: block
+            border-radius: 8px
+            border: none
+            justify-self: center
+            align-self: center
+            padding: 5px
+            transition: 0.5s ease-in-out
+        
+        textarea.form-item
+            height: 7vh
+        
+        
+        .form-item:hover
+            width: 90%
+            height: 5vh
+        
+        textarea.form-item:hover
+            width: 90%
+            height: 8vh
+
+        .form-email:invalid
+            border: 2px solid red
+            color: red
+
+        
+    .social-media
+        width: variable.$hundred-percent
+        background-color: rgba(173, 181, 189, 0.8)
+        border-radius: 0 0 20px 0
+        box-shadow: inset 0 0 10px gray
+        display: flex
+        flex-direction: column
+
+        strong
+            flex: 3
+            font-family: variable.$ubuntu
+            padding: 10px
+            font-size: 3vw
+            text-decoration: underline
+
+        .social-media-accounts 
+            display: flex
+            flex: 7
+            flex-direction: row
+            justify-content: space-around
+
+            .social-media-icon
+                font-size: 5vw
+                transition: 0.3s ease-in-out
+            
+            .social-media-icon:hover, .social-media-icon:focus
+                cursor: pointer
+                background-image: variable.$dusty-grass
+                background-clip: text
+                -webkit-text-fill-color: transparent
+
