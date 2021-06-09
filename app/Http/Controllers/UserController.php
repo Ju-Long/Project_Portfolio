@@ -202,21 +202,22 @@ class UserController extends Controller
             return [['output' => 'Invalid Input Given']];
         }
         $type = $req->input('type');
-	switch ($type) {
-            case "get_nearest_bus_stop": 
+	
+        switch ($type) {
+            case 'get_nearest_bus_stop': 
                 $lat = $req->input('lat');
                 $long = $req->input('long');
                 $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/5";
-            case "get_bus_arrival_time":
+            case 'get_bus_arrival_time':
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "http://babasama.me/get_bus_arrival/$busstopcode";
-            case "get_bus_route":
+            case 'get_bus_route':
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "http://babasama.me/get_bus_route/$busnumber";
-            case "get_bus_stop_data":
+            case 'get_bus_stop_data':
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
-            case "get_bus_data":
+            case 'get_bus_data':
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "http://babasama.me/get_bus_data/$busnumber";
 
