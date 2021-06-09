@@ -199,7 +199,7 @@ class UserController extends Controller
         $url = "";
         $account_key = config("value.private_api_key", '');
         if ($req->missing('type')) {
-            return [['output' => 'Invalid Input Given']];
+            return [['output' => 'Invalid Input']];
         }
         $type = $req->input('type');
         switch ($type) {
