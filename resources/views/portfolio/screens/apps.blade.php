@@ -23,7 +23,7 @@
             <button type="button" class="btn">show me</button>
         </div>
         <a class="app-content" href="/apps/#gymlog">
-            <img src="../portfolio/img/gymlog/CoverPage.png" class="app-img">
+            <img src="../portfolio/img/gymlog/out.webm" class="app-img">
         </a>
     </section>
 </div>
