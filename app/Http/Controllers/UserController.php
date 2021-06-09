@@ -199,7 +199,7 @@ class UserController extends Controller
         $url = "";
         $account_key = config("value.private_api_key", '');
         if ($req->missing('type')) {
-            return [['output' => 'Invalid Input']];
+            return [['output' => 'Invalid Input Given']];
         }
         $type = $req->input('type');
         switch ($type) {
@@ -221,7 +221,7 @@ class UserController extends Controller
                 $url = "http://babasama.me/get_bus_data/$busnumber";
 
             default: 
-                return [['output' => 'Invalid Input Given']];
+                return [['output' => $type]];
         }
         return $url;
         $result = Http::withHeaders([
