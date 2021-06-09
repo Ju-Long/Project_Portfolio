@@ -7,7 +7,7 @@
 
 <body>
     <div class='overall'>
-        <img src="../portfolio/img/polar_night.jpeg" class="background-img">
+        <img src="https://babasama.com/portfolio/img/polar_night.jpeg" class="background-img">
         <main>
             @include('portfolio/nav')
             <div class="content">
@@ -17,11 +17,11 @@
             </div>
         </main>
     </div>
-    <script src="../portfolio/js/index.js"></script>
-    <script src="../portfolio/js/view.js"></script>
-    <script src="../portfolio/js/nav.js"></script>
-    <script src="../portfolio/js/movie.js"></script>
-    <script src="../portfolio/js/airport.js"></script>
-    <script src="../portfolio/js/gymlog.js"></script>
-    <script src="../portfolio/js/faviconColor.js"></script>
+    <script src="https://babasama.com/portfolio/js/index.js"></script>
+    <script src="https://babasama.com/portfolio/js/view.js"></script>
+    <script src="https://babasama.com/portfolio/js/nav.js"></script>
+    <script src="https://babasama.com/portfolio/js/movie.js"></script>
+    <script src="https://babasama.com/portfolio/js/airport.js"></script>
+    <script src="https://babasama.com/portfolio/js/gymlog.js"></script>
+    <script src="https://babasama.com/portfolio/js/faviconColor.js"></script>
 </html>

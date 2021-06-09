@@ -5,7 +5,7 @@
             <button type="button" class="btn">show me</button>
         </div>
         <a class="app-content" href="/apps/#movie">
-            <img src="../portfolio/img/movie/CoverPageV2.png" class="app-img">
+            <img src="https://babasama.com/portfolio/img/movie/CoverPageV2.png" class="app-img">
         </a>
     </section>
     <section id="airport">
@@ -14,7 +14,7 @@
             <button type="button" class="btn">show me</button>
         </div>
         <a class="app-content" href="/apps/#airport">
-            <img src="../portfolio/img/airport/CoverPage.png" class="app-img">
+            <img src="https://babasama.com/portfolio/img/airport/CoverPage.png" class="app-img">
         </a>
     </section>
     <section id="gymlog">
@@ -23,7 +23,7 @@
             <button type="button" class="btn">show me</button>
         </div>
         <a class="app-content" href="/apps/#gymlog">
-            <img src="../portfolio/img/gymlog/out.webm" class="app-img">
+            <img src="https://babasama.com/portfolio/img/gymlog/CoverPage.gif" class="app-img">
         </a>
     </section>
 </div>
