@@ -202,7 +202,7 @@ class UserController extends Controller
             return [['output' => 'Invalid Input Given']];
         }
         $type = $req->input('type');
-        switch ($type) {
+	switch ($type) {
             case "get_nearest_bus_stop": 
                 $lat = $req->input('lat');
                 $long = $req->input('long');
