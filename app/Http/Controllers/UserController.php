@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Config;
 
 class UserController extends Controller
@@ -229,7 +230,6 @@ class UserController extends Controller
             default: 
                 return [['output' => $type]];
         }
-        return $url;
         $result = Http::withHeaders([
             'api_key' => $account_key
         ])->get($url);

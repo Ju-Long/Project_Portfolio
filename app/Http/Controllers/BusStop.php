@@ -54,12 +54,12 @@ class BusStop extends Controller
                 return [['output' => "Client Error"]];}
 
             return json_decode($result);
-        } else {
+	} else {
             $user_acc_key = $req->input('accountkey');
             $username = $req->input('username');
             $API_Key = DB::table('api_datacenter.User')->select('user_api_key', 'user_role')->where([['user_api_key', $user_acc_key], ['username', "$username"]])->get();
-            foreach ($API_Key as $i) {
-                $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key', $i->user_api_key]])->get();
+	    foreach ($API_Key as $i) { 
+		$ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key', $i->user_api_key]])->get();
                 if (count($ip_data) == 0) {
                     $id = DB::table('api_datacenter.IP_address_calls')->insertGetId(['ip_address' => "$client_ip", 'user_api_key' => $i->user_api_key]);
                     DB::table('api_datacenter.IP_address_call_date')->insert(['ip_id' => $id, 'date_of_calling' => "$currDay"]);
@@ -83,7 +83,6 @@ class BusStop extends Controller
 
                 $datamall_key = DB::table('api_datacenter.User_API_Keys')->select('datamall')->where('user_api_key', $i->user_api_key)->get();
                 foreach($datamall_key as $n) {
-
                     $result = Http::withHeaders([
                         'api_key' => $n->datamall
                     ])->get($url);
