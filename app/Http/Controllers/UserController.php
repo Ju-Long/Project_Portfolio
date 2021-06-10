@@ -208,18 +208,23 @@ class UserController extends Controller
                 $lat = $req->input('lat');
                 $long = $req->input('long');
                 $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/5";
+                break;
             case 'get_bus_arrival_time':
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "http://babasama.me/get_bus_arrival/$busstopcode";
+                break;
             case 'get_bus_route':
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "http://babasama.me/get_bus_route/$busnumber";
+                break;
             case 'get_bus_stop_data':
                 $busstopcode = $req->input('BusStopCode', 54201);
                 $url = "http://babasama.me/get_bus_stop_data/$busstopcode";
+                break;
             case 'get_bus_data':
                 $busnumber = $req->input('ServiceNo', 88);
                 $url = "http://babasama.me/get_bus_data/$busnumber";
+                break;
 
             default: 
                 return [['output' => $type]];
