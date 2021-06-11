@@ -81,6 +81,7 @@ class UserController extends Controller
         $confirm = DB::table('api_datacenter.User')->where('reset_password_code', "$token")->get();
         
         if (count($confirm) > 0) {
+            return [['output' => $confirm]];
             foreach($confirm as $i) {
                 DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
                 DB::table('api_datacenter.User_API_Keys')->insert(['user_api_key' => $new_api_key]);
