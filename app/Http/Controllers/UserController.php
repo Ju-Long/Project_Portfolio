@@ -81,7 +81,6 @@ class UserController extends Controller
         $confirm = DB::table('api_datacenter.User')->where('reset_password_code', "$token")->get();
         
         if (count($confirm) > 0) {
-            return [['output' => $confirm]];
             foreach($confirm as $i) {
                 DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
                 DB::table('api_datacenter.User_API_Keys')->insert(['user_api_key' => $new_api_key]);
@@ -90,7 +89,7 @@ class UserController extends Controller
                 foreach ($datamall_api as $n) {
                     session(['datamall_api' => $n->datamall]);
                 }
-                return view('api.main', ['username' => $req->session()->get('username'), 'email' => $req->session()->get('email'), 'password' => $req->session()->get('password'), 'user_api_key' => $req->session()->get('user_api_key'), 'datamall_api' => $req->session()->get('datamall_api')]);
+                return redirect('/api/dashboard');
             }
         } return [['output' => 'no data found']];
     }
