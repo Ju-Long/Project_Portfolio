@@ -84,8 +84,8 @@ class UserController extends Controller
             foreach($confirm as $i) {
                 DB::table('api_datacenter.User')->where('username', $i->username)->update(['user_api_key' => $new_api_key, 'reset_password_code' => null]);
                 DB::table('api_datacenter.User_API_Keys')->insert(['user_api_key' => $new_api_key]);
-                session(['user_id' => $i->user_id, 'username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $i->user_api_key, 'email' => $i->user_email]);
-                $datamall_api = DB::table('api_datacenter.User_API_Keys')->where('user_api_key', $i->user_api_key)->get();
+                session(['user_id' => $i->user_id, 'username' => $i->username, 'password' => $i->user_password, 'user_api_key' => $new_api_key, 'email' => $i->user_email]);
+                $datamall_api = DB::table('api_datacenter.User_API_Keys')->where('user_api_key', $new_api_key)->get();
                 foreach ($datamall_api as $n) {
                     session(['datamall_api' => $n->datamall]);
                 }

@@ -73,6 +73,9 @@ $(document).ready(() => {
         }, (data) => {
             if (data[0].output == "new user created") {
                 alert("new user successfully created, please check your email to confirm your email address");
+                setTimeout(() => {
+                    window.location.replace("https://babasama.com/api/dashboard")
+                }, 3000);
             } else  {
                 $("#error").html(data[0].output);
                 $("#error").addClass("show");
