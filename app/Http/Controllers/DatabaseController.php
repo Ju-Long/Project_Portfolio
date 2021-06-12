@@ -80,7 +80,7 @@ class DatabaseController extends Controller
             $data = DB::table(DB::raw('gym_planner.User_Has_Exercise_Data UHED'))
             ->join(DB::raw('gym_planner.User_Has_Exercise UHE'), 'UHED.user_has_exercise_id', '=', 'UHE.user_has_exercise_id')
             ->join(DB::raw('gym_planner.Exercise E'), 'UHE.exercise_id', '=', 'E.exercise_id')
-            ->select('UHED.data_id', 'UHED.user_has_exercise_id', 'E.exercise_name', 'E.exercise_image', 'UHED.sets', 'UHED.reps', 'UHED.weight', 'UHED.sets_done', 'UHED.date')
+            ->select('UHED.data_id', 'UHED.user_has_exercise_id', 'E.exercise_name', 'E.exercise_image', 'UHED.sets', 'UHED.reps', 'UHED.weight', 'UHED.sets_done', 'UHED.date', 'UHED.color')
             ->where([['UHED.date', "$date"], ['UHE.user_id', "$user_id"]])
             ->get();
             foreach($data as $i) {
@@ -128,6 +128,7 @@ class DatabaseController extends Controller
         $sets = $req->sets ?? 0;
         $reps = $req->reps ?? 0;
         $weight = $req->weight ?? 0;
+        $color = $req->color ?? 'orange';
         $date = $req->date ?? time();
 
         if (!($username || $password || $user_has_exercise_id || $sets || $reps || $date)) {
@@ -150,7 +151,7 @@ class DatabaseController extends Controller
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
                 ->updateOrInsert(
                     ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date], 
-                    ['sets' => $sets, 'reps' => $reps, 'weight' => $weight]);
+                    ['sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]);
                 
                 if ($data > 0) {
                     return [['output' => 'Inserted']];
