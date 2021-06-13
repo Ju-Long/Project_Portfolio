@@ -132,7 +132,8 @@ class DatabaseController extends Controller
         $color = $req->color ?? '#FF7141';
 
         if (!($username && $password && $user_has_exercise_id && $sets && $reps && $date)) {
-            return [['output' => "Invalid params"]];}
+            return [['output' => "Invalid params", 'data' => ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date, 'sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]]];
+        }
 
         $date = date('Y-m-d', $date);
 
