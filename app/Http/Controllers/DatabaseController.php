@@ -178,6 +178,8 @@ class DatabaseController extends Controller
         foreach ($userData as $i) {
             $user_id = $i->user_id;}
 
+        return ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date, 'sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color];
+
         if ($user_id != 0) {
             if ($data_id) {
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
