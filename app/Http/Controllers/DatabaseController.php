@@ -182,10 +182,10 @@ class DatabaseController extends Controller
             if ($data_id) {
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
                 ->where([['data_id', $data_id], ['date', "$date"]])
-                ->update(['sets' => $sets, 'reps' => $reps, 'weight' => $weight, '$color' => $color]);
+                ->update(['sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]);
                 
                 if ($data > 0) {
-                    return [['output' => 'Inserted']];
+                    return [['output' => 'updated']];
                 } return [['output' => 'fail to update']];
             } return [['output' => 'user_exercise_id does not exist or is not binded to your account']];
         } return [['output' => 'user credentials wrong']];
