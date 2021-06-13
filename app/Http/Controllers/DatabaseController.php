@@ -10,7 +10,7 @@ class DatabaseController extends Controller
         $username = $req->username ?? '';
         $password = $req->password ?? '';
 
-        if (!($username || $password)) {
+        if (!($username && $password)) {
             return [['output' => "Invalid params"]];}
         
         $data = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
@@ -23,7 +23,7 @@ class DatabaseController extends Controller
         $password = $req->password ?? '';
         $email = $req->email ?? '';
 
-        if (!($username || $email || $password)) {
+        if (!($username && $email && $password)) {
             return [['output' => "Invalid params"]];}
 
         $result = DB::table('gym_planner.User')->insertOrIgnore([
@@ -50,7 +50,7 @@ class DatabaseController extends Controller
         $username = $req->username ?? '';
         $password = $req->password ?? '';
 
-        if (!($username || $password)) {
+        if (!($username && $password)) {
             return [['output' => "Invalid params"]];}
 
         $user = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
@@ -67,7 +67,7 @@ class DatabaseController extends Controller
         $user_id = 0;
         $user_has_exercise_data = array();
 
-        if (!($username || $password)) {
+        if (!($username && $password)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
@@ -98,7 +98,7 @@ class DatabaseController extends Controller
         $user_id = 0;
         $user_has_exercise_data = array();
 
-        if (!($username || $password)) {
+        if (!($username && $password)) {
             return [['output' => "Invalid params"]];}
 
         $userData = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
@@ -120,7 +120,7 @@ class DatabaseController extends Controller
         } return [['output' => 'user credentials wrong']];
     }
 
-    function add_edit_exercise_data(Request $req) {
+    function add_exercise_data(Request $req) {
         $username = $req->username ?? '';
         $password = $req->password ?? '';
         $user_id = 0;
@@ -130,9 +130,8 @@ class DatabaseController extends Controller
         $weight = $req->weight ?? 0;
         $date = $req->date ?? time();
         $color = $req->color ?? '#FF7141';
-        return $color;
 
-        if (!($username || $password || $user_has_exercise_id || $sets || $reps || $date)) {
+        if (!($username && $password && $user_has_exercise_id && $sets && $reps && $date)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
@@ -150,9 +149,42 @@ class DatabaseController extends Controller
 
             if ($user_has_exercise_id > 0) {
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
-                ->updateOrInsert(
+                ->insertOrIgnore(
                     ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date], 
                     ['sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]);
+                
+                if ($data > 0) {
+                    return [['output' => 'Inserted']];
+                } return [['output' => 'fail to update']];
+            } return [['output' => 'user_exercise_id does not exist or is not binded to your account']];
+        } return [['output' => 'user credentials wrong']];
+    }
+
+    function edit_exercise_data(Request $req) {
+        $username = $req->username ?? '';
+        $password = $req->password ?? '';
+        $user_id = 0;
+        $data_id = $req->data_id ?? 0;
+        $sets = $req->sets ?? 0;
+        $reps = $req->reps ?? 0;
+        $weight = $req->weight ?? 0;
+        $date = $req->date ?? time();
+        $color = $req->color ?? '#FF7141';
+
+        if (!($username && $password && $data_id && $sets && $reps && $date)) {
+            return [['output' => "Invalid params"]];}
+
+        $date = date('Y-m-d', $date);
+
+        $userData = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
+        foreach ($userData as $i) {
+            $user_id = $i->user_id;}
+
+        if ($user_id != 0) {
+            if ($data_id) {
+                $data = DB::table('gym_planner.User_Has_Exercise_Data')
+                ->where([['data_id', $data_id], ['date', "$date"]])
+                ->update(['sets' => $sets, 'reps' => $reps, 'weight' => $weight, '$color' => $color]);
                 
                 if ($data > 0) {
                     return [['output' => 'Inserted']];
@@ -168,7 +200,7 @@ class DatabaseController extends Controller
         $exercise_name = $req->exercise_name ?? '';
         $exercise_image = $req->exercise_image ?? '';
     
-        if (!($username || $password || $exercise_name || $exercise_image)) {
+        if (!($username && $password && $exercise_name && $exercise_image)) {
             return [['output' => "Invalid params"]];}
 
         $userData = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
@@ -196,7 +228,7 @@ class DatabaseController extends Controller
         $date = $req->date ?? time();
         $user_id = 0;
 
-        if (!($username || $password || $data_id || $date)) {
+        if (!($username && $password && $data_id && $date)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
@@ -221,7 +253,7 @@ class DatabaseController extends Controller
         $date = $req->date ?? time();
         $user_id = 0;
 
-        if (!($username || $password || $data_id || $date)) {
+        if (!($username && $password && $data_id && $date)) {
             return [['output' => "Invalid params"]];}
 
         $date = date('Y-m-d', $date);
