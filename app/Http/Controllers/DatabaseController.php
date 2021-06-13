@@ -129,7 +129,7 @@ class DatabaseController extends Controller
         $reps = $req->reps ?? 0;
         $weight = $req->weight ?? 0;
         $date = $req->date ?? time();
-        $color = $req->color;
+        $color = $req->input("color");
         return $color;
 
         if (!($username && $password && $user_has_exercise_id && $sets && $reps && $date)) {
