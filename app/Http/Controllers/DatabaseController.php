@@ -130,7 +130,7 @@ class DatabaseController extends Controller
         $weight = $req->weight ?? 0;
         $date = $req->date ?? time();
         $color = $req->world;
-        return ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date, 'sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]
+        return ['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date, 'sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color];
 
         if (!($username && $password && $user_has_exercise_id && $sets && $reps && $date)) {
             return [['output' => "Invalid params"]];}
