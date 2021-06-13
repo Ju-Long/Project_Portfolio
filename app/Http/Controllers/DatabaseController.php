@@ -130,7 +130,6 @@ class DatabaseController extends Controller
         $weight = $req->weight ?? 0;
         $date = $req->date ?? time();
         $color = $req->color ?? '#FF7141';
-        return $color;
 
         if (!($username || $password || $user_has_exercise_id || $sets || $reps || $date)) {
             return [['output' => "Invalid params"]];}
