@@ -146,6 +146,7 @@ class DatabaseController extends Controller
                 if ($i->user_has_exercise_id == $user_has_exercise_id) {
                     $user_has_exercise_id = $i->user_has_exercise_id;
                 }}
+            return [['user_has_exercise_id' => $user_has_exercise_id, 'date' => $date, 'sets' => $sets, 'reps' => $reps, 'weight' => $weight, 'color' => $color]];
 
             if ($user_has_exercise_id > 0) {
                 $data = DB::table('gym_planner.User_Has_Exercise_Data')
