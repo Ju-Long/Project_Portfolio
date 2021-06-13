@@ -172,7 +172,7 @@ class DatabaseController extends Controller
         if (!($username && $password && $data_id && $sets && $reps && $date)) {
             return [['output' => "Invalid params"]];}
 
-        $date = date('Y-m-d', $date);
+        $date = date('Y-m-d', ($date - 978307200));
 
         $userData = DB::table('gym_planner.User')->where([['username', "$username"], ['user_password', "$password"]])->get();
         foreach ($userData as $i) {
