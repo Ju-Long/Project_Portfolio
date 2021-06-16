@@ -36,7 +36,6 @@ class BusStop extends Controller
                     $id = $i->ip_id;
                 }
             }
-            return 1;
             $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_called > 30) {
@@ -48,6 +47,7 @@ class BusStop extends Controller
             $result = Http::withHeaders([
                 'api_key' => $account_key
             ])->get($url);
+            return $result;
 
             if ($result->serverError()) {
                 return [['output' => "Server Error"]];
