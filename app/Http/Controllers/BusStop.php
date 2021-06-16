@@ -47,7 +47,6 @@ class BusStop extends Controller
             $result = Http::withHeaders([
                 'api_key' => $account_key
             ])->get($url);
-            return $result;
 
             if ($result->serverError()) {
                 return [['output' => "Server Error"]];
