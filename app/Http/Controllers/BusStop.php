@@ -24,7 +24,6 @@ class BusStop extends Controller
         $currDay = date('Y-m-d', time());
 
         $url = "http://babasama.me/get_nearest_bus_stop/$lat/$long/$amountReturned";
-        return $url;
 
         if ($req->missing('username') && $req->missing('accountkey')) {
             $ip_data = DB::table('api_datacenter.IP_address_calls')->where([['ip_address', "$client_ip"], ['user_api_key', null]])->get();
@@ -37,6 +36,7 @@ class BusStop extends Controller
                     $id = $i->ip_id;
                 }
             }
+            return 1;
             $datas = DB::table('api_datacenter.IP_address_call_date')->where([['ip_id', $id], ['date_of_calling', "$currDay"]])->get();
             foreach($datas as $i) {
                 if ($i->times_called > 30) {
