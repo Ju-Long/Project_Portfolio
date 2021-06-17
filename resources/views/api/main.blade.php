@@ -64,10 +64,11 @@
                                 DataMall API Key
                             </span>
                             <div>
-                                <input type="text" value="{{ $datamall_api }}" id="datamall">
+                                <input type="text" value="{{ $datamall_api }}" id="datamall" placeholder="Please insert datamall api key">
                                 <i class="fa-duotone fa-check datamall"></i>
                             </div>
                         </div>
+                        <span class="get" style="display: none"><a href="https://datamall.lta.gov.sg/content/datamall/en/request-for-api.html" target="_blank">get DataMall API Key</a></span>
                     </div>
                 </div>
 

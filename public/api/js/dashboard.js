@@ -32,6 +32,10 @@ $(document).ready(() => {
         chart.draw();
     }
 
+    if ($("#datamall").val() === "") {
+        $(".get").show()
+    }
+
     const passwordvalidate = (password) => {
         if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,30}$/.test(password)) 
             return true;
