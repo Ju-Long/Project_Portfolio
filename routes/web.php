@@ -8,7 +8,7 @@ use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\BusStop;
 use App\Http\Controllers\QuoteApiController;
 
-// Route::get('info', function() { phpinfo();});
+Route::get('info', function() { phpinfo();});
 
 Route::get('/gym_planner/login', [DatabaseController::class, 'login']);
 Route::get('/gym_planner/signup', [DatabaseController::class, 'signup']);
