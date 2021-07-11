@@ -66,7 +66,7 @@ Route::get('/apps', function() {
 });
 Route::post('/email', [MailController::class, 'sendEmail']);
 
-Route::get('/.well-known/pki-validation/0F524100EDED49375D9C4C5F8D895088.txt', function() {
-    return response('B790F0643144CB72C43648EEAE6AAA0F3D3F0FEDDA53660DEA1A08010F327D7A comodoca.com 606e9371a3a80', 200)
+Route::get('/.well-known/pki-validation/2F2A49229FE67311C08356BFAE2707DC.txt', function() {
+    return response('20D876EF7016D3441C091C14D0635E15753EFBCE7DA770647B340F2BDB6AE8F5 comodoca.com 60ea8135083a9', 200)
         -> header('Content-Type', 'text/plain');
 });
